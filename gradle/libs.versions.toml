@@ -13,6 +13,7 @@ retrofit = "3.0.0" # https://github.com/square/retrofit/releases
 okhttp3 = "4.12.0"
 retrofit-converter = "1.0.0" # https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter/releases
 hilt = "2.57.2" # https://github.com/google/dagger/releases
+kotlinDatetime = "0.7.1" # https://github.com/Kotlin/kotlinx-datetime/releases
 
 # Test
 junit = "4.13.2" # https://junit.org/
@@ -49,6 +50,7 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinDatetime" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutinesTest" }
 
 [plugins]
