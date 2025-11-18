@@ -1,7 +1,7 @@
 [versions]
 agp = "8.13.1" # https://developer.android.com/build/releases/gradle-plugin?hl=ja
 kotlin = "2.2.21" # https://github.com/JetBrains/kotlin/releases/
-kotlin-serialization = "1.9.0" # https://github.com/Kotlin/kotlinx.serialization/releases
+kotlinSerialization = "1.9.0" # https://github.com/Kotlin/kotlinx.serialization/releases
 coreKtx = "1.17.0" # https://developer.android.com/jetpack/androidx/releases/core?hl=ja
 lifecycleRuntimeKtx = "2.9.4" # https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=ja
 navigation = "2.9.6" # https://developer.android.com/jetpack/androidx/releases/navigation?hl=ja
@@ -10,6 +10,7 @@ composeBom = "2025.11.00" # https://developer.android.com/develop/ui/compose/bom
 ksp = "2.2.21-2.0.4" # https://github.com/google/ksp/releases
 coil = "3.3.0" # https://github.com/coil-kt/coil/releases
 retrofit = "3.0.0" # https://github.com/square/retrofit/releases
+okhttp3 = "4.12.0"
 retrofit-converter = "1.0.0" # https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter/releases
 hilt = "2.57.2" # https://github.com/google/dagger/releases
 
@@ -41,7 +42,8 @@ androidx-compose-material-icons-extended = { group = "androidx.compose.material"
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit2-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-converter" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -55,3 +57,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 google-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
