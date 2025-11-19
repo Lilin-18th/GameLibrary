@@ -1,9 +1,8 @@
 package com.lilin.gamelibrary.domain.model
 
+import com.lilin.gamelibrary.domain.provider.DateTimeProvider
+import com.lilin.gamelibrary.domain.provider.DefaultDateTimeProvider
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.todayIn
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
@@ -23,29 +22,44 @@ data class Game(
     val platforms: List<String>?,
 ) {
     val releaseYear: Int? = releaseDate?.let { dateString ->
-        LocalDate.parse(dateString).year
+        try {
+            LocalDate.parse(dateString).year
+        } catch (e: Exception) {
+            null
+        }
     }
-
-    // 注目バッジ判定
     val isPopular: Boolean = addedCount?.let { it >= POPULAR_THRESHOLD } ?: false
-
-    // 予約受付中バッジ判定
-    val isPreOrder: Boolean = if (isTba) {
-        true
-    } else {
-        val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
-        releaseDate?.let { dateString ->
-            try {
-                LocalDate.parse(dateString) > today
-            } catch (e: Exception) {
-                null
-            }
-        } ?: false
-    }
-
     val displayRating: String = String.format("%.1f", rating)
 
     companion object {
-        private const val POPULAR_THRESHOLD = 10000
+        const val POPULAR_THRESHOLD = 10000
     }
+}
+
+/**
+ * ゲームの予約受付中判定
+ *
+ * 以下のいずれかの条件を満たす場合にtrueを返します：
+ * - リリース日が現在の日付より未来の場合
+ *
+ * ゲームが発売日未定（TBA: To Be Announced）の場合やリリース日のパースに失敗した場合、リリース日がnullの場合はfalseを返します。
+ *
+ * @param dateTimeProvider 現在の日付を取得するためのプロバイダー。
+ * デフォルトでは[DefaultDateTimeProvider]を使用します。テスト時にはモックを渡すことで固定日付での動作確認が可能です。
+ *
+ * @return ゲームが予約受付中の場合はtrue、それ以外はfalse
+ */
+fun Game.isPreOrder(
+    dateTimeProvider: DateTimeProvider = DefaultDateTimeProvider(),
+): Boolean {
+    if (isTba) return false
+
+    return releaseDate?.let { dateString ->
+        try {
+            val date = LocalDate.parse(dateString)
+            date > dateTimeProvider.today()
+        } catch (e: Exception) {
+            false
+        }
+    } ?: false
 }

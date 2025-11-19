@@ -1,4 +1,4 @@
-package com.lilin.gamelibrary.data.di
+package com.lilin.gamelibrary.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.lilin.gamelibrary.BuildConfig
@@ -50,7 +50,7 @@ object NetworkModule {
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(
-                Json.asConverterFactory("application/json".toMediaType())
+                Json.Default.asConverterFactory("application/json".toMediaType())
             )
             .client(okHttpClient)
             .build()
