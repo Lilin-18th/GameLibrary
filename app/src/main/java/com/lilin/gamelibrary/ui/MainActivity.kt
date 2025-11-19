@@ -1,4 +1,4 @@
-package com.lilin.gamelibrary
+package com.lilin.gamelibrary.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
