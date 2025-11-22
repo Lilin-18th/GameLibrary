@@ -68,6 +68,8 @@ val StatusBacklog = Color(0xFFFF9800)      // オレンジ - 積みゲー
 val StatusWishlist = Color(0xFF9C27B0)     // 紫 - ウィッシュリスト
 // 評価用カラー
 val RatingGold = Color(0xFFFFD700)         // 星の色
+val RatingSilver = Color(0xFFC0C0C0)       // シルバー
+val RatingBronze = Color(0xFFCD7F32)       // ブロンズ
 val RatingEmpty = Color(0xFFBDBDBD)        // 空の星
 // その他の機能的なカラー
 val SuccessColor = Color(0xFF4CAF50)
