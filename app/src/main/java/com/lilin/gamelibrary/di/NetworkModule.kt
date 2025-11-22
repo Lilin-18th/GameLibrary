@@ -2,6 +2,7 @@ package com.lilin.gamelibrary.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.lilin.gamelibrary.BuildConfig
+import com.lilin.gamelibrary.data.api.ApiServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,5 +55,11 @@ object NetworkModule {
             )
             .client(okHttpClient)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiServices(retrofit: Retrofit): ApiServices {
+        return retrofit.create(ApiServices::class.java)
     }
 }
