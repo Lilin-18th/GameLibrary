@@ -2,7 +2,7 @@ package com.lilin.gamelibrary.domain.usecase
 
 import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.domain.repository.GameRepository
-import jakarta.inject.Inject
+import javax.inject.Inject
 
 class GetNewReleasesUseCase @Inject constructor(
     private val repository: GameRepository,
