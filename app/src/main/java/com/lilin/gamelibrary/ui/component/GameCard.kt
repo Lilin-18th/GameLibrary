@@ -88,7 +88,7 @@ fun TrendingGameCard(
                 Text(
                     text = game.name,
                     style = MaterialTheme.typography.titleMedium,
-                    maxLines = 2,
+                    maxLines = 1,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -186,7 +186,7 @@ fun HighRatedGameCard(
                 Text(
                     text = game.name,
                     style = MaterialTheme.typography.titleMedium,
-                    maxLines = 2,
+                    maxLines = 1,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -267,7 +267,7 @@ fun NewReleaseGameCard(
                 Text(
                     text = game.name,
                     style = MaterialTheme.typography.titleMedium,
-                    maxLines = 2,
+                    maxLines = 1,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
                 )
