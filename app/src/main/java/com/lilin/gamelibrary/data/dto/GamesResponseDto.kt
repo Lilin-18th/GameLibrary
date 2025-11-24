@@ -25,37 +25,37 @@ data class GameDto(
     @SerialName("name")
     val name: String,
     @SerialName("released")
-    val released: String?,
+    val released: String? = null,
     @SerialName("tba")
-    val tba: Boolean?,
+    val tba: Boolean? = null,
     @SerialName("background_image")
-    val backgroundImage: String?,
+    val backgroundImage: String? = null,
     @SerialName("rating")
     val rating: Double,
     @SerialName("rating_top")
-    val ratingTop: Int?,
+    val ratingTop: Int? = null,
     @SerialName("ratings")
-    val ratings: List<RatingsDto>?,
+    val ratings: List<RatingsDto>? = null,
     @SerialName("ratings_count")
-    val ratingsCount: Int?,
+    val ratingsCount: Int? = null,
     @SerialName("reviews_text_count")
-    val reviewsTextCount: Int?,
+    val reviewsTextCount: Int? = null,
     @SerialName("added")
-    val added: Int?,
+    val added: Int? = null,
     @SerialName("added_by_status")
-    val addedByStatus: AddedByStatusDto?,
+    val addedByStatus: AddedByStatusDto? = null,
     @SerialName("metacritic")
-    val metacritic: Int?,
+    val metacritic: Int? = null,
     @SerialName("playtime")
-    val playtime: Int?,
+    val playtime: Int? = null,
     @SerialName("suggestions_count")
-    val suggestionsCount: Int?,
+    val suggestionsCount: Int? = null,
     @SerialName("updated")
-    val updated: String?,
+    val updated: String? = null,
     @SerialName("esrb_rating")
-    val esrbRating: EsrbRatingDto?,
+    val esrbRating: EsrbRatingDto? = null,
     @SerialName("platforms")
-    val platforms: List<PlatformInfoDto>,
+    val platforms: List<PlatformInfoDto>? = null,
 )
 
 @Serializable
@@ -73,17 +73,17 @@ data class RatingsDto(
 @Serializable
 data class AddedByStatusDto(
     @SerialName("yet")
-    val yet: Int?,
+    val yet: Int? = null,
     @SerialName("owned")
-    val owned: Int?,
+    val owned: Int? = null,
     @SerialName("beaten")
-    val beaten: Int?,
+    val beaten: Int? = null,
     @SerialName("toplay")
-    val toplay: Int?,
+    val toplay: Int? = null,
     @SerialName("dropped")
-    val dropped: Int?,
+    val dropped: Int? = null,
     @SerialName("playing")
-    val playing: Int?,
+    val playing: Int? = null,
 )
 
 @Serializable
@@ -101,7 +101,7 @@ data class PlatformInfoDto(
     @SerialName("platform")
     val platform: PlatformDto,
     @SerialName("released_at")
-    val releasedAt: String?,
+    val releasedAt: String? = null,
     @SerialName("requirements")
     val requirements: JsonObject? = null,
 )
@@ -115,106 +115,3 @@ data class PlatformDto(
     @SerialName("slug")
     val slug: String,
 )
-
-// サブDTO
-//@Serializable
-//data class RatingDto(
-//    @SerialName("id")
-//    val id: Int,
-//    @SerialName("title")
-//    val title: String,
-//    @SerialName("count")
-//    val count: Int,
-//    @SerialName("percent")
-//    val percent: Double
-//)
-//
-//@Serializable
-//data class AddedByStatusDto(
-//    @SerialName("yet")
-//    val yet: Int?,
-//    @SerialName("owned")
-//    val owned: Int?,
-//    @SerialName("beaten")
-//    val beaten: Int?,
-//    @SerialName("toplay")
-//    val toplay: Int?,
-//    @SerialName("dropped")
-//    val dropped: Int?,
-//    @SerialName("playing")
-//    val playing: Int?
-//)
-//
-//@Serializable
-//data class RequirementsDto(
-//    @SerialName("minimum")
-//    val minimum: String?,
-//    @SerialName("recommended")
-//    val recommended: String?
-//)
-//
-//@Serializable
-//data class ParentPlatformInfoDto(
-//    @SerialName("platform")
-//    val platform: ParentPlatformDto
-//)
-//
-//@Serializable
-//data class ParentPlatformDto(
-//    @SerialName("id")
-//    val id: Int,
-//    @SerialName("name")
-//    val name: String,
-//    @SerialName("slug")
-//    val slug: String
-//)
-//
-//@Serializable
-//data class GenreDto(
-//    @SerialName("id")
-//    val id: Int,
-//    @SerialName("name")
-//    val name: String,
-//    @SerialName("slug")
-//    val slug: String
-//)
-//
-//@Serializable
-//data class StoreInfoDto(
-//    @SerialName("id")
-//    val id: Int,
-//    @SerialName("store")
-//    val store: StoreDto
-//)
-//
-//@Serializable
-//data class StoreDto(
-//    @SerialName("id")
-//    val id: Int,
-//    @SerialName("name")
-//    val name: String,
-//    @SerialName("slug")
-//    val slug: String
-//)
-//
-//@Serializable
-//data class TagDto(
-//    @SerialName("id")
-//    val id: Int,
-//    @SerialName("name")
-//    val name: String,
-//    @SerialName("slug")
-//    val slug: String,
-//    @SerialName("language")
-//    val language: String,
-//    @SerialName("games_count")
-//    val gamesCount: Int
-//)
-//
-//@Serializable
-//data class ScreenshotDto(
-//    @SerialName("id")
-//    val id: Int,
-//    @SerialName("image")
-//    val image: String
-//)
