@@ -2,4 +2,8 @@
     <string name="app_name">GameLibrary</string>
     <string name="popular">注目！</string>
     <string name="preorder">予約受付中！</string>
+    <string name="discover_title">Discover</string>
+    <string name="trending_section_title">Trending Games</string>
+    <string name="metacritic_section_title">High Metacritic Score Games</string>
+    <string name="new_release_section_title">New Releases</string>
 </resources>
