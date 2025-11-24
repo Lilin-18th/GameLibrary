@@ -117,11 +117,11 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
-                ordering = "-rating"
+                ordering = "-metacritic"
             )
         } returns Response.success(mockResponse)
 
-        val response = gameRepository.getHighRatedGames(page = 1, pageSize = 5)
+        val response = gameRepository.getHighMetacriticScoreGames(page = 1, pageSize = 5)
 
         assertTrue(response.isSuccess)
         assertEquals(5, response.getOrNull()?.size)
@@ -131,7 +131,7 @@ class GameRepositoryImplTest {
                 page = 1,
                 pageSize = 5,
                 dates = any(),
-                ordering = "-rating"
+                ordering = "-metacritic"
             )
         }
     }
@@ -143,11 +143,11 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
-                ordering = "-rating"
+                ordering = "-metacritic"
             )
         } returns Response.success(null)
 
-        val response = gameRepository.getHighRatedGames(page = 1, pageSize = 2)
+        val response = gameRepository.getHighMetacriticScoreGames(page = 1, pageSize = 2)
 
         assertTrue(response.isSuccess)
         assertTrue(response.getOrNull()?.isEmpty() == true)
@@ -160,11 +160,11 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
-                ordering = "-rating"
+                ordering = "-metacritic"
             )
         } returns Response.error(404, "Not Found".toResponseBody())
 
-        val response = gameRepository.getHighRatedGames(page = 1, pageSize = 2)
+        val response = gameRepository.getHighMetacriticScoreGames(page = 1, pageSize = 2)
 
         assertTrue(response.isFailure)
         assertTrue(response.exceptionOrNull()?.message?.contains("API Error: 404") == true)
@@ -177,11 +177,11 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
-                ordering = "-rating"
+                ordering = "-metacritic"
             )
         } throws Exception("Timeout")
 
-        val response = gameRepository.getHighRatedGames(page = 1, pageSize = 2)
+        val response = gameRepository.getHighMetacriticScoreGames(page = 1, pageSize = 2)
 
         assertTrue(response.isFailure)
         assertEquals("Timeout", response.exceptionOrNull()?.message)

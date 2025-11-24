@@ -1,7 +1,7 @@
 package com.lilin.gamelibrary.feature.discovery
 
 import com.lilin.gamelibrary.domain.model.Game
-import com.lilin.gamelibrary.domain.usecase.GetHighRatedGamesUseCase
+import com.lilin.gamelibrary.domain.usecase.GetHighMetacriticScoreGamesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetNewReleasesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetTrendingGamesUseCase
 import io.mockk.coEvery
@@ -21,7 +21,7 @@ class DiscoveryViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
     private lateinit var mockGetTrendingGamesUseCase: GetTrendingGamesUseCase
-    private lateinit var mockGetHighRatedGamesUseCase: GetHighRatedGamesUseCase
+    private lateinit var mockGetHighRatedGamesUseCase: GetHighMetacriticScoreGamesUseCase
     private lateinit var mockGetNewReleasesUseCase: GetNewReleasesUseCase
     private lateinit var viewModel: DiscoveryViewModel
 
@@ -62,7 +62,7 @@ class DiscoveryViewModelTest {
                 viewModel.trendingState.value,
             )
 
-            coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 20) }
+            coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
@@ -84,7 +84,7 @@ class DiscoveryViewModelTest {
         testScheduler.advanceUntilIdle()
 
         assertEquals(DiscoveryUiState.Error(exception), viewModel.trendingState.value)
-        coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 20) }
+        coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 4) }
     }
 
     @Test
@@ -110,7 +110,7 @@ class DiscoveryViewModelTest {
             assertEquals(DiscoveryUiState.Loading, viewModel.highlyRatedState.value)
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.highlyRatedState.value)
-            coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 20) }
+            coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
@@ -130,7 +130,7 @@ class DiscoveryViewModelTest {
         assertEquals(DiscoveryUiState.Loading, viewModel.highlyRatedState.value)
         testScheduler.advanceUntilIdle()
         assertEquals(DiscoveryUiState.Error(exception), viewModel.highlyRatedState.value)
-        coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 20) }
+        coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 4) }
     }
 
     @Test
@@ -156,7 +156,7 @@ class DiscoveryViewModelTest {
             assertEquals(DiscoveryUiState.Loading, viewModel.newReleasesState.value)
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.newReleasesState.value)
-            coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 20) }
+            coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
@@ -176,7 +176,7 @@ class DiscoveryViewModelTest {
         assertEquals(DiscoveryUiState.Loading, viewModel.highlyRatedState.value)
         testScheduler.advanceUntilIdle()
         assertEquals(DiscoveryUiState.Error(exception), viewModel.highlyRatedState.value)
-        coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 20) }
+        coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 4) }
     }
 
     @Test
@@ -206,7 +206,7 @@ class DiscoveryViewModelTest {
             assertEquals(DiscoveryUiState.ReLoading(mockGamesList), viewModel.trendingState.value)
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.trendingState.value)
-            coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 20) }
+            coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
@@ -233,7 +233,7 @@ class DiscoveryViewModelTest {
 
         testScheduler.advanceUntilIdle()
         assertEquals(DiscoveryUiState.ReLoadingError(mockGamesList, exception), viewModel.trendingState.value)
-        coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 20) }
+        coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 4) }
     }
 
     @Test
@@ -254,7 +254,7 @@ class DiscoveryViewModelTest {
             assertEquals(DiscoveryUiState.Error(exception), viewModel.trendingState.value)
 
             viewModel.reloadTrendingGames()
-            coVerify(exactly = 1) { mockGetTrendingGamesUseCase(page = 1, pageSize = 20) }
+            coVerify(exactly = 1) { mockGetTrendingGamesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
@@ -284,7 +284,7 @@ class DiscoveryViewModelTest {
             assertEquals(DiscoveryUiState.ReLoading(mockGamesList), viewModel.highlyRatedState.value)
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.highlyRatedState.value)
-            coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 20) }
+            coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
@@ -311,7 +311,7 @@ class DiscoveryViewModelTest {
 
         testScheduler.advanceUntilIdle()
         assertEquals(DiscoveryUiState.ReLoadingError(mockGamesList, exception), viewModel.highlyRatedState.value)
-        coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 20) }
+        coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 4) }
     }
 
     @Test
@@ -332,7 +332,7 @@ class DiscoveryViewModelTest {
             assertEquals(DiscoveryUiState.Error(exception), viewModel.highlyRatedState.value)
 
             viewModel.reloadHighlyRatedGames()
-            coVerify(exactly = 1) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 20) }
+            coVerify(exactly = 1) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
@@ -362,7 +362,7 @@ class DiscoveryViewModelTest {
             assertEquals(DiscoveryUiState.ReLoading(mockGamesList), viewModel.newReleasesState.value)
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.newReleasesState.value)
-            coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 20) }
+            coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
@@ -389,7 +389,7 @@ class DiscoveryViewModelTest {
 
         testScheduler.advanceUntilIdle()
         assertEquals(DiscoveryUiState.ReLoadingError(mockGamesList, exception), viewModel.newReleasesState.value)
-        coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 20) }
+        coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 4) }
     }
 
 
@@ -411,7 +411,7 @@ class DiscoveryViewModelTest {
             assertEquals(DiscoveryUiState.Error(exception), viewModel.newReleasesState.value)
 
             viewModel.reloadNewReleaseGame()
-            coVerify(exactly = 1) { mockGetNewReleasesUseCase(page = 1, pageSize = 20) }
+            coVerify(exactly = 1) { mockGetNewReleasesUseCase(page = 1, pageSize = 4) }
         }
 
     companion object {

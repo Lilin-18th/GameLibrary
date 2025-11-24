@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Test
 
 class GetHighRatedGamesUseCaseTest {
     private lateinit var gameRepository: GameRepository
-    private lateinit var useCase: GetHighRatedGamesUseCase
+    private lateinit var useCase: GetHighMetacriticScoreGamesUseCase
 
     @BeforeEach
     fun setUp() {
         gameRepository = mockk()
-        useCase = GetHighRatedGamesUseCase(gameRepository)
+        useCase = GetHighMetacriticScoreGamesUseCase(gameRepository)
     }
 
     @Test
-    fun test_GetHighRatedGamesUseCase_success() = runTest {
+    fun test_GetHighMetacriticScoreGamesUseCase_success() = runTest {
         val mockGames = listOf(createMockGame(1), createMockGame(2))
         coEvery {
-            gameRepository.getHighRatedGames(any(), any())
+            gameRepository.getHighMetacriticScoreGames(any(), any())
         } returns Result.success(mockGames)
 
         val response = useCase(1, 2)
@@ -33,15 +33,15 @@ class GetHighRatedGamesUseCaseTest {
         assertTrue(response.isSuccess)
         assertEquals(2, response.getOrNull()?.size)
         coVerify(exactly = 1) {
-            gameRepository.getHighRatedGames(1, 2)
+            gameRepository.getHighMetacriticScoreGames(1, 2)
         }
     }
 
     @Test
-    fun test_GetHighRatedGamesUseCase_failure() = runTest {
+    fun test_GetHighMetacriticScoreGamesUseCase_failure() = runTest {
         val exception = Exception("Api Error")
         coEvery {
-            gameRepository.getHighRatedGames(any(), any())
+            gameRepository.getHighMetacriticScoreGames(any(), any())
         } returns Result.failure(exception)
 
         val response = useCase(1, 5)
