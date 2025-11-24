@@ -1,7 +1,7 @@
 package com.lilin.gamelibrary.di
 
 import com.lilin.gamelibrary.domain.repository.GameRepository
-import com.lilin.gamelibrary.domain.usecase.GetHighRatedGamesUseCase
+import com.lilin.gamelibrary.domain.usecase.GetHighMetacriticScoreGamesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetNewReleasesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetTrendingGamesUseCase
 import dagger.Module
@@ -16,8 +16,8 @@ object GameUseCaseModule {
 
     @Provides
     @ViewModelScoped
-    fun provideGetHighRatedGamesUseCase(repository: GameRepository): GetHighRatedGamesUseCase {
-        return GetHighRatedGamesUseCase(repository)
+    fun provideGetHighRatedGamesUseCase(repository: GameRepository): GetHighMetacriticScoreGamesUseCase {
+        return GetHighMetacriticScoreGamesUseCase(repository)
     }
 
     @Provides

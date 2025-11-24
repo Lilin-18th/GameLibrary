@@ -4,7 +4,7 @@ import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.domain.repository.GameRepository
 import javax.inject.Inject
 
-class GetHighRatedGamesUseCase @Inject constructor(
+class GetHighMetacriticScoreGamesUseCase @Inject constructor(
     private val repository: GameRepository,
 ) {
     /**
@@ -15,6 +15,6 @@ class GetHighRatedGamesUseCase @Inject constructor(
      * @return 成功時はゲームのリスト、失敗時はエラー情報を含むResult
      */
     suspend operator fun invoke(page: Int, pageSize: Int): Result<List<Game>> {
-        return repository.getHighRatedGames(page, pageSize)
+        return repository.getHighMetacriticScoreGames(page, pageSize)
     }
 }

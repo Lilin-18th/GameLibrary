@@ -24,10 +24,9 @@ class GameRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getHighRatedGames(page: Int, pageSize: Int): Result<List<Game>> {
-        val (startDate, endDate) = getLast30DaysDates()
+    override suspend fun getHighMetacriticScoreGames(page: Int, pageSize: Int): Result<List<Game>> {
         return runCatching {
-            fetchGames(page, pageSize, startDate, endDate, "-rating")
+            fetchGames(page, pageSize, null, null, "-metacritic")
         }
     }
 
@@ -44,14 +43,20 @@ class GameRepositoryImpl @Inject constructor(
     private suspend fun fetchGames(
         page: Int,
         pageSize: Int,
-        startDate: String,
-        endDate: String,
+        startDate: String?,
+        endDate: String?,
         ordering: String,
     ): List<Game> {
+        val dates = if (startDate != null && endDate != null) {
+            "$startDate,$endDate"
+        } else {
+            null
+        }
+
         val response = apiService.getGames(
             page = page,
             pageSize = pageSize,
-            dates = "$startDate,$endDate",
+            dates = dates,
             ordering = ordering,
         )
         return if (response.isSuccessful) {

@@ -3,7 +3,7 @@ package com.lilin.gamelibrary.feature.discovery
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lilin.gamelibrary.domain.model.Game
-import com.lilin.gamelibrary.domain.usecase.GetHighRatedGamesUseCase
+import com.lilin.gamelibrary.domain.usecase.GetHighMetacriticScoreGamesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetNewReleasesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetTrendingGamesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class DiscoveryViewModel @Inject constructor(
     private val getTrendingGamesUseCase: GetTrendingGamesUseCase,
-    private val getHighRatedGamesUseCase: GetHighRatedGamesUseCase,
+    private val getHighRatedGamesUseCase: GetHighMetacriticScoreGamesUseCase,
     private val getNewReleasesUseCase: GetNewReleasesUseCase,
 ) : ViewModel() {
     private val _trendingState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.Loading)
@@ -81,7 +81,7 @@ class DiscoveryViewModel @Inject constructor(
 
     private fun loadTrendingGames() {
         viewModelScope.launch {
-            getTrendingGamesUseCase(page = 1, pageSize = 20)
+            getTrendingGamesUseCase(page = 1, pageSize = 4)
                 .onSuccess { result ->
                     _trendingState.value = DiscoveryUiState.Success(result)
                 }
@@ -93,7 +93,7 @@ class DiscoveryViewModel @Inject constructor(
 
     private fun loadHighlyRatedGames() {
         viewModelScope.launch {
-            getHighRatedGamesUseCase(page = 1, pageSize = 20)
+            getHighRatedGamesUseCase(page = 1, pageSize = 4)
                 .onSuccess { result ->
                     _highlyRatedState.value = DiscoveryUiState.Success(result)
                 }
@@ -105,7 +105,7 @@ class DiscoveryViewModel @Inject constructor(
 
     private fun loadNewReleaseGames() {
         viewModelScope.launch {
-            getNewReleasesUseCase(page = 1, pageSize = 20)
+            getNewReleasesUseCase(page = 1, pageSize = 4)
                 .onSuccess { result ->
                     _newReleasesState.value = DiscoveryUiState.Success(result)
                 }
@@ -117,7 +117,7 @@ class DiscoveryViewModel @Inject constructor(
 
     private fun reloadTrending(currentData: List<Game>) {
         viewModelScope.launch {
-            getTrendingGamesUseCase(page = 1, pageSize = 20)
+            getTrendingGamesUseCase(page = 1, pageSize = 4)
                 .onSuccess { result ->
                     _trendingState.value = DiscoveryUiState.Success(result)
                 }
@@ -129,7 +129,7 @@ class DiscoveryViewModel @Inject constructor(
 
     private fun reloadHighlyRated(currentData: List<Game>) {
         viewModelScope.launch {
-            getHighRatedGamesUseCase(page = 1, pageSize = 20)
+            getHighRatedGamesUseCase(page = 1, pageSize = 4)
                 .onSuccess { result ->
                     _highlyRatedState.value = DiscoveryUiState.Success(result)
                 }
@@ -141,7 +141,7 @@ class DiscoveryViewModel @Inject constructor(
 
     private fun reloadNewRelease(currentData: List<Game>) {
         viewModelScope.launch {
-            getNewReleasesUseCase(page = 1, pageSize = 20)
+            getNewReleasesUseCase(page = 1, pageSize = 4)
                 .onSuccess { result ->
                     _newReleasesState.value = DiscoveryUiState.Success(result)
                 }

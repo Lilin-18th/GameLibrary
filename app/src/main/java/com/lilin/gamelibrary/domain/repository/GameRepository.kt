@@ -16,13 +16,13 @@ interface GameRepository {
     ): Result<List<Game>>
 
     /**
-     * 過去30日間の高評価ゲームのリストを取得します。
+     * metacritic scoreの高い順番でゲームのリストの取得を行います。
      *
      * @param page ページ番号（1から始まる）
      * @param pageSize 1ページあたりの件数
      * @return 成功時はゲームのリスト、失敗時はエラー情報を含むResult
      */
-    suspend fun getHighRatedGames(
+    suspend fun getHighMetacriticScoreGames(
         page: Int,
         pageSize: Int,
     ): Result<List<Game>>
