@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.rounded.FiberNew
 import androidx.compose.material.icons.rounded.Games
 import androidx.compose.material.icons.rounded.LocalFireDepartment
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -42,10 +44,12 @@ import coil3.compose.AsyncImage
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.domain.model.isPreOrder
+import com.lilin.gamelibrary.ui.theme.LoadingColor
 import com.lilin.gamelibrary.ui.theme.RatingBronze
 import com.lilin.gamelibrary.ui.theme.RatingEmpty
 import com.lilin.gamelibrary.ui.theme.RatingGold
 import com.lilin.gamelibrary.ui.theme.RatingSilver
+import com.valentinilk.shimmer.shimmer
 
 @Composable
 fun TrendingGameCard(
@@ -76,7 +80,7 @@ fun TrendingGameCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(dimensionResource(R.dimen.image_height)),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
                 )
             }
 
@@ -153,7 +157,7 @@ fun HighRatedGameCard(
                         model = game.imageUrl,
                         contentDescription = game.name,
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
                     )
                 }
                 game.metacriticScore?.let { score ->
@@ -256,7 +260,7 @@ fun NewReleaseGameCard(
                     model = game.imageUrl,
                     contentDescription = game.name,
                     modifier = Modifier.size(dimensionResource(R.dimen.image_size)),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
                 )
             }
 
@@ -310,6 +314,152 @@ fun NewReleaseGameCard(
 }
 
 @Composable
+fun GameCardSkeleton(
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier
+            .width(dimensionResource(R.dimen.card_width))
+            .shimmer(),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+        elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.card_elevation)),
+    ) {
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(dimensionResource(R.dimen.image_height))
+                    .background(LoadingColor)
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .background(LoadingColor)
+                )
+
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(16.dp)
+                            .background(LoadingColor)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun NewReleaseGameCardSkeleton(
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.shimmer(),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+        elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.card_elevation)),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(dimensionResource(R.dimen.image_size))
+                    .background(LoadingColor)
+            )
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .background(LoadingColor)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .background(LoadingColor)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .background(LoadingColor)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .background(LoadingColor)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ErrorCard(
+    throwable: Throwable,
+    onClickRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+        elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.card_elevation)),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(dimensionResource(R.dimen.image_height))
+                .padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = throwable.message ?: "Unknown Error",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(onClick = onClickRetry) {
+                Text(
+                    text = "Retry",
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun LabeledIcon(
     content: String,
     imageVector: ImageVector,
@@ -332,6 +482,8 @@ private fun LabeledIcon(
             text = content,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.onSurface,
         )
     }
@@ -430,5 +582,26 @@ fun NewReleaseGameCardPreview() {
     NewReleaseGameCard(
         game = game,
         onClick = {},
+    )
+}
+
+@Preview
+@Composable
+private fun GameCardSkeletonPreview() {
+    GameCardSkeleton()
+}
+
+@Preview
+@Composable
+private fun NewReleaseGameCardSkeletonPreview() {
+    NewReleaseGameCardSkeleton()
+}
+
+@Preview
+@Composable
+private fun ErrorCardPreview() {
+    ErrorCard(
+        throwable = Throwable("Unknown Error"),
+        onClickRetry = {},
     )
 }
