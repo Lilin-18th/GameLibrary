@@ -160,25 +160,24 @@ fun HighRatedGameCard(
                         contentScale = ContentScale.Crop,
                     )
                 }
-                game.metacriticScore?.let { score ->
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(8.dp)
-                            .size(40.dp)
-                            .background(
-                                color = getMetacriticColor(score),
-                                shape = RoundedCornerShape(8.dp)
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = score.toString(),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = androidx.compose.ui.graphics.Color.White,
-                        )
-                    }
+
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp)
+                        .size(40.dp)
+                        .background(
+                            color = getMetacriticColor(game.metacriticScore),
+                            shape = RoundedCornerShape(8.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = game.metacriticScore.toString(),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = androidx.compose.ui.graphics.Color.White,
+                    )
                 }
             }
 
@@ -532,7 +531,7 @@ private fun TrendingGameCardPreview() {
         releaseDate = "2018-12-31",
         rating = 4.5,
         ratingsCount = 1523,
-        metacriticScore = 80,
+        metacritic = 80,
         isTba = false,
         addedCount = 5000,
         platforms = listOf("Switch", "PS5", "PC")
@@ -553,7 +552,7 @@ fun HighRatedGameCardPreview() {
         releaseDate = "2018-12-31",
         rating = 4.5,
         ratingsCount = 1523,
-        metacriticScore = 80,
+        metacritic = 80,
         isTba = false,
         addedCount = 5000,
         platforms = listOf("Switch", "PS5", "PC")
@@ -574,7 +573,7 @@ fun NewReleaseGameCardPreview() {
         releaseDate = "2028-12-31",
         rating = 4.5,
         ratingsCount = 1523,
-        metacriticScore = 80,
+        metacritic = 80,
         isTba = false,
         addedCount = 20000,
         platforms = listOf("Switch", "PS5", "PC")

@@ -15,7 +15,7 @@ data class Game(
     // 評価情報
     val rating: Double,
     val ratingsCount: Int?,
-    val metacriticScore: Int?,
+    val metacritic: Int?,
     // その他
     val isTba: Boolean,
     val addedCount: Int?,
@@ -28,6 +28,7 @@ data class Game(
             null
         }
     }
+    val metacriticScore = metacritic ?: 0
     val isPopular: Boolean = addedCount?.let { it >= POPULAR_THRESHOLD } ?: false
     val displayRating: String = String.format("%.1f", rating)
 

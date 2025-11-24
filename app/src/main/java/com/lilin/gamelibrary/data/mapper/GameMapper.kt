@@ -13,7 +13,7 @@ fun GameDto.toDomain(): Game {
         releaseDate = released,
         rating = rating,
         ratingsCount = ratingsCount,
-        metacriticScore = metacritic,
+        metacritic = metacritic,
         isTba = tba ?: false,
         addedCount = added,
         platforms = platforms?.map { platformInfoDto ->

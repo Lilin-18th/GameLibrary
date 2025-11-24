@@ -72,7 +72,7 @@ class GameTest {
             releaseDate = "2000-04-10",
             rating = 1.0,
             ratingsCount = null,
-            metacriticScore = null,
+            metacritic = null,
             isTba = false,
             addedCount = null,
             platforms = null,

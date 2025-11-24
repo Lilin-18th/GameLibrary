@@ -185,7 +185,7 @@ private fun TrendingGamesSectionPreview() {
             releaseDate = "2015-05-19",
             rating = 4.5,
             ratingsCount = 15234,
-            metacriticScore = 92,
+            metacritic = 92,
             isTba = false,
             addedCount = 50000,
             platforms = listOf("PC", "PS4", "Xbox One")
@@ -197,7 +197,7 @@ private fun TrendingGamesSectionPreview() {
             releaseDate = "2020-12-10",
             rating = 4.2,
             ratingsCount = 8765,
-            metacriticScore = 86,
+            metacritic = 86,
             isTba = false,
             addedCount = 30000,
             platforms = listOf("PC", "PS5", "Xbox Series X")
@@ -221,7 +221,7 @@ private fun HighMetacriticGamesSectionPreview() {
             releaseDate = "2015-05-19",
             rating = 4.5,
             ratingsCount = 15234,
-            metacriticScore = 92,
+            metacritic = 92,
             isTba = false,
             addedCount = 50000,
             platforms = listOf("PC", "PS4", "Xbox One")
@@ -233,7 +233,7 @@ private fun HighMetacriticGamesSectionPreview() {
             releaseDate = "2020-12-10",
             rating = 4.2,
             ratingsCount = 8765,
-            metacriticScore = 55,
+            metacritic = 55,
             isTba = false,
             addedCount = 30000,
             platforms = listOf("PC", "PS5", "Xbox Series X")
@@ -257,7 +257,7 @@ private fun NewReleaseGamesSectionPreview() {
             releaseDate = "2015-05-19",
             rating = 4.5,
             ratingsCount = 15234,
-            metacriticScore = 92,
+            metacritic = 92,
             isTba = false,
             addedCount = 50000,
             platforms = listOf("PC", "PS4", "Xbox One")
@@ -269,7 +269,7 @@ private fun NewReleaseGamesSectionPreview() {
             releaseDate = "2020-12-10",
             rating = 4.2,
             ratingsCount = 8765,
-            metacriticScore = 55,
+            metacritic = 55,
             isTba = false,
             addedCount = 30000,
             platforms = listOf("PC", "PS5", "Xbox Series X")
