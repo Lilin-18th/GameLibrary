@@ -16,7 +16,7 @@ fun GameDto.toDomain(): Game {
         metacriticScore = metacritic,
         isTba = tba ?: false,
         addedCount = added,
-        platforms = platforms.map { platformInfoDto ->
+        platforms = platforms?.map { platformInfoDto ->
             platformInfoDto.toPlatformName()
         },
     )
