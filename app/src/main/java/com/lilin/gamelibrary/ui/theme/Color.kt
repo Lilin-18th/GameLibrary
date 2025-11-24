@@ -75,3 +75,4 @@ val RatingEmpty = Color(0xFFBDBDBD)        // 空の星
 val SuccessColor = Color(0xFF4CAF50)
 val WarningColor = Color(0xFFFF9800)
 val InfoColor = Color(0xFF2196F3)
+val LoadingColor = Color(0xFFCCCCCC)

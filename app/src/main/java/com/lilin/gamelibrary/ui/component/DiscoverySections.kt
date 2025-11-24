@@ -9,8 +9,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.Game
 
 @Composable
@@ -19,20 +21,24 @@ fun TrendingGamesSection(
     onGameClick: (Game) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    SectionHeader(
-        title = "Trending Games",
-        modifier = modifier
-    )
-
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp),
+    Column(
+        modifier = modifier,
     ) {
-        items(items = games, key = { it.id }) { game ->
-            TrendingGameCard(
-                game = game,
-                onClick = { onGameClick(game) },
-            )
+        SectionHeader(
+            title = stringResource(R.string.trending_section_title),
+            modifier = modifier
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+        ) {
+            items(items = games, key = { it.id }) { game ->
+                TrendingGameCard(
+                    game = game,
+                    onClick = { onGameClick(game) },
+                )
+            }
         }
     }
 }
@@ -43,20 +49,24 @@ fun HighRatedGamesSection(
     onGameClick: (Game) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    SectionHeader(
-        title = "High Rated Games",
-        modifier = modifier
-    )
-
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp),
+    Column(
+        modifier = modifier,
     ) {
-        items(items = games, key = { it.id }) { game ->
-            HighRatedGameCard(
-                game = game,
-                onClick = { onGameClick(game) },
-            )
+        SectionHeader(
+            title = stringResource(R.string.metacritic_section_title),
+            modifier = modifier
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+        ) {
+            items(items = games, key = { it.id }) { game ->
+                HighRatedGameCard(
+                    game = game,
+                    onClick = { onGameClick(game) },
+                )
+            }
         }
     }
 }
@@ -67,23 +77,100 @@ fun NewReleaseGamesSection(
     onGameClick: (Game) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    SectionHeader(
-        title = "New Releases",
-        modifier = modifier
-    )
-
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = modifier,
     ) {
-        games.forEach { game ->
-            NewReleaseGameCard(
-                game = game,
-                onClick = { onGameClick(game) },
-            )
+        SectionHeader(
+            title = stringResource(R.string.new_release_section_title),
+            modifier = modifier
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            games.forEach { game ->
+                NewReleaseGameCard(
+                    game = game,
+                    onClick = { onGameClick(game) },
+                )
+            }
         }
+    }
+}
+
+@Composable
+fun SkeletonGamesSection(
+    sectionHeaderTitle: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        SectionHeader(
+            title = sectionHeaderTitle,
+            modifier = modifier
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+        ) {
+            repeat(4) {
+                item {
+                    GameCardSkeleton()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SkeletonNewReleaseGamesSection(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        SectionHeader(
+            title = stringResource(R.string.new_release_section_title),
+            modifier = modifier
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            repeat(4) {
+                NewReleaseGameCardSkeleton()
+            }
+        }
+    }
+}
+
+@Composable
+fun ErrorSection(
+    sectionHeaderTitle: String,
+    throwable: Throwable,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        SectionHeader(
+            title = sectionHeaderTitle,
+            modifier = modifier
+        )
+
+        ErrorCard(
+            throwable = throwable,
+            onClickRetry = {},
+            modifier = Modifier.padding(horizontal = 12.dp),
+        )
     }
 }
 
@@ -125,7 +212,7 @@ private fun TrendingGamesSectionPreview() {
 
 @Preview
 @Composable
-private fun HighRatedGamesSectionPreview() {
+private fun HighMetacriticGamesSectionPreview() {
     val sampleGames = listOf(
         Game(
             id = 1,
@@ -192,5 +279,28 @@ private fun NewReleaseGamesSectionPreview() {
     NewReleaseGamesSection(
         games = sampleGames,
         onGameClick = {},
+    )
+}
+
+@Preview
+@Composable
+private fun TrendingGamesSkeletonSectionPreview() {
+    SkeletonGamesSection(
+        sectionHeaderTitle = "Trending Games"
+    )
+}
+
+@Preview
+@Composable
+private fun SkeletonNewReleaseGamesSectionPreview() {
+    SkeletonNewReleaseGamesSection()
+}
+
+@Preview
+@Composable
+private fun ErrorSectionPreview() {
+    ErrorSection(
+        sectionHeaderTitle = "Trending Games",
+        throwable = Throwable("Something went wrong")
     )
 }
