@@ -63,7 +63,7 @@ class GetTrendingGamesUseCaseTest {
             releaseDate = "2024-01-01",
             rating = 4.5,
             ratingsCount = 1000,
-            metacriticScore = 85,
+            metacritic = 85,
             isTba = false,
             addedCount = 5000,
             platforms = listOf("PC")

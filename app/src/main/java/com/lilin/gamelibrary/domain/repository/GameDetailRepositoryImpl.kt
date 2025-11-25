@@ -15,7 +15,7 @@ class GameDetailRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.toDomain() ?: throw Exception("Empty body")
             } else {
-                throw Exception(response.message())
+                throw Exception("API Error: ${response.code()}")
             }
         }
     }

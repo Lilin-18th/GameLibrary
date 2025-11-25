@@ -1,6 +1,7 @@
 package com.lilin.gamelibrary.domain.model
 
 data class GameDetail(
+    val id: Int,
     val name: String,
     val backgroundImage: String?,
     val releaseDate: String?,

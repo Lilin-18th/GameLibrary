@@ -5,6 +5,7 @@ import com.lilin.gamelibrary.domain.model.GameDetail
 
 fun GameDetailResponse.toDomain(): GameDetail {
     return GameDetail(
+        id = id,
         name = name,
         backgroundImage = backgroundImage,
         releaseDate = released,
