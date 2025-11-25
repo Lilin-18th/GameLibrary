@@ -1,5 +1,7 @@
 package com.lilin.gamelibrary.di
 
+import com.lilin.gamelibrary.domain.repository.GameDetailRepository
+import com.lilin.gamelibrary.domain.repository.GameDetailRepositoryImpl
 import com.lilin.gamelibrary.domain.repository.GameRepository
 import com.lilin.gamelibrary.domain.repository.GameRepositoryImpl
 import dagger.Binds
@@ -17,4 +19,10 @@ abstract class GameRepositoryModule {
     abstract fun bindGameRepository(
         impl: GameRepositoryImpl,
     ): GameRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindGameDetailRepository(
+        impl: GameDetailRepositoryImpl,
+    ): GameDetailRepository
 }

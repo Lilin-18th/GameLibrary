@@ -30,7 +30,7 @@ data class Game(
     }
     val metacriticScore = metacritic ?: 0
     val isPopular: Boolean = addedCount?.let { it >= POPULAR_THRESHOLD } ?: false
-    val displayRating: String = String.format("%.1f", rating)
+    val displayRating: String = "%.1f".format(rating)
 
     companion object {
         const val POPULAR_THRESHOLD = 10000

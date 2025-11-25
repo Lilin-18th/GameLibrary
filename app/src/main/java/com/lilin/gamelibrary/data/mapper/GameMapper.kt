@@ -2,7 +2,6 @@ package com.lilin.gamelibrary.data.mapper
 
 import com.lilin.gamelibrary.data.dto.GameDto
 import com.lilin.gamelibrary.data.dto.GamesResponse
-import com.lilin.gamelibrary.data.dto.PlatformInfoDto
 import com.lilin.gamelibrary.domain.model.Game
 
 fun GameDto.toDomain(): Game {
@@ -24,8 +23,4 @@ fun GameDto.toDomain(): Game {
 
 fun GamesResponse.toDomainList(): List<Game> {
     return results.map { it.toDomain() }
-}
-
-fun PlatformInfoDto.toPlatformName(): String {
-    return platform.name
 }

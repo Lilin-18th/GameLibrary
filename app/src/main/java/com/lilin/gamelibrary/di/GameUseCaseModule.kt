@@ -1,6 +1,8 @@
 package com.lilin.gamelibrary.di
 
+import com.lilin.gamelibrary.domain.repository.GameDetailRepository
 import com.lilin.gamelibrary.domain.repository.GameRepository
+import com.lilin.gamelibrary.domain.usecase.GetGameDetailUseCase
 import com.lilin.gamelibrary.domain.usecase.GetHighMetacriticScoreGamesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetNewReleasesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetTrendingGamesUseCase
@@ -30,5 +32,11 @@ object GameUseCaseModule {
     @ViewModelScoped
     fun provideGetNewReleasesUseCase(repository: GameRepository): GetNewReleasesUseCase {
         return GetNewReleasesUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetGameDetailsUseCase(repository: GameDetailRepository): GetGameDetailUseCase {
+        return GetGameDetailUseCase(repository)
     }
 }
