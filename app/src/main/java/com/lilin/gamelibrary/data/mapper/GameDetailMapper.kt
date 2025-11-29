@@ -21,7 +21,5 @@ fun GameDetailResponse.toDomain(): GameDetail {
         esrbRating = esrbRating?.name,
         playtime = playtime,
         tags = tags.map { it.toTag() },
-        stores = stores.map { it.toStoreLink() },
-        updated = updated,
     )
 }

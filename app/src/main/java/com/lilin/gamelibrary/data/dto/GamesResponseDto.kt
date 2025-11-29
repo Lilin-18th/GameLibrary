@@ -50,10 +50,6 @@ data class GameDetailResponse(
     val playtime: Int = 0,
     @SerialName("tags")
     val tags: List<TagDto> = emptyList(),
-    @SerialName("stores")
-    val stores: List<StoreInfoDto> = emptyList(),
-    @SerialName("updated")
-    val updated: String? = null,
 )
 
 @Serializable
@@ -90,8 +86,6 @@ data class GameDto(
     val playtime: Int? = null,
     @SerialName("suggestions_count")
     val suggestionsCount: Int? = null,
-    @SerialName("updated")
-    val updated: String? = null,
     @SerialName("esrb_rating")
     val esrbRating: EsrbRatingDto? = null,
     @SerialName("platforms")
@@ -202,22 +196,3 @@ data class TagDto(
     val language: String = "eng",
 )
 
-@Serializable
-data class StoreInfoDto(
-    @SerialName("id")
-    val id: Int,
-    @SerialName("store")
-    val store: StoreDto,
-    @SerialName("url")
-    val url: String,
-)
-
-@Serializable
-data class StoreDto(
-    @SerialName("id")
-    val id: Int,
-    @SerialName("name")
-    val name: String,
-    @SerialName("slug")
-    val slug: String,
-)

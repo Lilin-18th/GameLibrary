@@ -295,7 +295,6 @@ class GameRepositoryImplTest {
             metacritic = 85,
             playtime = 10,
             suggestionsCount = 100,
-            updated = "2024-01-01",
             esrbRating = null,
             platforms = listOf(
                 PlatformInfoDto(

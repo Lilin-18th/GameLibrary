@@ -61,7 +61,6 @@ import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.lilin.gamelibrary.R
-import com.lilin.gamelibrary.domain.model.StoreLink
 
 @Composable
 fun GameBackgroundImage(

@@ -5,7 +5,6 @@ import com.lilin.gamelibrary.domain.model.GameDetail
 import com.lilin.gamelibrary.domain.model.Genre
 import com.lilin.gamelibrary.domain.model.Publisher
 import com.lilin.gamelibrary.domain.model.Screenshot
-import com.lilin.gamelibrary.domain.model.StoreLink
 import com.lilin.gamelibrary.domain.model.Tag
 import com.lilin.gamelibrary.domain.repository.GameDetailRepository
 import io.mockk.coEvery
@@ -161,15 +160,6 @@ class GetGameDetailUseCaseTest {
                 Tag(id = 1, name = "Singleplayer", slug = "singleplayer"),
                 Tag(id = 2, name = "Multiplayer", slug = "multiplayer")
             ),
-            stores = listOf(
-                StoreLink(
-                    id = 1, 
-                    storeName = "Steam", 
-                    storeSlug = "steam", 
-                    url = "https://store.steampowered.com/app/12345"
-                )
-            ),
-            updated = "2024-01-01T00:00:00.000Z"
         )
     }
 }

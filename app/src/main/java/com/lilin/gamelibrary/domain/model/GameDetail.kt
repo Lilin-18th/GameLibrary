@@ -17,24 +17,10 @@ data class GameDetail(
     val esrbRating: String?,
     val playtime: Int,
     val tags: List<Tag>,
-    val stores: List<StoreLink>,
-    val updated: String?,
 ) {
     val metacriticScore = metacritic ?: 0
     val displayRating: String = "%.1f".format(rating)
 }
-
-/**
- * プラットフォームの情報
- * @param id
- * @param name "PlayStation 5"
- * @param slug 検索用: "playstation5"
- */
-data class Platform(
-    val id: Int,
-    val name: String,
-    val slug: String,
-)
 
 /**
  * ジャンルの情報
@@ -88,28 +74,4 @@ data class Tag(
 data class Screenshot(
     val id: Int,
     val imageUrl: String,
-)
-
-/**
- * ストアリンクの情報
- * @param id
- * @param storeName "PlayStation Store"
- * @param storeSlug 検索用: "playstation-store"
- * @param url "https://..."
- */
-data class StoreLink(
-    val id: Int,
-    val storeName: String,
-    val storeSlug: String,
-    val url: String,
-)
-
-/**
- * 年齢レーティング
- * @param id
- * @param name "Mature 17+"
- */
-data class EsrbRating(
-    val id: Int,
-    val name: String,
 )

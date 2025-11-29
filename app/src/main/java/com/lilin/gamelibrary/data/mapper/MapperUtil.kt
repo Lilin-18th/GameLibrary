@@ -5,27 +5,17 @@ import com.lilin.gamelibrary.data.dto.GenreDto
 import com.lilin.gamelibrary.data.dto.PlatformInfoDto
 import com.lilin.gamelibrary.data.dto.PublisherDto
 import com.lilin.gamelibrary.data.dto.ScreenshotDto
-import com.lilin.gamelibrary.data.dto.StoreInfoDto
 import com.lilin.gamelibrary.data.dto.TagDto
 import com.lilin.gamelibrary.domain.model.Developer
 import com.lilin.gamelibrary.domain.model.Genre
 import com.lilin.gamelibrary.domain.model.Publisher
 import com.lilin.gamelibrary.domain.model.Screenshot
-import com.lilin.gamelibrary.domain.model.StoreLink
 import com.lilin.gamelibrary.domain.model.Tag
 
 fun PlatformInfoDto.toPlatformName(): String {
     return platform.name
 }
 
-fun StoreInfoDto.toStoreLink(): StoreLink {
-    return StoreLink(
-        id = id,
-        storeName = store.name,
-        storeSlug = store.slug,
-        url = url,
-    )
-}
 
 fun GenreDto.toGenre(): Genre {
     return Genre(
