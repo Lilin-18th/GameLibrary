@@ -29,6 +29,7 @@ import com.lilin.gamelibrary.ui.component.TrendingGamesSection
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiscoveryScreen(
+    onNavigateToDetail: (Int) -> Unit,
     viewModel: DiscoveryViewModel = hiltViewModel(),
 ) {
     val trendingState by viewModel.trendingState.collectAsState()
@@ -51,6 +52,7 @@ fun DiscoveryScreen(
             highlyRatedState = highlyRatedState,
             newReleasesState = newReleasesState,
             scrollBehavior = scrollBehavior,
+            onNavigateToDetail = onNavigateToDetail,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -63,6 +65,7 @@ private fun DiscoveryScreen(
     highlyRatedState: DiscoveryUiState,
     newReleasesState: DiscoveryUiState,
     scrollBehavior: TopAppBarScrollBehavior,
+    onNavigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -75,7 +78,9 @@ private fun DiscoveryScreen(
                 is DiscoveryUiState.Success -> {
                     TrendingGamesSection(
                         games = trendingState.data,
-                        onGameClick = { /* TODO */ },
+                        onGameClick = { game ->
+                            onNavigateToDetail(game.id)
+                        },
                     )
                 }
 
@@ -103,7 +108,9 @@ private fun DiscoveryScreen(
                 is DiscoveryUiState.Success -> {
                     HighRatedGamesSection(
                         games = highlyRatedState.data,
-                        onGameClick = { _ -> /* TODO */ },
+                        onGameClick = { game ->
+                            onNavigateToDetail(game.id)
+                        },
                     )
                 }
 
@@ -131,7 +138,9 @@ private fun DiscoveryScreen(
                 is DiscoveryUiState.Success -> {
                     NewReleaseGamesSection(
                         games = newReleasesState.data,
-                        onGameClick = { _ -> /* TODO */ },
+                        onGameClick = { game ->
+                            onNavigateToDetail(game.id)
+                        },
                     )
                 }
 

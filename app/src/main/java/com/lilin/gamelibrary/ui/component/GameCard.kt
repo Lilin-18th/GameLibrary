@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
@@ -176,7 +177,7 @@ fun HighRatedGameCard(
                         text = game.metacriticScore.toString(),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = androidx.compose.ui.graphics.Color.White,
+                        color = Color.White,
                     )
                 }
             }
@@ -502,7 +503,7 @@ private fun formatPlatformData(platforms: List<String>): String {
 /**
  * 数値をフォーマット（例：1234 → 1.2k）
  */
-private fun formatCount(count: Int): String {
+fun formatCount(count: Int): String {
     return when {
         count >= 1000 -> String.format("%.1fk", count / 1000.0)
         else -> count.toString()
@@ -512,7 +513,7 @@ private fun formatCount(count: Int): String {
 /**
  * Metacriticスコアに応じた色を取得。
  */
-private fun getMetacriticColor(score: Int): androidx.compose.ui.graphics.Color {
+fun getMetacriticColor(score: Int): androidx.compose.ui.graphics.Color {
     return when {
         score >= 80 -> RatingGold
         score >= 70 -> RatingSilver
