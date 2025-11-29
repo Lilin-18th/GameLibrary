@@ -37,6 +37,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-added"
             )
         } returns Response.success(mockResponse)
@@ -51,6 +52,7 @@ class GameRepositoryImplTest {
                 page = 1,
                 pageSize = 2,
                 dates = any(),
+                search = any(),
                 ordering = "-added"
             )
         }
@@ -63,6 +65,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-added"
             )
         } returns Response.success(null)
@@ -80,6 +83,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-added"
             )
         } returns Response.error(404, "Not Found".toResponseBody())
@@ -97,6 +101,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-added"
             )
         } throws Exception("Network Error")
@@ -117,6 +122,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-metacritic"
             )
         } returns Response.success(mockResponse)
@@ -131,6 +137,7 @@ class GameRepositoryImplTest {
                 page = 1,
                 pageSize = 5,
                 dates = any(),
+                search = any(),
                 ordering = "-metacritic"
             )
         }
@@ -143,6 +150,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-metacritic"
             )
         } returns Response.success(null)
@@ -160,6 +168,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-metacritic"
             )
         } returns Response.error(404, "Not Found".toResponseBody())
@@ -177,6 +186,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-metacritic"
             )
         } throws Exception("Timeout")
@@ -197,6 +207,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-released"
             )
         } returns Response.success(mockResponse)
@@ -211,6 +222,7 @@ class GameRepositoryImplTest {
                 page = 1,
                 pageSize = 4,
                 dates = any(),
+                search = any(),
                 ordering = "-released"
             )
         }
@@ -223,6 +235,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-released"
             )
         } returns Response.success(null)
@@ -240,6 +253,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-released"
             )
         } returns Response.error(404, "Not Found".toResponseBody())
@@ -257,6 +271,7 @@ class GameRepositoryImplTest {
                 page = any(),
                 pageSize = any(),
                 dates = any(),
+                search = any(),
                 ordering = "-released"
             )
         } throws Exception("Connection refused")
