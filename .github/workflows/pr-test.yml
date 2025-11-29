@@ -1,0 +1,29 @@
+name: PR Unit Tests
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Create local.properties with dummy API key
+      run: |
+        echo "api_key=dummy_key_for_unit_tests" > local.properties
+      
+    - name: Run unit tests
+      run: ./gradlew test
