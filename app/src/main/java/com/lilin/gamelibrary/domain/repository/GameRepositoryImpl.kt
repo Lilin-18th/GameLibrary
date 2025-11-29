@@ -17,10 +17,8 @@ class GameRepositoryImpl @Inject constructor(
 ) : GameRepository {
 
     override suspend fun getTrendingGames(page: Int, pageSize: Int): Result<List<Game>> {
-        val (startDate, endDate) = getCurrentWeekDates()
-
         return runCatching {
-            fetchGames(page, pageSize, startDate, endDate, "-added")
+            fetchGames(page, pageSize, null, null, "-added")
         }
     }
 
@@ -72,16 +70,5 @@ class GameRepositoryImpl @Inject constructor(
         val thirtyDaysAgo = today.minus(30, DateTimeUnit.DAY)
 
         return Pair(thirtyDaysAgo.toString(), today.toString())
-    }
-
-    @OptIn(ExperimentalTime::class)
-    private fun getCurrentWeekDates(): Pair<String, String> {
-        val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
-        val dayOfWeek = today.dayOfWeek.ordinal
-
-        val startOfWeek = today.minus(dayOfWeek, DateTimeUnit.DAY)
-        val endOfWeek = startOfWeek.plus(6, DateTimeUnit.DAY)
-
-        return Pair(startOfWeek.toString(), endOfWeek.toString())
     }
 }
