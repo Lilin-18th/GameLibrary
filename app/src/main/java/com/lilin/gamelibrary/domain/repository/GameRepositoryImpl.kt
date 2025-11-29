@@ -6,7 +6,6 @@ import com.lilin.gamelibrary.domain.model.Game
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
-import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
 import javax.inject.Inject
 import kotlin.time.Clock
@@ -18,13 +17,13 @@ class GameRepositoryImpl @Inject constructor(
 
     override suspend fun getTrendingGames(page: Int, pageSize: Int): Result<List<Game>> {
         return runCatching {
-            fetchGames(page, pageSize, null, null, "-added")
+            fetchGames(page, pageSize, null, null, null, "-added")
         }
     }
 
     override suspend fun getHighMetacriticScoreGames(page: Int, pageSize: Int): Result<List<Game>> {
         return runCatching {
-            fetchGames(page, pageSize, null, null, "-metacritic")
+            fetchGames(page, pageSize, null, null, null, "-metacritic")
         }
     }
 
@@ -34,7 +33,17 @@ class GameRepositoryImpl @Inject constructor(
     ): Result<List<Game>> {
         val (startDate, endDate) = getLast30DaysDates()
         return runCatching {
-            fetchGames(page, pageSize, startDate, endDate, "-released")
+            fetchGames(page, pageSize, startDate, endDate, null, "-released")
+        }
+    }
+
+    override suspend fun getSearchGameResults(
+        page: Int,
+        pageSize: Int,
+        searchText: String,
+    ): Result<List<Game>> {
+        return runCatching {
+            fetchGames(page, pageSize, null, null, searchText, "name")
         }
     }
 
@@ -43,6 +52,7 @@ class GameRepositoryImpl @Inject constructor(
         pageSize: Int,
         startDate: String?,
         endDate: String?,
+        search: String?,
         ordering: String,
     ): List<Game> {
         val dates = if (startDate != null && endDate != null) {
@@ -55,6 +65,7 @@ class GameRepositoryImpl @Inject constructor(
             page = page,
             pageSize = pageSize,
             dates = dates,
+            search = search,
             ordering = ordering,
         )
         return if (response.isSuccessful) {
