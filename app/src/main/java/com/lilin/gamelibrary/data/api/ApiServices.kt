@@ -16,7 +16,7 @@ interface ApiServices {
         @Query("ordering") ordering: String,
     ): Response<GamesResponse>
 
-    @GET("game/{id}")
+    @GET("games/{id}")
     suspend fun getGameDetail(
         @Path("id") id: Int,
     ): Response<GameDetailResponse>
