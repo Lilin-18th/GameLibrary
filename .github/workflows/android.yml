@@ -24,6 +24,10 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
+    - name: Create local.properties with dummy API key
+      run: |
+        echo "api_key=dummy_key_for_unit_tests" > local.properties
       
     - name: Run unit tests
       run: ./gradlew test
@@ -46,7 +50,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
-    - name: Create local.properties with dummy API key
+    - name: Create local.properties with actual API key
       run: |
         echo "api_key=${{ secrets.RAWG_API_KEY }}" > local.properties
       
