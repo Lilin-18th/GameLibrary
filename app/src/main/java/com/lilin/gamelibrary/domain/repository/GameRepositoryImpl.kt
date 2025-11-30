@@ -42,8 +42,10 @@ class GameRepositoryImpl @Inject constructor(
         pageSize: Int,
         searchText: String,
     ): Result<List<Game>> {
+        val search = searchText.ifBlank { null }
+
         return runCatching {
-            fetchGames(page, pageSize, null, null, searchText, "name")
+            fetchGames(page, pageSize, null, null, search, "name")
         }
     }
 
