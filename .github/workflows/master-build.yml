@@ -23,7 +23,7 @@ jobs:
       
     - name: Create local.properties with dummy API key
       run: |
-        echo "api_key=dummy_key_for_ci" > local.properties
+        echo "api_key=${{ secrets.RAWG_API_KEY }}" > local.properties
       
     - name: Run unit tests
       run: ./gradlew test
