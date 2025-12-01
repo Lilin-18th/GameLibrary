@@ -97,6 +97,37 @@ fun GameDetailTopAppBar(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchTopBar(
+    isSearchActive: Boolean,
+    onBackClick: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior,
+    modifier: Modifier = Modifier,
+) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = if (isSearchActive) "Search Results" else "Discovery",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+            )
+        },
+        navigationIcon = {
+            if (isSearchActive) {
+                IconButton(onClick = onBackClick) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                        contentDescription = "Navigate back",
+                    )
+                }
+            }
+        },
+        scrollBehavior = scrollBehavior,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun DiscoveryTopBarPreview() {
@@ -118,3 +149,26 @@ fun GameDetailTopAppBarPreview() {
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun SearchTopBarPreview() {
+    SearchTopBar(
+        isSearchActive = true,
+        onBackClick = {},
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun DiscoveryScreenSearchTopBarPreview() {
+    SearchTopBar(
+        isSearchActive = false,
+        onBackClick = {},
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+    )
+}
+

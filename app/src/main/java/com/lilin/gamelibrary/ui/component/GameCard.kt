@@ -460,7 +460,7 @@ fun ErrorCard(
 }
 
 @Composable
-private fun LabeledIcon(
+fun LabeledIcon(
     content: String,
     imageVector: ImageVector,
     contentDescription: String,
@@ -496,7 +496,7 @@ private fun formatReleaseDate(releaseDate: String): String {
 /**
  * 対象プラットフォームをフォーマット
  */
-private fun formatPlatformData(platforms: List<String>): String {
+fun formatPlatformData(platforms: List<String>): String {
     return platforms.joinToString("・")
 }
 
