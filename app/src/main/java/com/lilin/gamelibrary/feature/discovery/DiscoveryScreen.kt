@@ -17,6 +17,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.ui.component.DiscoveryTopBar
 import com.lilin.gamelibrary.ui.component.ErrorSection
@@ -25,6 +27,22 @@ import com.lilin.gamelibrary.ui.component.NewReleaseGamesSection
 import com.lilin.gamelibrary.ui.component.SkeletonGamesSection
 import com.lilin.gamelibrary.ui.component.SkeletonNewReleaseGamesSection
 import com.lilin.gamelibrary.ui.component.TrendingGamesSection
+import kotlinx.serialization.Serializable
+
+@Serializable
+object DiscoveryScreen
+
+fun NavGraphBuilder.navigateDiscoveryScreen(
+    onNavigateToDetail: (Int) -> Unit,
+) {
+    composable<DiscoveryScreen> {
+        DiscoveryScreen(
+            onNavigateToDetail = { gameId ->
+                onNavigateToDetail(gameId)
+            }
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

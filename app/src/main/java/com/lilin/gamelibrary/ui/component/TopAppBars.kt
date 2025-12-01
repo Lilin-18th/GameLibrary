@@ -36,14 +36,6 @@ fun DiscoveryTopBar(
                 fontWeight = FontWeight.Bold,
             )
         },
-        actions = {
-            IconButton(onClick = onSearchClick) {
-                Icon(
-                    imageVector = Icons.Rounded.Search,
-                    contentDescription = null,
-                )
-            }
-        },
         scrollBehavior = scrollBehavior,
         modifier = modifier,
     )

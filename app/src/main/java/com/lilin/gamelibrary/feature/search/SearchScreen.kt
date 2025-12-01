@@ -37,15 +37,22 @@ import kotlinx.serialization.Serializable
 @Serializable
 object SearchScreen
 
-fun NavGraphBuilder.navigateSearchScreen() {
+fun NavGraphBuilder.navigateSearchScreen(
+    navigateToDetail: (Int) -> Unit,
+) {
     composable<SearchScreen> {
-        SearchScreen()
+        SearchScreen(
+            navigateToDetail = { gameId ->
+                navigateToDetail(gameId)
+            }
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
+    navigateToDetail: (Int) -> Unit,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val searchUiState by viewModel.searchUiState.collectAsState()
@@ -68,6 +75,9 @@ fun SearchScreen(
             scrollBehavior = scrollBehavior,
             onQueryChange = viewModel::onQueryChange,
             onSearch = viewModel::search,
+            navigateToDetail = { gameId ->
+                navigateToDetail(gameId)
+            },
             modifier = Modifier.padding(it),
         )
     }
@@ -81,6 +91,7 @@ private fun SearchScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
+    navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -124,7 +135,9 @@ private fun SearchScreen(
                     ) { game ->
                         SearchResultCard(
                             game = game,
-                            onClick = {},
+                            onClickItem = {
+                                navigateToDetail(game.id)
+                            },
                         )
                     }
                 }
@@ -161,5 +174,7 @@ private fun SearchScreen(
 @Preview
 @Composable
 private fun SearchScreenPreview() {
-    SearchScreen()
+    SearchScreen(
+        navigateToDetail = {}
+    )
 }

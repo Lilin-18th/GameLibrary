@@ -95,12 +95,12 @@ fun SearchField(
 @Composable
 fun SearchResultCard(
     game: Game,
-    onClick: () -> Unit,
+    onClickItem: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier,
-        onClick = onClick,
+        onClick = onClickItem,
         shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
         elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.card_elevation)),
     ) {
@@ -211,6 +211,6 @@ private fun SearchResultCardPreview() {
     )
     SearchResultCard(
         game = game,
-        onClick = {},
+        onClickItem = {},
     )
 }
