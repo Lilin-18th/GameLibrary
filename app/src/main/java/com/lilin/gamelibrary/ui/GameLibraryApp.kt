@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.lilin.gamelibrary.feature.detail.DetailScreen
+import com.lilin.gamelibrary.feature.detail.GameDetailScreen
 import com.lilin.gamelibrary.feature.detail.navigateDetailScreen
 import com.lilin.gamelibrary.feature.discovery.DiscoveryScreen
 import com.lilin.gamelibrary.feature.discovery.navigateDiscoveryScreen
@@ -65,7 +65,7 @@ private fun AppNavHost(
     ) {
         navigateDiscoveryScreen(
             onNavigateToDetail = { gameId ->
-                navController.navigate(DetailScreen(gameId))
+                navController.navigate(GameDetailScreen(gameId))
             },
         )
 
@@ -73,7 +73,7 @@ private fun AppNavHost(
 
         navigateSearchScreen(
             navigateToDetail = { gameId ->
-                navController.navigate(DetailScreen(gameId))
+                navController.navigate(GameDetailScreen(gameId))
             },
         )
     }
