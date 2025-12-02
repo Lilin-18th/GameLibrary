@@ -66,11 +66,10 @@ detekt {
     allRules = false
     config.setFrom(file("$rootDir/detekt.yml"))
 
-    // 除外パターン（.ktsファイルなど）
     source.setFrom(
-        "src/main/kotlin",
-        "src/test/kotlin",
-        "src/androidTest/kotlin"
+        "src/main/java",
+        "src/test/java",
+        "src/androidTest/java"
     )
 }
 

@@ -20,11 +20,7 @@ naming:
     # デフォルト '[A-Z][_A-Z0-9]*' からの変更
   
   ClassNaming:
-    excludes: &testFolders
-      - '**/test/**'
-      - '**/androidTest/**'
-      - '**/commonTest/**'
-      - '**/androidInstrumentedTest/**'
+    excludes: '**/test/**'
 
 # ===== 複雑度ルール =====
 complexity:
@@ -56,7 +52,7 @@ complexity:
     ignoreAnnotatedFunctions:
       - 'Preview'
       - 'Composable'
-    excludes: *testFolders
+    excludes: '**/test/**'
   
   CyclomaticComplexMethod:
     active: true
@@ -92,7 +88,7 @@ style:
   MagicNumber:
     active: true
     excludes:
-      - *testFolders
+      - '**/test/**'
       - '**/*.kts'
     ignoreNumbers: ['-1', '0', '1', '2', '100', '1000']
     ignoreHashCodeFunction: true
@@ -119,6 +115,7 @@ style:
     maxLineLength: 120
     excludeCommentStatements: true
     excludeRawStrings: true
+    excludes: '**/test/**'
   
   ReturnCount:
     active: true
@@ -129,18 +126,6 @@ style:
   # Androidプロジェクトで不要なルールを無効化
   ForbiddenComment:
     active: false  # TODOコメントは許可
-  
-  LibraryCodeMustSpecifyReturnType:
-    active: false  # ライブラリ開発以外では不要
-  
-  UndocumentedPublicClass:
-    active: false  # チーム方針に応じて
-  
-  UndocumentedPublicFunction:
-    active: false
-  
-  UndocumentedPublicProperty:
-    active: false
 
 # ===== フォーマットルール（detekt-formatting依存） =====
 formatting:
@@ -180,7 +165,7 @@ exceptions:
   TooGenericExceptionCaught:
     active: true
     allowedExceptionNameRegex: '_|(ignored|expected).*'
-    excludes: *testFolders
+    excludes: '**/test/**'
 
 # ===== 潜在的バグ =====
 potential-bugs:
