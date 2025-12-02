@@ -45,7 +45,7 @@ class GameRepositoryImpl @Inject constructor(
         val search = searchText.ifBlank { null }
 
         return runCatching {
-            fetchGames(page, pageSize, null, null, search, "relevance,-metacritic")
+            fetchGames(page, pageSize, null, null, search, "name")
         }
     }
 
