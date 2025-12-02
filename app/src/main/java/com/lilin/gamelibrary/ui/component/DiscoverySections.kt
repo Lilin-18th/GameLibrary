@@ -26,7 +26,7 @@ fun TrendingGamesSection(
     ) {
         SectionHeader(
             title = stringResource(R.string.trending_section_title),
-            modifier = modifier
+            modifier = modifier,
         )
 
         LazyRow(
@@ -54,7 +54,7 @@ fun HighRatedGamesSection(
     ) {
         SectionHeader(
             title = stringResource(R.string.metacritic_section_title),
-            modifier = modifier
+            modifier = modifier,
         )
 
         LazyRow(
@@ -82,14 +82,14 @@ fun NewReleaseGamesSection(
     ) {
         SectionHeader(
             title = stringResource(R.string.new_release_section_title),
-            modifier = modifier
+            modifier = modifier,
         )
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             games.forEach { game ->
                 NewReleaseGameCard(
@@ -111,7 +111,7 @@ fun SkeletonGamesSection(
     ) {
         SectionHeader(
             title = sectionHeaderTitle,
-            modifier = modifier
+            modifier = modifier,
         )
 
         LazyRow(
@@ -136,14 +136,14 @@ fun SkeletonNewReleaseGamesSection(
     ) {
         SectionHeader(
             title = stringResource(R.string.new_release_section_title),
-            modifier = modifier
+            modifier = modifier,
         )
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             repeat(4) {
                 NewReleaseGameCardSkeleton()
@@ -163,7 +163,7 @@ fun ErrorSection(
     ) {
         SectionHeader(
             title = sectionHeaderTitle,
-            modifier = modifier
+            modifier = modifier,
         )
 
         ErrorCard(
@@ -188,7 +188,7 @@ private fun TrendingGamesSectionPreview() {
             metacritic = 92,
             isTba = false,
             addedCount = 50000,
-            platforms = listOf("PC", "PS4", "Xbox One")
+            platforms = listOf("PC", "PS4", "Xbox One"),
         ),
         Game(
             id = 2,
@@ -200,7 +200,7 @@ private fun TrendingGamesSectionPreview() {
             metacritic = 86,
             isTba = false,
             addedCount = 30000,
-            platforms = listOf("PC", "PS5", "Xbox Series X")
+            platforms = listOf("PC", "PS5", "Xbox Series X"),
         ),
     )
 
@@ -224,7 +224,7 @@ private fun HighMetacriticGamesSectionPreview() {
             metacritic = 92,
             isTba = false,
             addedCount = 50000,
-            platforms = listOf("PC", "PS4", "Xbox One")
+            platforms = listOf("PC", "PS4", "Xbox One"),
         ),
         Game(
             id = 2,
@@ -236,7 +236,7 @@ private fun HighMetacriticGamesSectionPreview() {
             metacritic = 55,
             isTba = false,
             addedCount = 30000,
-            platforms = listOf("PC", "PS5", "Xbox Series X")
+            platforms = listOf("PC", "PS5", "Xbox Series X"),
         ),
     )
 
@@ -260,7 +260,7 @@ private fun NewReleaseGamesSectionPreview() {
             metacritic = 92,
             isTba = false,
             addedCount = 50000,
-            platforms = listOf("PC", "PS4", "Xbox One")
+            platforms = listOf("PC", "PS4", "Xbox One"),
         ),
         Game(
             id = 2,
@@ -272,7 +272,7 @@ private fun NewReleaseGamesSectionPreview() {
             metacritic = 55,
             isTba = false,
             addedCount = 30000,
-            platforms = listOf("PC", "PS5", "Xbox Series X")
+            platforms = listOf("PC", "PS5", "Xbox Series X"),
         ),
     )
 
@@ -286,7 +286,7 @@ private fun NewReleaseGamesSectionPreview() {
 @Composable
 private fun TrendingGamesSkeletonSectionPreview() {
     SkeletonGamesSection(
-        sectionHeaderTitle = "Trending Games"
+        sectionHeaderTitle = "Trending Games",
     )
 }
 
@@ -301,6 +301,6 @@ private fun SkeletonNewReleaseGamesSectionPreview() {
 private fun ErrorSectionPreview() {
     ErrorSection(
         sectionHeaderTitle = "Trending Games",
-        throwable = Throwable("Something went wrong")
+        throwable = Throwable("Something went wrong"),
     )
 }

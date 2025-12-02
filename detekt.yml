@@ -16,8 +16,7 @@ naming:
   
   TopLevelPropertyNaming:
     active: true
-    constantPattern: '[A-Z][A-Za-z0-9]*'  # Compose推奨のPascalCase定数
-    # デフォルト '[A-Z][_A-Z0-9]*' からの変更
+    constantPattern: '[A-Z][_A-Z0-9]*'  # 標準的なUPPER_SNAKE_CASE定数
   
   ClassNaming:
     excludes: '**/test/**'

@@ -51,6 +51,11 @@ import com.lilin.gamelibrary.ui.theme.RatingEmpty
 import com.lilin.gamelibrary.ui.theme.RatingGold
 import com.lilin.gamelibrary.ui.theme.RatingSilver
 import com.valentinilk.shimmer.shimmer
+import java.util.Locale
+
+private const val METACRITIC_GOLD_THRESHOLD = 80
+private const val METACRITIC_SILVER_THRESHOLD = 70
+private const val METACRITIC_BRONZE_THRESHOLD = 50
 
 @Composable
 fun TrendingGameCard(
@@ -88,7 +93,7 @@ fun TrendingGameCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp)
+                    .padding(12.dp),
             ) {
                 Text(
                     text = game.name,
@@ -99,7 +104,7 @@ fun TrendingGameCard(
                 )
 
                 HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = 4.dp),
                 )
 
                 Row(
@@ -169,9 +174,9 @@ fun HighRatedGameCard(
                         .size(40.dp)
                         .background(
                             color = getMetacriticColor(game.metacriticScore),
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(8.dp),
                         ),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = game.metacriticScore.toString(),
@@ -185,7 +190,7 @@ fun HighRatedGameCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp)
+                    .padding(12.dp),
             ) {
                 Text(
                     text = game.name,
@@ -196,7 +201,7 @@ fun HighRatedGameCard(
                 )
 
                 HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = 4.dp),
                 )
 
                 LabeledIcon(
@@ -266,7 +271,7 @@ fun NewReleaseGameCard(
 
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
                     text = game.name,
@@ -329,23 +334,23 @@ fun GameCardSkeleton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(dimensionResource(R.dimen.image_height))
-                    .background(LoadingColor)
+                    .background(LoadingColor),
             )
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp)
+                    .padding(12.dp),
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(16.dp)
-                        .background(LoadingColor)
+                        .background(LoadingColor),
                 )
 
                 HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = 4.dp),
                 )
 
                 Row(
@@ -356,7 +361,7 @@ fun GameCardSkeleton(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(16.dp)
-                            .background(LoadingColor)
+                            .background(LoadingColor),
                     )
                 }
             }
@@ -382,39 +387,39 @@ fun NewReleaseGameCardSkeleton(
             Box(
                 modifier = Modifier
                     .size(dimensionResource(R.dimen.image_size))
-                    .background(LoadingColor)
+                    .background(LoadingColor),
             )
 
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(16.dp)
-                        .background(LoadingColor)
+                        .background(LoadingColor),
                 )
 
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(16.dp)
-                        .background(LoadingColor)
+                        .background(LoadingColor),
                 )
 
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(16.dp)
-                        .background(LoadingColor)
+                        .background(LoadingColor),
                 )
 
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(16.dp)
-                        .background(LoadingColor)
+                        .background(LoadingColor),
                 )
             }
         }
@@ -505,7 +510,10 @@ fun formatPlatformData(platforms: List<String>): String {
  */
 fun formatCount(count: Int): String {
     return when {
-        count >= 1000 -> String.format("%.1fk", count / 1000.0)
+        count >= 1000 -> {
+            String.format(Locale.ROOT, "%.1fk", count / 1000.0)
+        }
+
         else -> count.toString()
     }
 }
@@ -513,11 +521,11 @@ fun formatCount(count: Int): String {
 /**
  * Metacriticスコアに応じた色を取得。
  */
-fun getMetacriticColor(score: Int): androidx.compose.ui.graphics.Color {
+fun getMetacriticColor(score: Int): Color {
     return when {
-        score >= 80 -> RatingGold
-        score >= 70 -> RatingSilver
-        score >= 50 -> RatingBronze
+        score >= METACRITIC_GOLD_THRESHOLD -> RatingGold
+        score >= METACRITIC_SILVER_THRESHOLD -> RatingSilver
+        score >= METACRITIC_BRONZE_THRESHOLD -> RatingBronze
         else -> RatingEmpty
     }
 }
@@ -535,7 +543,7 @@ private fun TrendingGameCardPreview() {
         metacritic = 80,
         isTba = false,
         addedCount = 5000,
-        platforms = listOf("Switch", "PS5", "PC")
+        platforms = listOf("Switch", "PS5", "PC"),
     )
     TrendingGameCard(
         game = game,
@@ -556,7 +564,7 @@ fun HighRatedGameCardPreview() {
         metacritic = 80,
         isTba = false,
         addedCount = 5000,
-        platforms = listOf("Switch", "PS5", "PC")
+        platforms = listOf("Switch", "PS5", "PC"),
     )
     HighRatedGameCard(
         game = game,
@@ -577,7 +585,7 @@ fun NewReleaseGameCardPreview() {
         metacritic = 80,
         isTba = false,
         addedCount = 20000,
-        platforms = listOf("Switch", "PS5", "PC")
+        platforms = listOf("Switch", "PS5", "PC"),
     )
     NewReleaseGameCard(
         game = game,
