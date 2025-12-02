@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.detekt.arturbosch)
 }
 
 android {
@@ -60,6 +61,32 @@ kotlin {
     }
 }
 
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    config.setFrom(file("$rootDir/detekt.yml"))
+
+    // 除外パターン（.ktsファイルなど）
+    source.setFrom(
+        "src/main/kotlin",
+        "src/test/kotlin",
+        "src/androidTest/kotlin"
+    )
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        sarif.required.set(true)
+        md.required.set(true)
+    }
+}
+
+tasks.named("check") {
+    dependsOn("detekt")
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -82,6 +109,9 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.datetime)
     implementation(libs.compose.shimmer)
+
+    detektPlugins(libs.detekt.compose)
+    detektPlugins(libs.detekt.formatting)
 
 
     testImplementation(libs.junit)
