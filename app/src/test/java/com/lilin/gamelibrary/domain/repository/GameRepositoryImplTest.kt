@@ -293,7 +293,7 @@ class GameRepositoryImplTest {
                     pageSize = 10,
                     dates = any(),
                     search = "test",
-                    ordering = "name",
+                    ordering = "relevance,-metacritic",
                 )
             } returns Response.success(mockResponse)
 
@@ -308,7 +308,7 @@ class GameRepositoryImplTest {
                     pageSize = 10,
                     dates = any(),
                     search = "test",
-                    ordering = "name"
+                    ordering = "relevance,-metacritic"
                 )
             }
         }
@@ -322,7 +322,7 @@ class GameRepositoryImplTest {
                     pageSize = 10,
                     dates = any(),
                     search = "test",
-                    ordering = "name",
+                    ordering = "relevance,-metacritic",
                 )
             } returns Response.success(null)
 
@@ -342,7 +342,7 @@ class GameRepositoryImplTest {
                     pageSize = any(),
                     dates = any(),
                     search = "test",
-                    ordering = "name"
+                    ordering = "relevance,-metacritic"
                 )
             } returns Response.error(404, "Not Found".toResponseBody())
 
@@ -362,7 +362,7 @@ class GameRepositoryImplTest {
                     pageSize = any(),
                     dates = any(),
                     search = "test",
-                    ordering = "name"
+                    ordering = "relevance,-metacritic"
                 )
             } throws Exception("Network Error")
 

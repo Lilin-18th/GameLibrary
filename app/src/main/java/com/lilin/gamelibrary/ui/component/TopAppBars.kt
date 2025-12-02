@@ -2,7 +2,6 @@ package com.lilin.gamelibrary.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -24,7 +23,6 @@ import com.lilin.gamelibrary.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiscoveryTopBar(
-    onSearchClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier = Modifier,
 ) {
@@ -35,14 +33,6 @@ fun DiscoveryTopBar(
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
             )
-        },
-        actions = {
-            IconButton(onClick = onSearchClick) {
-                Icon(
-                    imageVector = Icons.Rounded.Search,
-                    contentDescription = null,
-                )
-            }
         },
         scrollBehavior = scrollBehavior,
         modifier = modifier,
@@ -97,11 +87,29 @@ fun GameDetailTopAppBar(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchTopBar(
+    scrollBehavior: TopAppBarScrollBehavior,
+    modifier: Modifier = Modifier,
+) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = "Search Screen",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+            )
+        },
+        scrollBehavior = scrollBehavior,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun DiscoveryTopBarPreview() {
     DiscoveryTopBar(
-        onSearchClick = {},
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     )
 }
@@ -118,3 +126,13 @@ fun GameDetailTopAppBarPreview() {
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun SearchTopBarPreview() {
+    SearchTopBar(
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+    )
+}
+

@@ -28,6 +28,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.lilin.gamelibrary.domain.model.GameDetail
 import com.lilin.gamelibrary.ui.component.GameBackgroundImageSection
 import com.lilin.gamelibrary.ui.component.GameBasicInfoSection
@@ -42,6 +45,21 @@ import com.lilin.gamelibrary.ui.component.SkeletonGameDescriptionSection
 import com.lilin.gamelibrary.ui.component.SkeletonGameRatingSummarySection
 import com.lilin.gamelibrary.ui.component.SkeletonGameScreenshotsSection
 import com.lilin.gamelibrary.ui.component.SkeletonGameTagsSection
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class DetailScreen(val gameId: Int)
+
+fun NavGraphBuilder.navigateDetailScreen(
+    onBackClick: () -> Unit,
+) {
+    composable<DetailScreen> { backStackEntry ->
+        backStackEntry.toRoute<DetailScreen>()
+        GameDetailScreen(
+            onBackClick = onBackClick,
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,7 +83,7 @@ fun GameDetailScreen(
                 onShareClick = { /*TODO*/ },
             )
         },
-        contentWindowInsets = WindowInsets.navigationBars
+        contentWindowInsets = WindowInsets.navigationBars,
     ) {
         GameDetailScreen(
             uiState = uiState,
@@ -104,7 +122,7 @@ private fun GameDetailScreen(
             GameDetailErrorContent(
                 throwable = uiState.throwable,
                 onRetry = onRetry,
-                modifier = modifier
+                modifier = modifier,
             )
         }
     }
@@ -188,31 +206,31 @@ private fun GameDetailErrorContent(
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
                     text = "エラーが発生しました",
                     style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
                 )
 
                 Text(
                     text = throwable.message ?: "不明なエラーが発生しました",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
 
                 Button(onClick = onRetry) {
