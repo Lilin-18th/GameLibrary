@@ -39,9 +39,4 @@ class SearchViewModel @Inject constructor(
     fun onQueryChange(query: String) {
         _query.value = query
     }
-
-    fun clearSearch() {
-        _query.value = ""
-        _searchUiState.value = SearchUiState.None
-    }
 }

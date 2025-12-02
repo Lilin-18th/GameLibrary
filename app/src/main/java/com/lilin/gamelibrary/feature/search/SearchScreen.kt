@@ -44,7 +44,7 @@ fun NavGraphBuilder.navigateSearchScreen(
         SearchScreen(
             navigateToDetail = { gameId ->
                 navigateToDetail(gameId)
-            }
+            },
         )
     }
 }
@@ -61,11 +61,7 @@ fun SearchScreen(
 
     Scaffold(
         topBar = {
-            SearchTopBar(
-                isSearchActive = true,
-                onBackClick = {},
-                scrollBehavior = scrollBehavior,
-            )
+            SearchTopBar(scrollBehavior = scrollBehavior)
         },
         contentWindowInsets = WindowInsets.navigationBars,
     ) {
@@ -104,9 +100,7 @@ private fun SearchScreen(
         )
 
         when (searchUiState) {
-            is SearchUiState.None -> {
-
-            }
+            is SearchUiState.None -> {}
 
             is SearchUiState.Loading -> {
                 Box(
@@ -175,6 +169,6 @@ private fun SearchScreen(
 @Composable
 private fun SearchScreenPreview() {
     SearchScreen(
-        navigateToDetail = {}
+        navigateToDetail = {},
     )
 }

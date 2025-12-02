@@ -39,7 +39,7 @@ fun NavGraphBuilder.navigateDiscoveryScreen(
         DiscoveryScreen(
             onNavigateToDetail = { gameId ->
                 onNavigateToDetail(gameId)
-            }
+            },
         )
     }
 }
@@ -58,10 +58,7 @@ fun DiscoveryScreen(
 
     Scaffold(
         topBar = {
-            DiscoveryTopBar(
-                onSearchClick = {},
-                scrollBehavior = scrollBehavior,
-            )
+            DiscoveryTopBar(scrollBehavior = scrollBehavior)
         },
         contentWindowInsets = WindowInsets.navigationBars,
     ) { paddingValues ->
@@ -71,7 +68,7 @@ fun DiscoveryScreen(
             newReleasesState = newReleasesState,
             scrollBehavior = scrollBehavior,
             onNavigateToDetail = onNavigateToDetail,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
         )
     }
 }
@@ -141,7 +138,7 @@ private fun DiscoveryScreen(
                 is DiscoveryUiState.Error -> {
                     ErrorSection(
                         sectionHeaderTitle = stringResource(R.string.metacritic_section_title),
-                        throwable = highlyRatedState.throwable
+                        throwable = highlyRatedState.throwable,
                     )
                 }
 
@@ -169,7 +166,7 @@ private fun DiscoveryScreen(
                 is DiscoveryUiState.Error -> {
                     ErrorSection(
                         sectionHeaderTitle = stringResource(R.string.new_release_section_title),
-                        throwable = newReleasesState.throwable
+                        throwable = newReleasesState.throwable,
                     )
                 }
 

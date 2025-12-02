@@ -2,7 +2,6 @@ package com.lilin.gamelibrary.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -24,7 +23,6 @@ import com.lilin.gamelibrary.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiscoveryTopBar(
-    onSearchClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier = Modifier,
 ) {
@@ -91,28 +89,16 @@ fun GameDetailTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTopBar(
-    isSearchActive: Boolean,
-    onBackClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier = Modifier,
 ) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = if (isSearchActive) "Search Results" else "Discovery",
+                text = "Search Screen",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
             )
-        },
-        navigationIcon = {
-            if (isSearchActive) {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                        contentDescription = "Navigate back",
-                    )
-                }
-            }
         },
         scrollBehavior = scrollBehavior,
         modifier = modifier,
@@ -124,7 +110,6 @@ fun SearchTopBar(
 @Composable
 fun DiscoveryTopBarPreview() {
     DiscoveryTopBar(
-        onSearchClick = {},
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     )
 }
@@ -147,19 +132,6 @@ fun GameDetailTopAppBarPreview() {
 @Composable
 private fun SearchTopBarPreview() {
     SearchTopBar(
-        isSearchActive = true,
-        onBackClick = {},
-        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-private fun DiscoveryScreenSearchTopBarPreview() {
-    SearchTopBar(
-        isSearchActive = false,
-        onBackClick = {},
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     )
 }
