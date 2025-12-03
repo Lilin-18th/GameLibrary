@@ -54,7 +54,7 @@ fun HighRatedGamesSection(
     ) {
         SectionHeader(
             title = stringResource(R.string.metacritic_section_title),
-            modifier = modifier,
+            modifier = Modifier,
         )
 
         LazyRow(
@@ -82,7 +82,7 @@ fun NewReleaseGamesSection(
     ) {
         SectionHeader(
             title = stringResource(R.string.new_release_section_title),
-            modifier = modifier,
+            modifier = Modifier,
         )
 
         Column(
@@ -111,7 +111,7 @@ fun SkeletonGamesSection(
     ) {
         SectionHeader(
             title = sectionHeaderTitle,
-            modifier = modifier,
+            modifier = Modifier,
         )
 
         LazyRow(
@@ -136,7 +136,7 @@ fun SkeletonNewReleaseGamesSection(
     ) {
         SectionHeader(
             title = stringResource(R.string.new_release_section_title),
-            modifier = modifier,
+            modifier = Modifier,
         )
 
         Column(
@@ -163,7 +163,7 @@ fun ErrorSection(
     ) {
         SectionHeader(
             title = sectionHeaderTitle,
-            modifier = modifier,
+            modifier = Modifier,
         )
 
         ErrorCard(

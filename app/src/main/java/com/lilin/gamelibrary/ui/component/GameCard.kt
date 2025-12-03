@@ -553,7 +553,7 @@ private fun TrendingGameCardPreview() {
 
 @Preview
 @Composable
-fun HighRatedGameCardPreview() {
+private fun HighRatedGameCardPreview() {
     val game = Game(
         id = 1,
         name = "League of Legends",
@@ -574,7 +574,7 @@ fun HighRatedGameCardPreview() {
 
 @Preview
 @Composable
-fun NewReleaseGameCardPreview() {
+private fun NewReleaseGameCardPreview() {
     val game = Game(
         id = 1,
         name = "League of Legends",

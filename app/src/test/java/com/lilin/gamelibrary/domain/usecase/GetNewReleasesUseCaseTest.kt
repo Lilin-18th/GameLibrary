@@ -26,7 +26,7 @@ class GetNewReleasesUseCaseTest {
         val mockGames = listOf(
             createMockGame(1),
             createMockGame(2),
-            createMockGame(3)
+            createMockGame(3),
         )
         coEvery {
             gameRepository.getNewReleases(any(), any())
@@ -65,7 +65,7 @@ class GetNewReleasesUseCaseTest {
             metacritic = 85,
             isTba = false,
             addedCount = 5000,
-            platforms = listOf("PC")
+            platforms = listOf("PC"),
         )
     }
 }

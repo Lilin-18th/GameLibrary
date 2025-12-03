@@ -66,7 +66,7 @@ class GetTrendingGamesUseCaseTest {
             metacritic = 85,
             isTba = false,
             addedCount = 5000,
-            platforms = listOf("PC")
+            platforms = listOf("PC"),
         )
     }
 }

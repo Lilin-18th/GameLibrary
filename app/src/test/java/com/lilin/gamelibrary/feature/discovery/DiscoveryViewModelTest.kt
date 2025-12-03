@@ -210,31 +210,35 @@ class DiscoveryViewModelTest {
         }
 
     @Test
-    fun `reloadTrendingGames current state is Success should update state to reloading error when use case fails`() = runTest {
-        val exception = Exception("Network error")
-        coEvery { mockGetTrendingGamesUseCase(any(), any()) } returnsMany listOf(
-            Result.success(mockGamesList),
-            Result.failure(exception),
-        )
-        coEvery { mockGetHighRatedGamesUseCase(any(), any()) } returns Result.success(listOf())
-        coEvery { mockGetNewReleasesUseCase(any(), any()) } returns Result.success(listOf())
+    fun `reloadTrendingGames current state is Success should update state to reloading error when use case fails`() =
+        runTest {
+            val exception = Exception("Network error")
+            coEvery { mockGetTrendingGamesUseCase(any(), any()) } returnsMany listOf(
+                Result.success(mockGamesList),
+                Result.failure(exception),
+            )
+            coEvery { mockGetHighRatedGamesUseCase(any(), any()) } returns Result.success(listOf())
+            coEvery { mockGetNewReleasesUseCase(any(), any()) } returns Result.success(listOf())
 
-        viewModel = DiscoveryViewModel(
-            getTrendingGamesUseCase = mockGetTrendingGamesUseCase,
-            getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
-            getNewReleasesUseCase = mockGetNewReleasesUseCase,
-        )
+            viewModel = DiscoveryViewModel(
+                getTrendingGamesUseCase = mockGetTrendingGamesUseCase,
+                getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
+                getNewReleasesUseCase = mockGetNewReleasesUseCase,
+            )
 
-        testScheduler.advanceUntilIdle()
-        assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.trendingState.value)
+            testScheduler.advanceUntilIdle()
+            assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.trendingState.value)
 
-        viewModel.reloadTrendingGames()
-        assertEquals(DiscoveryUiState.ReLoading(mockGamesList), viewModel.trendingState.value)
+            viewModel.reloadTrendingGames()
+            assertEquals(DiscoveryUiState.ReLoading(mockGamesList), viewModel.trendingState.value)
 
-        testScheduler.advanceUntilIdle()
-        assertEquals(DiscoveryUiState.ReLoadingError(mockGamesList, exception), viewModel.trendingState.value)
-        coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 4) }
-    }
+            testScheduler.advanceUntilIdle()
+            assertEquals(
+                DiscoveryUiState.ReLoadingError(mockGamesList, exception),
+                viewModel.trendingState.value,
+            )
+            coVerify(exactly = 2) { mockGetTrendingGamesUseCase(page = 1, pageSize = 4) }
+        }
 
     @Test
     fun `reloadTrendingGames current state is Error should set loading state, not call use case`() =
@@ -281,38 +285,48 @@ class DiscoveryViewModelTest {
 
             viewModel.reloadHighlyRatedGames()
 
-            assertEquals(DiscoveryUiState.ReLoading(mockGamesList), viewModel.highlyRatedState.value)
+            assertEquals(
+                DiscoveryUiState.ReLoading(mockGamesList),
+                viewModel.highlyRatedState.value,
+            )
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.highlyRatedState.value)
             coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
-    fun `reloadHighlyRatedGames current state is Success should update state to reloading error when use case fails`() = runTest {
-        val exception = Exception("Network error")
-        coEvery { mockGetTrendingGamesUseCase(any(), any()) } returns Result.success(listOf())
-        coEvery { mockGetHighRatedGamesUseCase(any(), any()) } returnsMany listOf(
-            Result.success(mockGamesList),
-            Result.failure(exception),
-        )
-        coEvery { mockGetNewReleasesUseCase(any(), any()) } returns Result.success(listOf())
+    fun `reloadHighlyRatedGames current state is Success should update state to reloading error when use case fails`() =
+        runTest {
+            val exception = Exception("Network error")
+            coEvery { mockGetTrendingGamesUseCase(any(), any()) } returns Result.success(listOf())
+            coEvery { mockGetHighRatedGamesUseCase(any(), any()) } returnsMany listOf(
+                Result.success(mockGamesList),
+                Result.failure(exception),
+            )
+            coEvery { mockGetNewReleasesUseCase(any(), any()) } returns Result.success(listOf())
 
-        viewModel = DiscoveryViewModel(
-            getTrendingGamesUseCase = mockGetTrendingGamesUseCase,
-            getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
-            getNewReleasesUseCase = mockGetNewReleasesUseCase,
-        )
+            viewModel = DiscoveryViewModel(
+                getTrendingGamesUseCase = mockGetTrendingGamesUseCase,
+                getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
+                getNewReleasesUseCase = mockGetNewReleasesUseCase,
+            )
 
-        testScheduler.advanceUntilIdle()
-        assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.highlyRatedState.value)
+            testScheduler.advanceUntilIdle()
+            assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.highlyRatedState.value)
 
-        viewModel.reloadHighlyRatedGames()
-        assertEquals(DiscoveryUiState.ReLoading(mockGamesList), viewModel.highlyRatedState.value)
+            viewModel.reloadHighlyRatedGames()
+            assertEquals(
+                DiscoveryUiState.ReLoading(mockGamesList),
+                viewModel.highlyRatedState.value,
+            )
 
-        testScheduler.advanceUntilIdle()
-        assertEquals(DiscoveryUiState.ReLoadingError(mockGamesList, exception), viewModel.highlyRatedState.value)
-        coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 4) }
-    }
+            testScheduler.advanceUntilIdle()
+            assertEquals(
+                DiscoveryUiState.ReLoadingError(mockGamesList, exception),
+                viewModel.highlyRatedState.value,
+            )
+            coVerify(exactly = 2) { mockGetHighRatedGamesUseCase(page = 1, pageSize = 4) }
+        }
 
     @Test
     fun `reloadHighlyRatedGames current state is Error should set loading state, not call use case`() =
@@ -359,38 +373,48 @@ class DiscoveryViewModelTest {
 
             viewModel.reloadNewReleaseGame()
 
-            assertEquals(DiscoveryUiState.ReLoading(mockGamesList), viewModel.newReleasesState.value)
+            assertEquals(
+                DiscoveryUiState.ReLoading(mockGamesList),
+                viewModel.newReleasesState.value,
+            )
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.newReleasesState.value)
             coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 4) }
         }
 
     @Test
-    fun `reloadNewReleases current state is Success should update state to reloading error when use case fails`() = runTest {
-        val exception = Exception("Network error")
-        coEvery { mockGetTrendingGamesUseCase(any(), any()) } returns Result.success(listOf())
-        coEvery { mockGetHighRatedGamesUseCase(any(), any()) } returns Result.success(listOf())
-        coEvery { mockGetNewReleasesUseCase(any(), any()) } returnsMany listOf(
-            Result.success(mockGamesList),
-            Result.failure(exception),
-        )
+    fun `reloadNewReleases current state is Success should update state to reloading error when use case fails`() =
+        runTest {
+            val exception = Exception("Network error")
+            coEvery { mockGetTrendingGamesUseCase(any(), any()) } returns Result.success(listOf())
+            coEvery { mockGetHighRatedGamesUseCase(any(), any()) } returns Result.success(listOf())
+            coEvery { mockGetNewReleasesUseCase(any(), any()) } returnsMany listOf(
+                Result.success(mockGamesList),
+                Result.failure(exception),
+            )
 
-        viewModel = DiscoveryViewModel(
-            getTrendingGamesUseCase = mockGetTrendingGamesUseCase,
-            getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
-            getNewReleasesUseCase = mockGetNewReleasesUseCase,
-        )
+            viewModel = DiscoveryViewModel(
+                getTrendingGamesUseCase = mockGetTrendingGamesUseCase,
+                getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
+                getNewReleasesUseCase = mockGetNewReleasesUseCase,
+            )
 
-        testScheduler.advanceUntilIdle()
-        assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.newReleasesState.value)
+            testScheduler.advanceUntilIdle()
+            assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.newReleasesState.value)
 
-        viewModel.reloadNewReleaseGame()
-        assertEquals(DiscoveryUiState.ReLoading(mockGamesList), viewModel.newReleasesState.value)
+            viewModel.reloadNewReleaseGame()
+            assertEquals(
+                DiscoveryUiState.ReLoading(mockGamesList),
+                viewModel.newReleasesState.value,
+            )
 
-        testScheduler.advanceUntilIdle()
-        assertEquals(DiscoveryUiState.ReLoadingError(mockGamesList, exception), viewModel.newReleasesState.value)
-        coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 4) }
-    }
+            testScheduler.advanceUntilIdle()
+            assertEquals(
+                DiscoveryUiState.ReLoadingError(mockGamesList, exception),
+                viewModel.newReleasesState.value,
+            )
+            coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 4) }
+        }
 
 
     @Test
