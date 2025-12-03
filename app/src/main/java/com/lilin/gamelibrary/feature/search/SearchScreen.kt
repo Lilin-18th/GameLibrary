@@ -53,8 +53,8 @@ fun NavGraphBuilder.navigateSearchScreen(
 @Composable
 fun SearchScreen(
     navigateToDetail: (Int) -> Unit,
-    viewModel: SearchViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val searchUiState by viewModel.searchUiState.collectAsState()
     val query by viewModel.query.collectAsState()

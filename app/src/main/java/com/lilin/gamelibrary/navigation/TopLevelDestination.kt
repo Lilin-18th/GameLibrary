@@ -7,19 +7,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.lilin.gamelibrary.feature.discovery.DiscoveryScreen
 import com.lilin.gamelibrary.feature.search.SearchScreen
 
-data class TopLevelRoute<T : Any>(
+data class TopLevelDestination<T : Any>(
     val route: T,
     val icon: ImageVector,
     val label: String,
 )
 
 val TOP_LEVEL_ROUTES = listOf(
-    TopLevelRoute(
+    TopLevelDestination(
         route = DiscoveryScreen,
         icon = Icons.Filled.Home,
         label = "Discovery",
     ),
-    TopLevelRoute(
+    TopLevelDestination(
         route = SearchScreen,
         icon = Icons.Filled.Search,
         label = "Search",

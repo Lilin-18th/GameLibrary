@@ -25,7 +25,7 @@ data class Game(
     val releaseYear: Int? = releaseDate?.let { dateString ->
         try {
             LocalDate.parse(dateString).year
-        } catch (e: Exception) {
+        } catch (e: IllegalArgumentException) {
             Log.e("Can not parse", "${e.message}")
             null
         }
@@ -61,7 +61,7 @@ fun Game.isPreOrder(
         try {
             val date = LocalDate.parse(dateString)
             date > dateTimeProvider.today()
-        } catch (e: Exception) {
+        } catch (e: IllegalArgumentException) {
             Log.e("Can not parse", "${e.message}")
             false
         }

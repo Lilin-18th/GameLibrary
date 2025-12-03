@@ -64,8 +64,8 @@ fun NavGraphBuilder.navigateDetailScreen(
 @Composable
 fun GameDetailScreen(
     onBackClick: () -> Unit,
-    viewModel: GameDetailViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: GameDetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.state.collectAsState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior() // 詳細画面に必要かどうか？

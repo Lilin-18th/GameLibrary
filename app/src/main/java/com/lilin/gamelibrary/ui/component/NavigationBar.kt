@@ -13,11 +13,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
-import com.lilin.gamelibrary.navigation.TopLevelRoute
+import com.lilin.gamelibrary.navigation.TopLevelDestination
 
 @Composable
 fun GameLibraryNavigationBar(
-    topLevelRoute: List<TopLevelRoute<*>>,
+    topLevelRoute: List<TopLevelDestination<*>>,
     currentDestination: NavDestination?,
     onNavigateToRoute: (Any) -> Unit,
     modifier: Modifier = Modifier,

@@ -7,6 +7,7 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.todayIn
+import java.io.IOException
 import javax.inject.Inject
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -73,7 +74,7 @@ class GameRepositoryImpl @Inject constructor(
         return if (response.isSuccessful) {
             response.body()?.toDomainList() ?: emptyList()
         } else {
-            throw Exception("API Error: ${response.code()}")
+            throw IOException("API Error: ${response.code()}")
         }
     }
 

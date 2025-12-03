@@ -48,8 +48,8 @@ fun NavGraphBuilder.navigateDiscoveryScreen(
 @Composable
 fun DiscoveryScreen(
     onNavigateToDetail: (Int) -> Unit,
-    viewModel: DiscoveryViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: DiscoveryViewModel = hiltViewModel(),
 ) {
     val trendingState by viewModel.trendingState.collectAsState()
     val highlyRatedState by viewModel.highlyRatedState.collectAsState()

@@ -214,8 +214,7 @@ fun SkeletonGameRatingSummarySection(
                             color = MaterialTheme.colorScheme.surfaceVariant,
                             shape = RoundedCornerShape(4.dp),
                         ),
-
-                    )
+                )
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.6f)

@@ -293,7 +293,7 @@ private fun GameMetadataInfo(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier,
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         if (genres.isNotEmpty()) {
@@ -512,7 +512,7 @@ private fun GameMetadataInfoPreview() {
 @Composable
 private fun GameDescriptionPreview() {
     GameDescription(
-        description = "jfkldsajf;kldjsfjsdkl;ajfkl;dsjfkjdskajfksdja;fj;askjfkdsjkfjkdsa;jfdjskal;fkdlsjafkl;jdksl;ajfkl;fjdksla;fj;kdlsajfkl;dsjafk;ljdskl;afkl;dsjfkl;sdjkl;afkldjskafjkldsjafkl;jdskajfk;sdajfklsdajk;fljsdak;fjk;sdajfk;ajfdjsakfjkdls;ajfkl;dsjk;fjdkls;ajkfldsk;aljfkl;dsa;",
+        description = "説明",
     )
 }
 
