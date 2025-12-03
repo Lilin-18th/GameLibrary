@@ -138,7 +138,7 @@ fun SkeletonGameBackgroundImageSection(
             modifier = Modifier
                 .fillMaxSize()
                 .shimmer()
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
         )
     }
 }
@@ -161,8 +161,8 @@ fun SkeletonGameBasicInfoSection(
                 .shimmer()
                 .background(
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = RoundedCornerShape(4.dp)
-                )
+                    shape = RoundedCornerShape(4.dp),
+                ),
         )
 
         Spacer(Modifier.height(8.dp))
@@ -175,8 +175,8 @@ fun SkeletonGameBasicInfoSection(
                 .shimmer()
                 .background(
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = RoundedCornerShape(4.dp)
-                )
+                    shape = RoundedCornerShape(4.dp),
+                ),
         )
     }
 }
@@ -197,7 +197,7 @@ fun SkeletonGameRatingSummarySection(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             // 左側: 評価サマリー
             Column(
@@ -212,9 +212,8 @@ fun SkeletonGameRatingSummarySection(
                         .height(20.dp)
                         .background(
                             color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = RoundedCornerShape(4.dp)
-                        )
-
+                            shape = RoundedCornerShape(4.dp),
+                        ),
                 )
                 Box(
                     modifier = Modifier
@@ -222,8 +221,8 @@ fun SkeletonGameRatingSummarySection(
                         .height(16.dp)
                         .background(
                             color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = RoundedCornerShape(4.dp)
-                        )
+                            shape = RoundedCornerShape(4.dp),
+                        ),
                 )
                 Box(
                     modifier = Modifier
@@ -231,8 +230,8 @@ fun SkeletonGameRatingSummarySection(
                         .height(16.dp)
                         .background(
                             color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = RoundedCornerShape(4.dp)
-                        )
+                            shape = RoundedCornerShape(4.dp),
+                        ),
                 )
             }
 
@@ -253,7 +252,7 @@ fun SkeletonGameRatingSummarySection(
             ) {
                 repeat(3) {
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         Box(
                             modifier = Modifier
@@ -261,8 +260,8 @@ fun SkeletonGameRatingSummarySection(
                                 .height(14.dp)
                                 .background(
                                     color = MaterialTheme.colorScheme.surfaceVariant,
-                                    shape = RoundedCornerShape(4.dp)
-                                )
+                                    shape = RoundedCornerShape(4.dp),
+                                ),
                         )
                         Box(
                             modifier = Modifier
@@ -270,8 +269,8 @@ fun SkeletonGameRatingSummarySection(
                                 .height(16.dp)
                                 .background(
                                     color = MaterialTheme.colorScheme.surfaceVariant,
-                                    shape = RoundedCornerShape(4.dp)
-                                )
+                                    shape = RoundedCornerShape(4.dp),
+                                ),
                         )
                     }
                 }
@@ -290,7 +289,7 @@ fun SkeletonGameDescriptionSection(
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         elevation = CardDefaults.cardElevation(2.dp),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -303,8 +302,8 @@ fun SkeletonGameDescriptionSection(
                     .shimmer()
                     .background(
                         color = MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(4.dp)
-                    )
+                        shape = RoundedCornerShape(4.dp),
+                    ),
             )
 
             Spacer(Modifier.height(8.dp))
@@ -318,8 +317,8 @@ fun SkeletonGameDescriptionSection(
                         .shimmer()
                         .background(
                             color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = RoundedCornerShape(4.dp)
-                        )
+                            shape = RoundedCornerShape(4.dp),
+                        ),
                 )
                 Spacer(Modifier.height(6.dp))
             }
@@ -332,8 +331,8 @@ fun SkeletonGameDescriptionSection(
                     .shimmer()
                     .background(
                         color = MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(4.dp)
-                    )
+                        shape = RoundedCornerShape(4.dp),
+                    ),
             )
         }
     }
@@ -345,7 +344,7 @@ fun SkeletonGameScreenshotsSection(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 16.dp)
+        modifier = modifier.padding(horizontal = 16.dp),
     ) {
         // ラベル
         Box(
@@ -355,8 +354,8 @@ fun SkeletonGameScreenshotsSection(
                 .shimmer()
                 .background(
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = RoundedCornerShape(4.dp)
-                )
+                    shape = RoundedCornerShape(4.dp),
+                ),
         )
 
         Spacer(Modifier.height(8.dp))
@@ -364,7 +363,7 @@ fun SkeletonGameScreenshotsSection(
         // スクリーンショットリスト
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
             items(3) {
                 Card(
@@ -378,7 +377,7 @@ fun SkeletonGameScreenshotsSection(
                         modifier = Modifier
                             .fillMaxSize()
                             .shimmer()
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .background(MaterialTheme.colorScheme.surfaceVariant),
                     )
                 }
             }
@@ -404,8 +403,8 @@ fun SkeletonGameTagsSection(
                 .shimmer()
                 .background(
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = RoundedCornerShape(4.dp)
-                )
+                    shape = RoundedCornerShape(4.dp),
+                ),
         )
 
         Spacer(Modifier.height(8.dp))
@@ -423,8 +422,8 @@ fun SkeletonGameTagsSection(
                         .shimmer()
                         .background(
                             color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = RoundedCornerShape(16.dp)
-                        )
+                            shape = RoundedCornerShape(16.dp),
+                        ),
                 )
             }
         }

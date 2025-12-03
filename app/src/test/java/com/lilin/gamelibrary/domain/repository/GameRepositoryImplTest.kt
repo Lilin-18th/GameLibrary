@@ -26,7 +26,6 @@ class GameRepositoryImplTest {
         gameRepository = GameRepositoryImpl(apiServices)
     }
 
-
     // getTrendingGames テスト
     @Test
     fun test_getTrendingGames_success() = runTest {
@@ -38,7 +37,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-added"
+                ordering = "-added",
             )
         } returns Response.success(mockResponse)
 
@@ -53,7 +52,7 @@ class GameRepositoryImplTest {
                 pageSize = 2,
                 dates = any(),
                 search = any(),
-                ordering = "-added"
+                ordering = "-added",
             )
         }
     }
@@ -66,7 +65,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-added"
+                ordering = "-added",
             )
         } returns Response.success(null)
 
@@ -84,7 +83,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-added"
+                ordering = "-added",
             )
         } returns Response.error(404, "Not Found".toResponseBody())
 
@@ -102,7 +101,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-added"
+                ordering = "-added",
             )
         } throws Exception("Network Error")
 
@@ -123,7 +122,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-metacritic"
+                ordering = "-metacritic",
             )
         } returns Response.success(mockResponse)
 
@@ -138,7 +137,7 @@ class GameRepositoryImplTest {
                 pageSize = 5,
                 dates = any(),
                 search = any(),
-                ordering = "-metacritic"
+                ordering = "-metacritic",
             )
         }
     }
@@ -151,7 +150,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-metacritic"
+                ordering = "-metacritic",
             )
         } returns Response.success(null)
 
@@ -169,7 +168,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-metacritic"
+                ordering = "-metacritic",
             )
         } returns Response.error(404, "Not Found".toResponseBody())
 
@@ -187,7 +186,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-metacritic"
+                ordering = "-metacritic",
             )
         } throws Exception("Timeout")
 
@@ -208,7 +207,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-released"
+                ordering = "-released",
             )
         } returns Response.success(mockResponse)
 
@@ -223,7 +222,7 @@ class GameRepositoryImplTest {
                 pageSize = 4,
                 dates = any(),
                 search = any(),
-                ordering = "-released"
+                ordering = "-released",
             )
         }
     }
@@ -236,7 +235,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-released"
+                ordering = "-released",
             )
         } returns Response.success(null)
 
@@ -254,7 +253,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-released"
+                ordering = "-released",
             )
         } returns Response.error(404, "Not Found".toResponseBody())
 
@@ -272,7 +271,7 @@ class GameRepositoryImplTest {
                 pageSize = any(),
                 dates = any(),
                 search = any(),
-                ordering = "-released"
+                ordering = "-released",
             )
         } throws Exception("Connection refused")
 
@@ -308,7 +307,7 @@ class GameRepositoryImplTest {
                     pageSize = 10,
                     dates = any(),
                     search = "test",
-                    ordering = "relevance,-metacritic"
+                    ordering = "relevance,-metacritic",
                 )
             }
         }
@@ -342,7 +341,7 @@ class GameRepositoryImplTest {
                     pageSize = any(),
                     dates = any(),
                     search = "test",
-                    ordering = "relevance,-metacritic"
+                    ordering = "relevance,-metacritic",
                 )
             } returns Response.error(404, "Not Found".toResponseBody())
 
@@ -362,7 +361,7 @@ class GameRepositoryImplTest {
                     pageSize = any(),
                     dates = any(),
                     search = "test",
-                    ordering = "relevance,-metacritic"
+                    ordering = "relevance,-metacritic",
                 )
             } throws Exception("Network Error")
 
@@ -379,7 +378,7 @@ class GameRepositoryImplTest {
             count = count,
             next = null,
             previous = null,
-            results = games
+            results = games,
         )
     }
 
@@ -407,12 +406,12 @@ class GameRepositoryImplTest {
                     platform = PlatformDto(
                         id = 1,
                         name = "PC",
-                        slug = "pc"
+                        slug = "pc",
                     ),
                     releasedAt = "2024-01-01",
-                    requirements = null
-                )
-            )
+                    requirements = null,
+                ),
+            ),
         )
     }
 }

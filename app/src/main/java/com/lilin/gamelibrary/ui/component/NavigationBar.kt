@@ -1,10 +1,5 @@
 package com.lilin.gamelibrary.ui.component
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocalLibrary
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
@@ -18,11 +13,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
-import com.lilin.gamelibrary.navigation.TopLevelRoute
+import com.lilin.gamelibrary.navigation.TopLevelDestination
 
 @Composable
 fun GameLibraryNavigationBar(
-    topLevelRoute: List<TopLevelRoute<*>>,
+    topLevelRoute: List<TopLevelDestination<*>>,
     currentDestination: NavDestination?,
     onNavigateToRoute: (Any) -> Unit,
     modifier: Modifier = Modifier,

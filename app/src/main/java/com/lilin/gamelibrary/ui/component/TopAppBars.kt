@@ -108,7 +108,7 @@ fun SearchTopBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun DiscoveryTopBarPreview() {
+private fun DiscoveryTopBarPreview() {
     DiscoveryTopBar(
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     )
@@ -117,7 +117,7 @@ fun DiscoveryTopBarPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun GameDetailTopAppBarPreview() {
+private fun GameDetailTopAppBarPreview() {
     GameDetailTopAppBar(
         title = "Game Title",
         onBackClick = {},
@@ -135,4 +135,3 @@ private fun SearchTopBarPreview() {
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     )
 }
-

@@ -25,7 +25,7 @@ fun SectionHeader(
 
 @Preview
 @Composable
-fun SectionHeaderPreview() {
+private fun SectionHeaderPreview() {
     SectionHeader(
         title = "Popular",
     )

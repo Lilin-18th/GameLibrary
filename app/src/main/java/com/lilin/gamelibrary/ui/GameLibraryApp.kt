@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.lilin.gamelibrary.feature.detail.DetailScreen
+import com.lilin.gamelibrary.feature.detail.GameDetailScreen
 import com.lilin.gamelibrary.feature.detail.navigateDetailScreen
 import com.lilin.gamelibrary.feature.discovery.DiscoveryScreen
 import com.lilin.gamelibrary.feature.discovery.navigateDiscoveryScreen
@@ -21,7 +21,9 @@ import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
 import com.lilin.gamelibrary.ui.component.GameLibraryNavigationBar
 
 @Composable
-fun GameLibraryApp() {
+fun GameLibraryApp(
+    modifier: Modifier = Modifier,
+) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
@@ -43,6 +45,7 @@ fun GameLibraryApp() {
             )
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        modifier = modifier,
     ) { paddingValues ->
         AppNavHost(
             navController = navController,
@@ -65,7 +68,7 @@ private fun AppNavHost(
     ) {
         navigateDiscoveryScreen(
             onNavigateToDetail = { gameId ->
-                navController.navigate(DetailScreen(gameId))
+                navController.navigate(GameDetailScreen(gameId))
             },
         )
 
@@ -73,7 +76,7 @@ private fun AppNavHost(
 
         navigateSearchScreen(
             navigateToDetail = { gameId ->
-                navController.navigate(DetailScreen(gameId))
+                navController.navigate(GameDetailScreen(gameId))
             },
         )
     }

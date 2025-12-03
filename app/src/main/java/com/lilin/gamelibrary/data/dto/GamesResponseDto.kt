@@ -157,7 +157,7 @@ data class GenreDto(
     @SerialName("name")
     val name: String,
     @SerialName("slug")
-    val slug: String
+    val slug: String,
 )
 
 @Serializable
@@ -195,4 +195,3 @@ data class TagDto(
     @SerialName("language")
     val language: String = "eng",
 )
-

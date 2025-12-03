@@ -51,15 +51,15 @@ class GameTest {
         // Given
         val mockDateTimeProvider = mockk<DateTimeProvider>()
         every { mockDateTimeProvider.today() } returns LocalDate.parse(mockTodayDate)
-        
+
         val game = baseGameModel.copy(
             isTba = inputIsTba,
             releaseDate = inputReleaseDate,
         )
-        
+
         // When
         val actualIsPreOrder = game.isPreOrder(mockDateTimeProvider)
-        
+
         // Then
         assertEquals(expectedIsPreOrder, actualIsPreOrder)
     }
@@ -111,7 +111,7 @@ class GameTest {
                 Arguments.of(POPULAR_THRESHOLD - 1, false), // 9999
                 Arguments.of(POPULAR_THRESHOLD, true), // 10000
                 Arguments.of(POPULAR_THRESHOLD + 1, true), // 10001
-                Arguments.of(20000, true)
+                Arguments.of(20000, true),
             )
         }
 
@@ -122,17 +122,17 @@ class GameTest {
                 Arguments.of(true, "2024-01-01", "2025-01-01", false),
                 Arguments.of(true, "2025-01-10", "2025-01-01", false),
                 Arguments.of(true, null, "2025-01-01", false),
-                
+
                 // isTba = falseで将来の日付
                 Arguments.of(false, "2025-06-01", "2025-01-01", true), // 将来の日付
                 Arguments.of(false, "2030-12-31", "2025-01-01", true), // 遠い将来
                 Arguments.of(false, "2025-01-02", "2025-01-01", true), // 1日後
-                
+
                 // isTba = falseで過去または今日の日付
                 Arguments.of(false, "2024-12-31", "2025-01-01", false), // 過去
                 Arguments.of(false, "2025-01-01", "2025-01-01", false), // 今日
                 Arguments.of(false, "2020-01-01", "2025-01-01", false), // 遠い過去
-                
+
                 // 異常なケース
                 Arguments.of(false, null, "2025-01-01", false), // null
                 Arguments.of(false, "", "2025-01-01", false), // 空文字

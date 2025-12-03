@@ -141,24 +141,24 @@ class GetGameDetailUseCaseTest {
             platformNames = listOf("PC", "PlayStation 5"),
             genres = listOf(
                 Genre(id = 1, name = "Action", slug = "action"),
-                Genre(id = 2, name = "Adventure", slug = "adventure")
+                Genre(id = 2, name = "Adventure", slug = "adventure"),
             ),
             description = "A test game description for game $gameId",
             shortScreenshots = listOf(
                 Screenshot(id = 1, imageUrl = "https://example.com/screenshot1.jpg"),
-                Screenshot(id = 2, imageUrl = "https://example.com/screenshot2.jpg")
+                Screenshot(id = 2, imageUrl = "https://example.com/screenshot2.jpg"),
             ),
             developers = listOf(
-                Developer(id = 1, name = "Test Developer")
+                Developer(id = 1, name = "Test Developer"),
             ),
             publishers = listOf(
-                Publisher(id = 1, name = "Test Publisher")
+                Publisher(id = 1, name = "Test Publisher"),
             ),
             esrbRating = "Teen",
             playtime = 120,
             tags = listOf(
                 Tag(id = 1, name = "Singleplayer", slug = "singleplayer"),
-                Tag(id = 2, name = "Multiplayer", slug = "multiplayer")
+                Tag(id = 2, name = "Multiplayer", slug = "multiplayer"),
             ),
         )
     }

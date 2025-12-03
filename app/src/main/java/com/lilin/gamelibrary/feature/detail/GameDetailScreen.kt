@@ -25,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
@@ -48,13 +47,13 @@ import com.lilin.gamelibrary.ui.component.SkeletonGameTagsSection
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DetailScreen(val gameId: Int)
+data class GameDetailScreen(val gameId: Int)
 
 fun NavGraphBuilder.navigateDetailScreen(
     onBackClick: () -> Unit,
 ) {
-    composable<DetailScreen> { backStackEntry ->
-        backStackEntry.toRoute<DetailScreen>()
+    composable<GameDetailScreen> { backStackEntry ->
+        backStackEntry.toRoute<GameDetailScreen>()
         GameDetailScreen(
             onBackClick = onBackClick,
         )
@@ -65,6 +64,7 @@ fun NavGraphBuilder.navigateDetailScreen(
 @Composable
 fun GameDetailScreen(
     onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: GameDetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.state.collectAsState()
@@ -84,6 +84,7 @@ fun GameDetailScreen(
             )
         },
         contentWindowInsets = WindowInsets.navigationBars,
+        modifier = modifier,
     ) {
         GameDetailScreen(
             uiState = uiState,
@@ -157,8 +158,6 @@ private fun GameDetailSuccessContent(
     scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalUriHandler.current
-
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()

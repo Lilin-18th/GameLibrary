@@ -128,7 +128,7 @@ fun SearchResultCard(
 
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
                     text = game.name,
@@ -207,7 +207,7 @@ private fun SearchResultCardPreview() {
         metacritic = 80,
         isTba = false,
         addedCount = 20000,
-        platforms = listOf("Switch", "PS5", "PC")
+        platforms = listOf("Switch", "PS5", "PC"),
     )
     SearchResultCard(
         game = game,

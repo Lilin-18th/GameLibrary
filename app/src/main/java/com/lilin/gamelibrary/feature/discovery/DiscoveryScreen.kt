@@ -48,6 +48,7 @@ fun NavGraphBuilder.navigateDiscoveryScreen(
 @Composable
 fun DiscoveryScreen(
     onNavigateToDetail: (Int) -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: DiscoveryViewModel = hiltViewModel(),
 ) {
     val trendingState by viewModel.trendingState.collectAsState()
@@ -61,6 +62,7 @@ fun DiscoveryScreen(
             DiscoveryTopBar(scrollBehavior = scrollBehavior)
         },
         contentWindowInsets = WindowInsets.navigationBars,
+        modifier = modifier,
     ) { paddingValues ->
         DiscoveryScreen(
             trendingState = trendingState,

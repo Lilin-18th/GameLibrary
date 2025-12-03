@@ -27,9 +27,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material.icons.rounded.Games
-import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -115,9 +113,9 @@ fun GameBackgroundImage(
                 .size(64.dp),
             shape = CircleShape,
             colors = CardDefaults.cardColors(
-                containerColor = getMetacriticColor(metacriticScore)
+                containerColor = getMetacriticColor(metacriticScore),
             ),
-            elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.card_elevation))
+            elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.card_elevation)),
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -190,13 +188,13 @@ fun GameInfoCard(
         modifier = modifier
             .padding(horizontal = 16.dp),
         elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.card_elevation)),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min)  // ← これが重要！
-                .padding(16.dp)  // ← Card内部の余白
+                .height(IntrinsicSize.Min)
+                .padding(16.dp),
         ) {
             GameRatingSummary(
                 rating = rating,
@@ -207,7 +205,7 @@ fun GameInfoCard(
             VerticalDivider(
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
-                    .fillMaxHeight(),  // ← height(IntrinsicSize.Min)と組み合わせて機能
+                    .fillMaxHeight(),
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.outlineVariant,
             )
@@ -241,7 +239,7 @@ private fun GameRatingSummary(
                 imageVector = Icons.Rounded.Star,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(16.dp),
             )
             Text(
                 text = "%.1f".format(rating),
@@ -259,13 +257,13 @@ private fun GameRatingSummary(
 
         // プラットフォーム行
         Row(
-            verticalAlignment = Alignment.Top,  // ← CenterVertically → Top に変更
+            verticalAlignment = Alignment.Top,
         ) {
             Icon(
                 imageVector = Icons.Rounded.Games,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(16.dp)  // ← .align()を削除
+                modifier = Modifier.size(16.dp),
             )
 
             Spacer(Modifier.width(8.dp))
@@ -295,7 +293,7 @@ private fun GameMetadataInfo(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier,  // ← paddingを削除
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         if (genres.isNotEmpty()) {
@@ -339,7 +337,7 @@ private fun MetaDataInfoRow(
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(top = 4.dp)
+            modifier = Modifier.padding(top = 4.dp),
         )
     }
 }
@@ -374,7 +372,7 @@ fun GameDescription(
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioMediumBouncy,
                         stiffness = Spring.StiffnessMedium,
-                    )
+                    ),
                 ),
         )
 
@@ -385,7 +383,7 @@ fun GameDescription(
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
-                .clickable { isExpanded = !isExpanded }
+                .clickable { isExpanded = !isExpanded },
         )
     }
 }
@@ -411,7 +409,7 @@ fun GameScreenshots(
         Spacer(Modifier.height(8.dp))
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(16.dp),
         ) {
             items(screenshots) {
                 Card(
@@ -425,7 +423,7 @@ fun GameScreenshots(
                         model = it,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
             }
@@ -514,7 +512,7 @@ private fun GameMetadataInfoPreview() {
 @Composable
 private fun GameDescriptionPreview() {
     GameDescription(
-        description = "jfkldsajf;kldjsfjsdkl;ajfkl;dsjfkjdskajfksdja;fj;askjfkdsjkfjkdsa;jfdjskal;fkdlsjafkl;jdksl;ajfkl;fjdksla;fj;kdlsajfkl;dsjafk;ljdskl;afkl;dsjfkl;sdjkl;afkldjskafjkldsjafkl;jdskajfk;sdajfklsdajk;fljsdak;fjk;sdajfk;ajfdjsakfjkdls;ajfkl;dsjk;fjdkls;ajkfldsk;aljfkl;dsa;",
+        description = "説明",
     )
 }
 
@@ -522,7 +520,7 @@ private fun GameDescriptionPreview() {
 @Composable
 private fun GameScreenshotsPreview() {
     GameScreenshots(
-        screenshots = listOf("https://i.imgur.com/kSjV6Qn.jpeg")
+        screenshots = listOf("https://i.imgur.com/kSjV6Qn.jpeg"),
     )
 }
 
@@ -530,6 +528,6 @@ private fun GameScreenshotsPreview() {
 @Composable
 private fun GameTagsPreview() {
     GameTags(
-        tags = listOf("Action", "Adventure", "RPG", "Indie", "Sandbox", "Strategy")
+        tags = listOf("Action", "Adventure", "RPG", "Indie", "Sandbox", "Strategy"),
     )
 }

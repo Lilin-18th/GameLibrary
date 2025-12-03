@@ -7,10 +7,10 @@ import com.lilin.gamelibrary.domain.usecase.GetHighMetacriticScoreGamesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetNewReleasesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetTrendingGamesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class DiscoveryViewModel @Inject constructor(
@@ -134,7 +134,8 @@ class DiscoveryViewModel @Inject constructor(
                     _highlyRatedState.value = DiscoveryUiState.Success(result)
                 }
                 .onFailure { throwable ->
-                    _highlyRatedState.value = DiscoveryUiState.ReLoadingError(currentData, throwable)
+                    _highlyRatedState.value =
+                        DiscoveryUiState.ReLoadingError(currentData, throwable)
                 }
         }
     }
@@ -146,7 +147,8 @@ class DiscoveryViewModel @Inject constructor(
                     _newReleasesState.value = DiscoveryUiState.Success(result)
                 }
                 .onFailure { throwable ->
-                    _newReleasesState.value = DiscoveryUiState.ReLoadingError(currentData, throwable)
+                    _newReleasesState.value =
+                        DiscoveryUiState.ReLoadingError(currentData, throwable)
                 }
         }
     }

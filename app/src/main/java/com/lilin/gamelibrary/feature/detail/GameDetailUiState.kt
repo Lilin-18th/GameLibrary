@@ -6,7 +6,7 @@ sealed interface GameDetailUiState {
     data object Loading : GameDetailUiState
 
     data class Success(
-        val gameDetail: GameDetail
+        val gameDetail: GameDetail,
     ) : GameDetailUiState
 
     data class Error(
