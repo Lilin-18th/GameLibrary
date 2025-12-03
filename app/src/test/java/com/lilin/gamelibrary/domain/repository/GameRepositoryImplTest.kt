@@ -26,7 +26,6 @@ class GameRepositoryImplTest {
         gameRepository = GameRepositoryImpl(apiServices)
     }
 
-
     // getTrendingGames テスト
     @Test
     fun test_getTrendingGames_success() = runTest {

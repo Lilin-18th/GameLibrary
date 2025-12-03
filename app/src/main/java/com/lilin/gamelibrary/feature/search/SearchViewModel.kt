@@ -26,7 +26,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             _searchUiState.value = SearchUiState.Loading
 
-            getGameSearchUseCase(1, 50, currentQuery)
+            getGameSearchUseCase(INITIAL_PAGE, PAGE_SIZE, currentQuery)
                 .onSuccess { result ->
                     _searchUiState.value = SearchUiState.Success(result)
                 }
@@ -38,5 +38,10 @@ class SearchViewModel @Inject constructor(
 
     fun onQueryChange(query: String) {
         _query.value = query
+    }
+
+    private companion object {
+        const val INITIAL_PAGE = 1
+        const val PAGE_SIZE = 50
     }
 }

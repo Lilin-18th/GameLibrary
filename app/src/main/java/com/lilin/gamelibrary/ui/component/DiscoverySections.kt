@@ -26,7 +26,7 @@ fun TrendingGamesSection(
     ) {
         SectionHeader(
             title = stringResource(R.string.trending_section_title),
-            modifier = modifier,
+            modifier = Modifier,
         )
 
         LazyRow(

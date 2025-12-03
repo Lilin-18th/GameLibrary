@@ -16,7 +16,6 @@ fun PlatformInfoDto.toPlatformName(): String {
     return platform.name
 }
 
-
 fun GenreDto.toGenre(): Genre {
     return Genre(
         id = id,

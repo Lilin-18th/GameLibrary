@@ -416,7 +416,6 @@ class DiscoveryViewModelTest {
             coVerify(exactly = 2) { mockGetNewReleasesUseCase(page = 1, pageSize = 4) }
         }
 
-
     @Test
     fun `reloadNewReleases current state is Error should set loading state, not call use case`() =
         runTest {

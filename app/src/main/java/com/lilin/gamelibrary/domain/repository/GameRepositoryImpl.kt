@@ -80,8 +80,12 @@ class GameRepositoryImpl @Inject constructor(
     @OptIn(ExperimentalTime::class)
     private fun getLast30DaysDates(): Pair<String, String> {
         val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
-        val thirtyDaysAgo = today.minus(30, DateTimeUnit.DAY)
+        val thirtyDaysAgo = today.minus(THIRTY_DAYS, DateTimeUnit.DAY)
 
         return Pair(thirtyDaysAgo.toString(), today.toString())
+    }
+
+    private companion object {
+        const val THIRTY_DAYS = 30
     }
 }

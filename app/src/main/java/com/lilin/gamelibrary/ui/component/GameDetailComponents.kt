@@ -193,8 +193,8 @@ fun GameInfoCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min)  // ← これが重要！
-                .padding(16.dp),  // ← Card内部の余白
+                .height(IntrinsicSize.Min)
+                .padding(16.dp),
         ) {
             GameRatingSummary(
                 rating = rating,
@@ -205,7 +205,7 @@ fun GameInfoCard(
             VerticalDivider(
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
-                    .fillMaxHeight(),  // ← height(IntrinsicSize.Min)と組み合わせて機能
+                    .fillMaxHeight(),
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.outlineVariant,
             )
@@ -257,13 +257,13 @@ private fun GameRatingSummary(
 
         // プラットフォーム行
         Row(
-            verticalAlignment = Alignment.Top,  // ← CenterVertically → Top に変更
+            verticalAlignment = Alignment.Top,
         ) {
             Icon(
                 imageVector = Icons.Rounded.Games,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(16.dp),  // ← .align()を削除
+                modifier = Modifier.size(16.dp),
             )
 
             Spacer(Modifier.width(8.dp))
@@ -293,7 +293,7 @@ private fun GameMetadataInfo(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier,  // ← paddingを削除
+        modifier = Modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         if (genres.isNotEmpty()) {
