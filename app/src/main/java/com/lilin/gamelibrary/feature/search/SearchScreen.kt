@@ -54,6 +54,7 @@ fun NavGraphBuilder.navigateSearchScreen(
 fun SearchScreen(
     navigateToDetail: (Int) -> Unit,
     viewModel: SearchViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
 ) {
     val searchUiState by viewModel.searchUiState.collectAsState()
     val query by viewModel.query.collectAsState()
@@ -64,6 +65,7 @@ fun SearchScreen(
             SearchTopBar(scrollBehavior = scrollBehavior)
         },
         contentWindowInsets = WindowInsets.navigationBars,
+        modifier = modifier,
     ) {
         SearchScreen(
             query = query,

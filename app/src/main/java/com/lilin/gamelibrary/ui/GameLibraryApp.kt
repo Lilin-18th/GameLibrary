@@ -21,7 +21,9 @@ import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
 import com.lilin.gamelibrary.ui.component.GameLibraryNavigationBar
 
 @Composable
-fun GameLibraryApp() {
+fun GameLibraryApp(
+    modifier: Modifier = Modifier,
+) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
@@ -43,6 +45,7 @@ fun GameLibraryApp() {
             )
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        modifier = modifier,
     ) { paddingValues ->
         AppNavHost(
             navController = navController,
