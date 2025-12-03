@@ -1,6 +1,5 @@
 package com.lilin.gamelibrary.domain.model
 
-import android.util.Log
 import com.lilin.gamelibrary.domain.provider.DateTimeProvider
 import com.lilin.gamelibrary.domain.provider.DefaultDateTimeProvider
 import kotlinx.datetime.LocalDate
@@ -26,7 +25,7 @@ data class Game(
         try {
             LocalDate.parse(dateString).year
         } catch (e: IllegalArgumentException) {
-            Log.e("Can not parse", "${e.message}")
+            println("Can not parse ${e.message}")
             null
         }
     }
@@ -62,7 +61,7 @@ fun Game.isPreOrder(
             val date = LocalDate.parse(dateString)
             date > dateTimeProvider.today()
         } catch (e: IllegalArgumentException) {
-            Log.e("Can not parse", "${e.message}")
+            println("Can not parse ${e.message}")
             false
         }
     } ?: false
