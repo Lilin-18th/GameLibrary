@@ -5,7 +5,7 @@ import com.lilin.gamelibrary.domain.repository.GameRepository
 import javax.inject.Inject
 
 class GetTrendingGamesUseCase @Inject constructor(
-    private val repository: GameRepository
+    private val repository: GameRepository,
 ) {
     /**
      * 今週のトレンドゲームを取得します。

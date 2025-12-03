@@ -157,7 +157,7 @@ data class GenreDto(
     @SerialName("name")
     val name: String,
     @SerialName("slug")
-    val slug: String
+    val slug: String,
 )
 
 @Serializable

@@ -50,6 +50,6 @@ interface GameRepository {
     suspend fun getSearchGameResults(
         page: Int,
         pageSize: Int,
-        searchText: String
+        searchText: String,
     ): Result<List<Game>>
 }
