@@ -1,0 +1,272 @@
+config:
+  validation: true
+  warningsAsErrors: false
+
+# ===== 命名規則 =====
+naming:
+  active: true
+  
+  FunctionNaming:
+    active: true
+    functionPattern: '^([a-z$][a-zA-Z$0-9]*)|(`.*`)$'
+    ignoreAnnotated:
+      - 'Composable'
+  
+  TopLevelPropertyNaming:
+    active: true
+    constantPattern: '[A-Z][_A-Z0-9]*'
+  
+  ClassNaming:
+    excludes: '**/test/**'
+
+# ===== 複雑度ルール =====
+complexity:
+  active: true
+  
+  LongParameterList:
+    active: true
+    functionThreshold: 15
+    constructorThreshold: 10
+    ignoreDefaultParameters: true
+    ignoreDataClasses: true
+    ignoreAnnotated:
+      - 'Composable'
+  
+  LongMethod:
+    active: true
+    threshold: 80
+    ignoreAnnotated:
+      - 'Composable'
+  
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 20
+    thresholdInClasses: 15
+    thresholdInInterfaces: 11
+    thresholdInObjects: 15
+    thresholdInEnums: 11
+    ignoreOverridden: true
+    ignoreAnnotatedFunctions:
+      - 'Preview'
+      - 'Composable'
+    excludes: '**/test/**'
+  
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+    ignoreSingleWhenExpression: true
+    ignoreSimpleWhenEntries: true
+  
+  NestedBlockDepth:
+    active: true
+    threshold: 5
+
+# ===== スタイルルール =====
+style:
+  active: true
+  
+  WildcardImport:
+    active: true
+    excludeImports:
+      - 'java.util.*'
+      - 'kotlinx.coroutines.*'
+      - 'kotlinx.coroutines.flow.*'
+      - 'androidx.compose.animation.*'
+      - 'androidx.compose.foundation.*'
+      - 'androidx.compose.foundation.layout.*'
+      - 'androidx.compose.material.*'
+      - 'androidx.compose.material3.*'
+      - 'androidx.compose.material.icons.*'
+      - 'androidx.compose.runtime.*'
+      - 'androidx.compose.ui.*'
+      - 'androidx.compose.ui.graphics.*'
+      - 'androidx.compose.ui.unit.*'
+  
+  MagicNumber:
+    active: true
+    excludes:
+      - '**/androidTest/**'
+      - '**/test/**'
+      - '**/*.kts'
+    ignoreNumbers: ['-1', '0', '1', '2', '100', '1000']
+    ignoreHashCodeFunction: true
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreNamedArgument: true
+    ignoreEnums: true
+    ignoreAnnotated:
+      - 'Composable'
+      - 'Preview'
+  
+  UnusedPrivateMember:
+    active: true
+    allowedNames: '(_|ignored|expected|serialVersionUID)'
+    ignoreAnnotated:
+      - 'Preview'
+  
+  UnusedPrivateProperty:
+    active: true
+    allowedNames: '(_|ignored|expected|serialVersionUID)'
+  
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+    excludeCommentStatements: true
+    excludeRawStrings: true
+    excludes: '**/test/**'
+  
+  ReturnCount:
+    active: true
+    max: 4
+    ignoreAnnotated:
+      - 'Composable'
+  
+  # Androidプロジェクトで不要なルールを無効化
+  ForbiddenComment:
+    active: false  # TODOコメントは許可
+
+# ===== フォーマットルール（detekt-formatting依存） =====
+formatting:
+  active: true
+  android: true
+  autoCorrect: true
+  
+  TrailingCommaOnDeclarationSite:
+    active: true
+    useTrailingCommaOnDeclarationSite: true
+  
+  TrailingCommaOnCallSite:
+    active: true
+    useTrailingCommaOnCallSite: true
+  
+  NoWildcardImports:
+    active: false
+  
+  MaximumLineLength:
+    active: false
+  
+  Indentation:
+    active: true
+    indentSize: 4
+  
+  ParameterListWrapping:
+    active: true
+    maxLineLength: 120
+  
+  ArgumentListWrapping:
+    active: true
+    maxLineLength: 120
+
+# ===== 例外処理 =====
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: true
+    allowedExceptionNameRegex: '_|(ignored|expected).*'
+    excludes: '**/test/**'
+
+# ===== 潜在的バグ =====
+potential-bugs:
+  active: true
+  IgnoredReturnValue:
+    active: true
+    ignoreAnnotated:
+      - 'Composable'
+
+# ===== コルーチン =====
+coroutines:
+  active: true
+  GlobalCoroutineUsage:
+    active: true
+  RedundantSuspendModifier:
+    active: true
+  SleepInsteadOfDelay:
+    active: true
+
+# ===== 空ブロック =====
+empty-blocks:
+  active: true
+  EmptyCatchBlock:
+    active: true
+    allowedExceptionNameRegex: '_|(ignored|expected).*'
+  EmptyFunctionBlock:
+    active: true
+    ignoreOverridden: true
+
+# ===== コメント =====
+comments:
+  active: false  # Androidアプリ開発では通常無効化
+
+# detekt.ymlに追加（compose-rulesプラグイン使用時）
+Compose:
+  # 命名規則
+  ComposableNaming:
+    active: true
+
+  CompositionLocalNaming:
+    active: true
+
+  PreviewAnnotationNaming:
+    active: true
+
+  ModifierMissing:
+    active: true
+    checkModifiersForVisibility: only_public
+
+  ModifierWithoutDefault:
+    active: true
+
+  ModifierReused:
+    active: true
+
+  ModifierNotUsedAtRoot:
+    active: true
+
+  ModifierNaming:
+    active: true
+
+  ModifierClickableOrder:
+    active: true
+
+  ModifierComposed:
+    active: true
+
+  RememberMissing:
+    active: true
+
+  MutableParams:
+    active: true
+
+  MutableStateParam:
+    active: true
+
+  MutableStateAutoboxing:
+    active: true
+
+  ViewModelInjection:
+    active: true
+    viewModelFactories: 'hiltViewModel,koinViewModel'
+
+  ViewModelForwarding:
+    active: true
+
+  ContentTrailingLambda:
+    active: true
+
+  ContentEmitterReturningValues:
+    active: true
+
+  MultipleEmitters:
+    active: true
+
+  ComposableParamOrder:
+    active: true
+
+  PreviewPublic:
+    active: true
+
+  Material2:
+    active: false
+
+  UnstableCollections:
+    active: false
