@@ -1,0 +1,112 @@
+name: CompareScreenshotComment
+
+on:
+  workflow_run:
+    workflows:
+      - CompareScreenshot
+    types:
+      - completed
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Download PR number artifact
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          name: pr
+          run_id: ${{ github.event.workflow_run.id }}
+
+      - name: Read PR number
+        id: pr_number
+        run: echo "number=$(cat NR)" >> $GITHUB_OUTPUT
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download diff artifact
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          name: screenshot-diff
+          run_id: ${{ github.event.workflow_run.id }}
+          path: screenshot-diff
+          if_no_artifact_found: ignore
+
+      - name: Push Diff to Companion Branch
+        id: push_diff
+        run: |
+          if [ ! -d "screenshot-diff" ] || [ -z "$(find screenshot-diff -name '*_compare.png' 2>/dev/null)" ]; then
+            echo "No diffs found."
+            echo "has_diff=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "has_diff=true" >> $GITHUB_OUTPUT
+
+          BRANCH_NAME="roborazzi-companion-${{ steps.pr_number.outputs.number }}"
+
+          git config --global user.name "Roborazzi Bot"
+          git config --global user.email "roborazzi-bot@noreply.github.com"
+
+          git checkout --orphan "$BRANCH_NAME"
+          git rm -rf .
+
+          cp -r screenshot-diff/* .
+          git add .
+          git commit -m "Add screenshot diffs for PR #${{ steps.pr_number.outputs.number }}"
+
+          git push origin HEAD:"$BRANCH_NAME" --force
+          
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+      - name: Generate Image List and Comment
+        if: steps.push_diff.outputs.has_diff == 'true'
+        run: |
+          cat << 'EOF' > comment.md
+          ## 📸 Snapshot diff report
+          
+          | File name | Image |
+          |-----------|-------|
+          EOF
+
+          cd screenshot-diff
+          for compare_file in $(find . -name '*_compare.png' | sort); do
+            # ファイル名から基本名を取得（_compare.pngを除く）
+            base_name=$(basename "$compare_file" _compare.png)
+
+            file_path=$(echo "$compare_file" | sed 's|^\./||')
+
+            REPO="${{ github.repository }}"
+            BRANCH="${{ steps.push_diff.outputs.branch_name }}"
+            BASE_URL="https://raw.githubusercontent.com/${REPO}/${BRANCH}"
+          
+            diff_url="${BASE_URL}/${file_path}"
+
+            echo "| \`${base_name}\` | ![](${diff_url}) |" >> ../comment.md
+          done
+          cd ..
+
+          cat << 'EOF' >> comment.md
+          
+          ---
+          
+          💡 **View full resolution:** [Branch: ${{ steps.push_diff.outputs.branch_name }}](https://github.com/${{ github.repository }}/tree/${{ steps.push_diff.outputs.branch_name }})
+          
+          📦 **Download artifacts:** [Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }})
+          EOF
+
+      - name: Post Comment on PR
+        if: steps.push_diff.outputs.has_diff == 'true'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ steps.pr_number.outputs.number }}
+          body-path: comment.md
