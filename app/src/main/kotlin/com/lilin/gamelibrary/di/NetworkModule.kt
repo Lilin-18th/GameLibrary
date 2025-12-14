@@ -1,4 +1,4 @@
-package com.lilin.gamelibrary.core.di
+package com.lilin.gamelibrary.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.lilin.gamelibrary.BuildConfig

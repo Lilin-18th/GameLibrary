@@ -37,7 +37,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -52,6 +52,12 @@ android {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+
+            all { test ->
+                test.useJUnitPlatform {
+                    includeEngines("junit-jupiter", "junit-vintage")
+                }
+            }
         }
     }
 }
@@ -106,7 +112,7 @@ dependencies {
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
     testImplementation(libs.roborazzi.junit.rule)
-    testImplementation(libs.junit.vintage.engine)
+    testRuntimeOnly(libs.junit.vintage.engine)
     // AndroidTest
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
