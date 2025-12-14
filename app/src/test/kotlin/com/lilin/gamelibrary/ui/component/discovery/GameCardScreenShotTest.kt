@@ -1,4 +1,4 @@
-package com.lilin.gamelibrary.ui.component
+package com.lilin.gamelibrary.ui.component.discovery
 
 import android.content.Context
 import androidx.activity.ComponentActivity

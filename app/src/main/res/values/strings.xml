@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GameLibrary</string>
+    <string name="discover_screen_title">見つける</string>
+    <string name="discovery_trending_section_title">トレンドゲーム</string>
+    <string name="discovery_metacritic_section_title">メタスコア殿堂入り</string>
+    <string name="discovery_new_release_section_title">新着ゲーム</string>
 </resources>
