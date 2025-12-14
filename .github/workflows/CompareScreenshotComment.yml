@@ -33,6 +33,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create local.properties
+        run: echo "api_key=dummy_key_for_unit_tests" > local.properties
+
       - name: Download diff artifact
         uses: dawidd6/action-download-artifact@v3
         with:

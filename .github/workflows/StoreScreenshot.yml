@@ -23,6 +23,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Create local.properties
+        run: echo "api_key=dummy_key_for_unit_tests" > local.properties
+
       - name: Record Screenshots
         run: ./gradlew recordRoborazziDebug --stacktrace
 

@@ -33,6 +33,9 @@ jobs:
           workflow_conclusion: success
           if_no_artifact_found: warn
 
+      - name: Create local.properties
+        run: echo "api_key=dummy_key_for_unit_tests" > local.properties
+
       - name: Compare Screenshots
         id: compare
         continue-on-error: true
