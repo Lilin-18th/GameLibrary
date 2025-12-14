@@ -32,7 +32,7 @@ val DefaultRoborazziOptions =
     )
 
 enum class DefaultTestDevices(val description: String, val spec: String) {
-    PHONE("phone", "spec:shape=Normal,width=640,height=360,unit=dp,dpi=480"),
+    PHONE("phone", "spec:shape=Normal,width=411,height=914,unit=dp,dpi=420"),
     FOLDABLE("foldable", "spec:shape=Normal,width=673,height=841,unit=dp,dpi=480"),
     TABLET("tablet", "spec:shape=Normal,width=1280,height=800,unit=dp,dpi=480"),
 }
