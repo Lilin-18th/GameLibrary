@@ -1,0 +1,150 @@
+name: PR Quality Checks
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  unit-test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Create local.properties
+        run: echo "api_key=dummy_key_for_unit_tests" > local.properties
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/build/reports/tests/'
+
+  detekt:
+    name: Static Analysis (Detekt)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      security-events: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Create local.properties
+        run: echo "api_key=dummy_key_for_unit_tests" > local.properties
+
+      - name: Run Detekt
+        run: ./gradlew detekt
+        continue-on-error: true
+
+      - name: Upload SARIF to GitHub Code Scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: app/build/reports/detekt/detekt.sarif
+          category: detekt
+
+      - name: Upload Detekt reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detekt-reports
+          path: |
+            **/build/reports/detekt/
+
+      - name: Comment PR with Detekt summary
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            const sarifPath = 'app/build/reports/detekt/detekt.sarif';
+            
+            if (!fs.existsSync(sarifPath)) {
+              console.log('SARIF file not found');
+              return;
+            }
+            
+            const sarif = JSON.parse(fs.readFileSync(sarifPath, 'utf8'));
+            const results = sarif.runs[0].results || [];
+            
+            const errors = results.filter(r => r.level === 'error').length;
+            const warnings = results.filter(r => r.level === 'warning').length;
+            const notes = results.filter(r => r.level === 'note').length;
+            
+            const icon = errors > 0 ? '❌' : warnings > 0 ? '⚠️' : '✅';
+            const status = errors > 0 ? 'Issues found' : warnings > 0 ? 'Warnings found' : 'No issues found';
+            
+            const body = `## ${icon} Detekt Static Analysis
+            
+            **Status:** ${status}
+            
+            | Severity | Count |
+            |----------|-------|
+            | ❌ Error | ${errors} |
+            | ⚠️ Warning | ${warnings} |
+            | ℹ️ Info | ${notes} |
+            | **Total** | **${results.length}** |
+            
+            ${results.length > 0 ? '📝 **Details:** Check the "Files changed" tab or "Security" tab for inline annotations.' : ''}
+            ${results.length > 0 ? '\n[View detailed HTML report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})' : ''}
+            `;
+            
+            // 既存のコメントを探す
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Detekt Static Analysis')
+            );
+            
+            if (botComment) {
+              // 既存コメントを更新
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+            } else {
+              // 新規コメント作成
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }
