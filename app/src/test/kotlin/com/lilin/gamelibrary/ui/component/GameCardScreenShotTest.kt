@@ -51,14 +51,14 @@ class GameCardScreenShotTest {
     }
 
     @Test
-    fun validImageUrl_showsInterceptedImage() {
+    fun trendingGameCard_ValidImageUrl_ShowsInterceptedImage() {
         composeTestRule.captureMultiDevice("TrendingGameCard_Image") {
             TrendingGameCard(game = GAME_INFO, onClick = {})
         }
     }
 
     @Test
-    fun nullImageUrl_showsPlaceholderOrNoImage() {
+    fun trendingGameCard_NullImageUrl_ShowsPlaceholder() {
         val game = GAME_INFO.copy(
             name = "Kirby's Air Rider",
             releaseDate = "2025-11-20",
@@ -67,6 +67,50 @@ class GameCardScreenShotTest {
         )
         composeTestRule.captureMultiDevice("TrendingGameCard_NullImage") {
             TrendingGameCard(game = game, onClick = {})
+        }
+    }
+
+    @Test
+    fun highRatedGameCard_ValidImageUrl_ShowsInterceptedImage() {
+        composeTestRule.captureMultiDevice("TrendingGameCard_Image") {
+            HighRatedGameCard(game = GAME_INFO, onClick = {})
+        }
+    }
+
+    @Test
+    fun highRatedGameCard_NullImageUrl_ShowsPlaceholder() {
+        val game = GAME_INFO.copy(
+            name = "Kirby's Air Rider",
+            releaseDate = "2025-11-20",
+            imageUrl = null,
+            platforms = listOf("Switch2"),
+        )
+        composeTestRule.captureMultiDevice("TrendingGameCard_NullImage") {
+            HighRatedGameCard(game = game, onClick = {})
+        }
+    }
+
+    @Test
+    fun highRatedGameCard_MetacriticScoreOver90_RatingGold() {
+        val game = GAME_INFO.copy(metacritic = 90)
+        composeTestRule.captureMultiDevice("HighRatedGameCard_Metacritic90") {
+            HighRatedGameCard(game = game, onClick = {})
+        }
+    }
+
+    @Test
+    fun highRatedGameCard_MetacriticScoreOver70_RatingSilver() {
+        val game = GAME_INFO.copy(metacritic = 70)
+        composeTestRule.captureMultiDevice("HighRatedGameCard_Metacritic70") {
+            HighRatedGameCard(game = game, onClick = {})
+        }
+    }
+
+    @Test
+    fun highRatedGameCard_MetacriticScoreOver50_RatingBronze() {
+        val game = GAME_INFO.copy(metacritic = 50)
+        composeTestRule.captureMultiDevice("HighRatedGameCard_Metacritic50") {
+            HighRatedGameCard(game = game, onClick = {})
         }
     }
 
