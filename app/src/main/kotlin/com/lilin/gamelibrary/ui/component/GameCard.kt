@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.FiberNew
 import androidx.compose.material.icons.rounded.Games
+import androidx.compose.material.icons.rounded.LocalFireDepartment
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -228,6 +231,72 @@ fun HighRatedGameCard(
 }
 
 @Composable
+fun NewReleaseGameCard(
+    game: Game,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        onClick = onClick,
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            if (game.imageUrl.isNullOrBlank()) {
+                Image(
+                    painter = painterResource(R.drawable.ic_broken_image),
+                    contentDescription = null,
+                    modifier = Modifier.size(90.dp),
+                    contentScale = ContentScale.Crop,
+                )
+            } else {
+                AsyncImage(
+                    model = game.imageUrl,
+                    contentDescription = game.name,
+                    modifier = Modifier.size(90.dp),
+                    contentScale = ContentScale.Crop,
+                )
+            }
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Text(
+                    text = game.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    fontWeight = FontWeight.Bold,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                game.releaseDate?.let {
+                    LabeledIcon(
+                        content = it,
+                        imageVector = Icons.Rounded.CalendarMonth,
+                        contentDescription = "Release Year",
+                    )
+                }
+
+                game.platforms?.let {
+                    LabeledIcon(
+                        content = formatPlatformData(it),
+                        imageVector = Icons.Rounded.Games,
+                        contentDescription = "Platform",
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun LabeledIcon(
     content: String,
     imageVector: ImageVector,
@@ -325,6 +394,27 @@ private fun HighRatedGameCardPreview() {
         platforms = listOf("Switch", "PS5", "PC"),
     )
     HighRatedGameCard(
+        game = game,
+        onClick = {},
+    )
+}
+
+@Preview
+@Composable
+private fun NewReleaseGameCardPreview() {
+    val game = Game(
+        id = 1,
+        name = "League of Legends",
+        imageUrl = null,
+        releaseDate = "2028-12-31",
+        rating = 4.5,
+        ratingsCount = 1523,
+        metacritic = 80,
+        isTba = false,
+        addedCount = 20000,
+        platforms = listOf("Switch", "PS5", "PC"),
+    )
+    NewReleaseGameCard(
         game = game,
         onClick = {},
     )
