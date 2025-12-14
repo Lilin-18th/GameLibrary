@@ -72,7 +72,7 @@ class GameCardScreenShotTest {
 
     @Test
     fun highRatedGameCard_ValidImageUrl_ShowsInterceptedImage() {
-        composeTestRule.captureMultiDevice("TrendingGameCard_Image") {
+        composeTestRule.captureMultiDevice("HighRatedGameCard_Image") {
             HighRatedGameCard(game = GAME_INFO, onClick = {})
         }
     }
@@ -85,7 +85,7 @@ class GameCardScreenShotTest {
             imageUrl = null,
             platforms = listOf("Switch2"),
         )
-        composeTestRule.captureMultiDevice("TrendingGameCard_NullImage") {
+        composeTestRule.captureMultiDevice("HighRatedGameCard_NullImage") {
             HighRatedGameCard(game = game, onClick = {})
         }
     }
