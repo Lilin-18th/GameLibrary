@@ -114,6 +114,26 @@ class GameCardScreenShotTest {
         }
     }
 
+    @Test
+    fun newReleaseGameCard_ValidImageUrl_ShowsInterceptedImage() {
+        composeTestRule.captureMultiDevice("NewReleaseGameCard_Image") {
+            NewReleaseGameCard(game = GAME_INFO, onClick = {})
+        }
+    }
+
+    @Test
+    fun newReleaseGameCard_NullImageUrl_ShowsPlaceholder() {
+        val game = GAME_INFO.copy(
+            name = "Kirby's Air Rider",
+            releaseDate = "2025-11-20",
+            imageUrl = null,
+            platforms = listOf("Switch2"),
+        )
+        composeTestRule.captureMultiDevice("NewReleaseGameCard_NullImage") {
+            NewReleaseGameCard(game = game, onClick = {})
+        }
+    }
+
     private companion object {
         val GAME_INFO = Game(
             id = 1,
