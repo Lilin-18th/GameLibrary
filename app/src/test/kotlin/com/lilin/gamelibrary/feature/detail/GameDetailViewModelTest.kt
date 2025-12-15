@@ -12,7 +12,6 @@ import com.lilin.gamelibrary.domain.usecase.GetGameDetailUseCase
 import com.lilin.gamelibrary.domain.usecase.favorite.AddFavoriteGameUseCase
 import com.lilin.gamelibrary.domain.usecase.favorite.IsFavoriteGameUseCase
 import com.lilin.gamelibrary.domain.usecase.favorite.RemoveFavoriteGameUseCase
-import io.mockk.MockKMatcherScope
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
@@ -30,7 +29,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import kotlin.to
 
 @ExperimentalCoroutinesApi
 class GameDetailViewModelTest {

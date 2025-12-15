@@ -155,7 +155,7 @@ class GameDetailSectionCardsScreenShotTest {
                     "Fantasy",
                     "Singleplayer",
                     "Story Rich",
-                    "Third Person"
+                    "Third Person",
                 ),
             )
         }
@@ -179,13 +179,13 @@ class GameDetailSectionCardsScreenShotTest {
                     contentDescription = "Cyberpunk 2077",
                     metacriticScore = 86,
                 )
-                
+
                 GameBasicInfo(
                     gameName = "Cyberpunk 2077",
                     developers = listOf("CD Projekt RED"),
                     releaseYear = "2020",
                 )
-                
+
                 GameInfoCard(
                     rating = 4.1,
                     ratingsCount = 8765,
@@ -195,11 +195,11 @@ class GameDetailSectionCardsScreenShotTest {
                     esrbRating = "M",
                     modifier = Modifier.padding(vertical = 8.dp),
                 )
-                
+
                 GameDescription(
                     description = "Cyberpunk 2077 is an open-world, action-adventure story set in Night City, a megalopolis obsessed with power, glamour and body modification.",
                 )
-                
+
                 GameTags(
                     tags = listOf("Action", "RPG", "Sci-fi", "Open World", "Cyberpunk"),
                 )
