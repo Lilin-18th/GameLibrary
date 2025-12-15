@@ -1,5 +1,6 @@
 package com.lilin.gamelibrary.feature.detail
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -219,4 +220,19 @@ private fun GameDetailErrorContent(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@VisibleForTesting
+@Composable
+internal fun GameDetailScreenSample(
+    uiState: GameDetailUiState,
+    modifier: Modifier = Modifier,
+) {
+    GameDetailScreen(
+        uiState = uiState,
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+        onRetry = {},
+        modifier = modifier,
+    )
 }
