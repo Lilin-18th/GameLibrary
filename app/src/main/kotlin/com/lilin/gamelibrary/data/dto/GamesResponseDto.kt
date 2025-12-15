@@ -17,6 +17,42 @@ data class GamesResponse(
 )
 
 @Serializable
+data class GameDetailResponse(
+    @SerialName("id")
+    val id: Int,
+    @SerialName("name")
+    val name: String,
+    @SerialName("background_image")
+    val backgroundImage: String? = null,
+    @SerialName("released")
+    val released: String? = null,
+    @SerialName("metacritic")
+    val metacritic: Int? = null,
+    @SerialName("rating")
+    val rating: Double = 0.0,
+    @SerialName("ratings_count")
+    val ratingsCount: Int = 0,
+    @SerialName("platforms")
+    val platforms: List<PlatformInfoDto> = emptyList(),
+    @SerialName("genres")
+    val genres: List<GenreDto> = emptyList(),
+    @SerialName("description_raw")
+    val descriptionRaw: String? = null,
+    @SerialName("short_screenshots")
+    val shortScreenshots: List<ScreenshotDto> = emptyList(),
+    @SerialName("developers")
+    val developers: List<DeveloperDto> = emptyList(),
+    @SerialName("publishers")
+    val publishers: List<PublisherDto> = emptyList(),
+    @SerialName("esrb_rating")
+    val esrbRating: EsrbRatingDto? = null,
+    @SerialName("playtime")
+    val playtime: Int = 0,
+    @SerialName("tags")
+    val tags: List<TagDto> = emptyList(),
+)
+
+@Serializable
 data class GameDto(
     @SerialName("id")
     val id: Int,
@@ -112,4 +148,50 @@ data class PlatformDto(
     val name: String,
     @SerialName("slug")
     val slug: String,
+)
+
+@Serializable
+data class GenreDto(
+    @SerialName("id")
+    val id: Int,
+    @SerialName("name")
+    val name: String,
+    @SerialName("slug")
+    val slug: String,
+)
+
+@Serializable
+data class ScreenshotDto(
+    @SerialName("id")
+    val id: Int,
+    @SerialName("image")
+    val image: String,
+)
+
+@Serializable
+data class DeveloperDto(
+    @SerialName("id")
+    val id: Int,
+    @SerialName("name")
+    val name: String,
+)
+
+@Serializable
+data class PublisherDto(
+    @SerialName("id")
+    val id: Int,
+    @SerialName("name")
+    val name: String,
+)
+
+@Serializable
+data class TagDto(
+    @SerialName("id")
+    val id: Int,
+    @SerialName("name")
+    val name: String,
+    @SerialName("slug")
+    val slug: String,
+    @SerialName("language")
+    val language: String = "eng",
 )
