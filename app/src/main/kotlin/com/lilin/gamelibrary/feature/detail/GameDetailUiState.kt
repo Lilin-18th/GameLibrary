@@ -7,6 +7,7 @@ sealed interface GameDetailUiState {
 
     data class Success(
         val gameDetail: GameDetail,
+        val isFavorite: Boolean,
     ) : GameDetailUiState
 
     data class Error(
