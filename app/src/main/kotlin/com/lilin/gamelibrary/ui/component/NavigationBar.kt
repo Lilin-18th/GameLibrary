@@ -15,8 +15,6 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
 import com.lilin.gamelibrary.navigation.TopLevelDestination
-import kotlin.collections.forEach
-import kotlin.sequences.any
 
 @Composable
 fun GameLibraryNavigationBar(

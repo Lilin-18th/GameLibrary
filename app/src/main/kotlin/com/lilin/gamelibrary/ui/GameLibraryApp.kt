@@ -12,6 +12,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.lilin.gamelibrary.feature.detail.GameDetailScreen
+import com.lilin.gamelibrary.feature.detail.navigateDetailScreen
 import com.lilin.gamelibrary.feature.discovery.DiscoveryScreen
 import com.lilin.gamelibrary.feature.discovery.navigateDiscoveryScreen
 import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
@@ -64,9 +66,11 @@ private fun AppNavHost(
         modifier = modifier,
     ) {
         navigateDiscoveryScreen(
-            onNavigateToDetail = {
-                // TODO: DetailScreen
+            onNavigateToDetail = { gameId ->
+                navController.navigate(GameDetailScreen(gameId))
             },
         )
+
+        navigateDetailScreen(onBackClick = navController::popBackStack)
     }
 }
