@@ -39,6 +39,18 @@ class GameRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSearchGameResults(
+        page: Int,
+        pageSize: Int,
+        searchText: String,
+    ): Result<List<Game>> {
+        val search = searchText.ifBlank { null }
+
+        return runCatching {
+            fetchGames(page, pageSize, null, null, search, "relevance,-metacritic")
+        }
+    }
+
     private suspend fun fetchGames(
         page: Int,
         pageSize: Int,
