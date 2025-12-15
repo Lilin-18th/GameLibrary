@@ -1,5 +1,6 @@
 package com.lilin.gamelibrary.di
 
+import com.lilin.gamelibrary.data.repository.FavoriteGameRepository
 import com.lilin.gamelibrary.domain.repository.GameDetailRepository
 import com.lilin.gamelibrary.domain.repository.GameRepository
 import com.lilin.gamelibrary.domain.usecase.GetGameDetailUseCase
@@ -7,6 +8,10 @@ import com.lilin.gamelibrary.domain.usecase.GetGameSearchUseCase
 import com.lilin.gamelibrary.domain.usecase.GetHighMetacriticScoreGamesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetNewReleasesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetTrendingGamesUseCase
+import com.lilin.gamelibrary.domain.usecase.favorite.AddFavoriteGameUseCase
+import com.lilin.gamelibrary.domain.usecase.favorite.GetFavoriteGamesUseCase
+import com.lilin.gamelibrary.domain.usecase.favorite.IsFavoriteGameUseCase
+import com.lilin.gamelibrary.domain.usecase.favorite.RemoveFavoriteGameUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,5 +50,29 @@ object GameUseCaseModule {
     @ViewModelScoped
     fun provideGetGameSearchUseCase(repository: GameRepository): GetGameSearchUseCase {
         return GetGameSearchUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetFavoriteGamesUseCase(repository: FavoriteGameRepository): GetFavoriteGamesUseCase {
+        return GetFavoriteGamesUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideAddFavoriteGameUseCase(repository: FavoriteGameRepository): AddFavoriteGameUseCase {
+        return AddFavoriteGameUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideRemoveFavoriteGameUseCase(repository: FavoriteGameRepository): RemoveFavoriteGameUseCase {
+        return RemoveFavoriteGameUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideIsFavoriteGameUseCase(repository: FavoriteGameRepository): IsFavoriteGameUseCase {
+        return IsFavoriteGameUseCase(repository)
     }
 }
