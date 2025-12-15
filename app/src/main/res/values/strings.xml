@@ -5,4 +5,10 @@
     <string name="discovery_trending_section_title">トレンドゲーム</string>
     <string name="discovery_metacritic_section_title">メタスコア殿堂入り</string>
     <string name="discovery_new_release_section_title">新着ゲーム</string>
+    <string name="detail_label_genre">ジャンル</string>
+    <string name="detail_label_release_date">発売日</string>
+    <string name="detail_label_esrb_rating">ESRB</string>
+    <string name="detail_label_description">説明</string>
+    <string name="detail_description_button_collapse">折りたたむ ▲</string>
+    <string name="detail_description_button_expand">もっと見る ▼</string>
 </resources>
