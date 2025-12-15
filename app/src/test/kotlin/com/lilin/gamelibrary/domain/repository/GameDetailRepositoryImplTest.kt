@@ -24,7 +24,7 @@ class GameDetailRepositoryImplTest {
     }
 
     @Test
-    fun `getGameDetail success response`() = runTest {
+    fun getGameDetail_withValidGameId_returnsSuccessResponse() = runTest {
         val mockResponse = createGameDetailResponse()
 
         coEvery {
@@ -38,7 +38,7 @@ class GameDetailRepositoryImplTest {
     }
 
     @Test
-    fun `getGameDetail api response error`() = runTest {
+    fun getGameDetail_withApiError_returnsFailureResponse() = runTest {
         coEvery {
             apiServices.getGameDetail(any())
         } returns Response.error(404, "Not Found".toResponseBody())
@@ -51,7 +51,7 @@ class GameDetailRepositoryImplTest {
     }
 
     @Test
-    fun `getGameDetail throws exception`() = runTest {
+    fun getGameDetail_withNetworkException_returnsFailureResponse() = runTest {
         coEvery {
             apiServices.getGameDetail(any())
         } throws kotlin.Exception("Network Error")

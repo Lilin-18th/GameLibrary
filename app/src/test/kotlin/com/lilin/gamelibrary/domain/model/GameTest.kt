@@ -10,7 +10,7 @@ import java.util.stream.Stream
 class GameTest {
     @ParameterizedTest
     @MethodSource("provideReleaseDatesAndYears")
-    fun test_releaseYear(
+    fun releaseYear_withVariousDateFormats_returnsExpectedYear(
         inputDate: String?,
         expectedYear: Int?,
     ) {
@@ -24,7 +24,7 @@ class GameTest {
 
     @ParameterizedTest
     @MethodSource("provideAddedCountsAndPopular")
-    fun test_isPopular(
+    fun isPopular_withVariousAddedCounts_returnsExpectedResult(
         inputAddedCount: Int?,
         expectedIsPopular: Boolean,
     ) {

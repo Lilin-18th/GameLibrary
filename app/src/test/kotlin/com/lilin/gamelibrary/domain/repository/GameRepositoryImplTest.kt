@@ -28,7 +28,7 @@ class GameRepositoryImplTest {
 
     // getTrendingGames テスト
     @Test
-    fun test_getTrendingGames_success() = runTest {
+    fun getTrendingGames_withValidParameters_returnsSuccessResult() = runTest {
         val mockResponse = createMockGamesResponse(3)
 
         coEvery {
@@ -58,7 +58,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun test_getTrendingGames_success_body_null() = runTest {
+    fun getTrendingGames_withNullBody_returnsEmptyList() = runTest {
         coEvery {
             apiServices.getGames(
                 page = any(),
@@ -76,7 +76,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun test_getTrendingGames_api_response_error() = runTest {
+    fun getTrendingGames_withApiError_returnsFailureResult() = runTest {
         coEvery {
             apiServices.getGames(
                 page = any(),
@@ -94,7 +94,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun test_getTrendingGames_throws_exception() = runTest {
+    fun getTrendingGames_withNetworkException_returnsFailureResult() = runTest {
         coEvery {
             apiServices.getGames(
                 page = any(),
@@ -113,7 +113,7 @@ class GameRepositoryImplTest {
 
     // getHighRatedGames テスト
     @Test
-    fun test_getHighRatedGames_success() = runTest {
+    fun getHighMetacriticScoreGames_withValidParameters_returnsSuccessResult() = runTest {
         val mockResponse = createMockGamesResponse(5)
 
         coEvery {
@@ -143,7 +143,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun test_getHighRatedGames_success_body_null() = runTest {
+    fun getHighMetacriticScoreGames_withNullBody_returnsEmptyList() = runTest {
         coEvery {
             apiServices.getGames(
                 page = any(),
@@ -161,7 +161,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun test_getHighRatedGames_api_response_error() = runTest {
+    fun getHighMetacriticScoreGames_withApiError_returnsFailureResult() = runTest {
         coEvery {
             apiServices.getGames(
                 page = any(),
@@ -179,7 +179,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun test_getHighRatedGames_throws_exception() = runTest {
+    fun getHighMetacriticScoreGames_withTimeoutException_returnsFailureResult() = runTest {
         coEvery {
             apiServices.getGames(
                 page = any(),
@@ -198,7 +198,7 @@ class GameRepositoryImplTest {
 
     // getNewReleases テスト
     @Test
-    fun test_getNewReleases_success() = runTest {
+    fun getNewReleases_withValidParameters_returnsSuccessResult() = runTest {
         val mockResponse = createMockGamesResponse(4)
 
         coEvery {
@@ -228,7 +228,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun test_getNewReleases_success_body_null() = runTest {
+    fun getNewReleases_withNullBody_returnsEmptyList() = runTest {
         coEvery {
             apiServices.getGames(
                 page = any(),
@@ -246,7 +246,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun test_getNewReleases_api_response_error() = runTest {
+    fun getNewReleases_withApiError_returnsFailureResult() = runTest {
         coEvery {
             apiServices.getGames(
                 page = any(),
@@ -264,7 +264,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun test_getNewReleases_throws_exception() = runTest {
+    fun getNewReleases_withConnectionException_returnsFailureResult() = runTest {
         coEvery {
             apiServices.getGames(
                 page = any(),
@@ -282,7 +282,7 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun `given successful api response when getSearchGameResults is called then return success result`() =
+    fun getSearchGameResults_withValidQuery_returnsSuccessResult() =
         runTest {
             val mockResponse = createMockGamesResponse(7)
 
@@ -313,7 +313,7 @@ class GameRepositoryImplTest {
         }
 
     @Test
-    fun `given successful api response when getSearchGameResults is called then return null body`() =
+    fun getSearchGameResults_withNullBody_returnsEmptyList() =
         runTest {
             coEvery {
                 apiServices.getGames(
@@ -333,7 +333,7 @@ class GameRepositoryImplTest {
         }
 
     @Test
-    fun `given api response error when getSearchGameResults is called then return failure result`() =
+    fun getSearchGameResults_withApiError_returnsFailureResult() =
         runTest {
             coEvery {
                 apiServices.getGames(
@@ -353,7 +353,7 @@ class GameRepositoryImplTest {
         }
 
     @Test
-    fun `given repository throw exception when getSearchGameResults is called then return exception`() =
+    fun getSearchGameResults_withNetworkException_returnsFailureResult() =
         runTest {
             coEvery {
                 apiServices.getGames(

@@ -21,7 +21,7 @@ class IsFavoriteGameUseCaseTest {
     }
 
     @Test
-    fun `invoke with favorite game returns true`() = runTest {
+    fun invoke_withFavoriteGame_returnsTrue() = runTest {
         val gameId = 1
 
         coEvery {
@@ -35,7 +35,7 @@ class IsFavoriteGameUseCaseTest {
     }
 
     @Test
-    fun `invoke with non-favorite game returns false`() = runTest {
+    fun invoke_withNonFavoriteGame_returnsFalse() = runTest {
         val gameId = 2
 
         coEvery {

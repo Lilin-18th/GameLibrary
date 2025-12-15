@@ -22,7 +22,7 @@ class GetNewReleasesUseCaseTest {
     }
 
     @Test
-    fun test_GetNewReleasesUseCase_success() = runTest {
+    fun invoke_withValidParameters_returnsSuccessResult() = runTest {
         val mockGames = listOf(
             createMockGame(1),
             createMockGame(2),
@@ -42,7 +42,7 @@ class GetNewReleasesUseCaseTest {
     }
 
     @Test
-    fun test_GetNewReleasesUseCase_failure() = runTest {
+    fun invoke_withNetworkError_returnsFailureResult() = runTest {
         val exception = Exception("Network Error")
         coEvery {
             gameRepository.getNewReleases(any(), any())

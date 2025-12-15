@@ -22,7 +22,7 @@ class GetTrendingGamesUseCaseTest {
     }
 
     @Test
-    fun test_GetTrendingGamesUseCase_success() = runTest {
+    fun invoke_withValidParameters_returnsSuccessResult() = runTest {
         val mockGames = listOf(
             createMockGame(1),
             createMockGame(2),
@@ -43,7 +43,7 @@ class GetTrendingGamesUseCaseTest {
     }
 
     @Test
-    fun test_GetTrendingGamesUseCase_failer() = runTest {
+    fun invoke_withTimeoutError_returnsFailureResult() = runTest {
         val exception = Exception("Timeout")
         coEvery {
             gameRepository.getTrendingGames(any(), any())

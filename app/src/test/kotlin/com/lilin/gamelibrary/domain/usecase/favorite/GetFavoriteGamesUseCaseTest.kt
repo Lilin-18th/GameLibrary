@@ -23,7 +23,7 @@ class GetFavoriteGamesUseCaseTest {
     }
 
     @Test
-    fun `invoke with NEWEST_FIRST returns correct flow`() = runTest {
+    fun invoke_withNewestFirstOrder_returnsCorrectFlow() = runTest {
         val order = SortOrder.NEWEST_FIRST
         val games = newestGames()
 
@@ -38,7 +38,7 @@ class GetFavoriteGamesUseCaseTest {
     }
 
     @Test
-    fun `invoke with OLDEST_FIRST returns correct flow`() = runTest {
+    fun invoke_withOldestFirstOrder_returnsCorrectFlow() = runTest {
         val order = SortOrder.OLDEST_FIRST
         val games = oldestGames()
 
@@ -53,7 +53,7 @@ class GetFavoriteGamesUseCaseTest {
     }
 
     @Test
-    fun `invoke with empty list returns empty flow`() = runTest {
+    fun invoke_withEmptyList_returnsEmptyFlow() = runTest {
         val order = SortOrder.NEWEST_FIRST
         val emptyGames = emptyList<FavoriteGame>()
 
