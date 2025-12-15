@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">GameLibrary</string>
     <string name="navigation_label_home">Home</string>
+    <string name="navigation_label_search">Search</string>
     <string name="discover_screen_title">見つける</string>
     <string name="discovery_trending_section_title">トレンドゲーム</string>
     <string name="discovery_metacritic_section_title">メタスコア殿堂入り</string>
@@ -11,4 +12,6 @@
     <string name="detail_label_description">説明</string>
     <string name="detail_description_button_collapse">折りたたむ ▲</string>
     <string name="detail_description_button_expand">もっと見る ▼</string>
+    <string name="search_screen_title">さがす</string>
+    <string name="search_field_hit">探したいゲームタイトルを入力してください</string>
 </resources>
