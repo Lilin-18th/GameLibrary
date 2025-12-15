@@ -72,8 +72,13 @@ fun GameDetailScreen(
                 },
                 scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick,
-                onStarClick = { /*TODO*/ },
+                onStarClick = { viewModel.toggleFavorite() },
                 onShareClick = { /*TODO*/ },
+                isFavorite = if (uiState is GameDetailUiState.Success) {
+                    (uiState as GameDetailUiState.Success).isFavorite
+                } else {
+                    false
+                },
             )
         },
         contentWindowInsets = WindowInsets.navigationBars,

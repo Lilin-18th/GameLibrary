@@ -3,6 +3,7 @@ package com.lilin.gamelibrary.ui.component
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +49,7 @@ fun GameDetailTopAppBar(
     onShareClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier = Modifier,
+    isFavorite: Boolean = false,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -70,7 +72,11 @@ fun GameDetailTopAppBar(
         actions = {
             IconButton(onClick = onStarClick) {
                 Icon(
-                    imageVector = Icons.Rounded.StarOutline,
+                    imageVector = if (isFavorite) {
+                        Icons.Rounded.Star
+                    } else {
+                        Icons.Rounded.StarOutline
+                    },
                     contentDescription = null,
                 )
             }
