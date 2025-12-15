@@ -1,8 +1,10 @@
 package com.lilin.gamelibrary.data.api
 
+import com.lilin.gamelibrary.data.dto.GameDetailResponse
 import com.lilin.gamelibrary.data.dto.GamesResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiServices {
@@ -14,4 +16,9 @@ interface ApiServices {
         @Query("dates") dates: String?,
         @Query("ordering") ordering: String,
     ): Response<GamesResponse>
+
+    @GET("games/{id}")
+    suspend fun getGameDetail(
+        @Path("id") id: Int,
+    ): Response<GameDetailResponse>
 }
