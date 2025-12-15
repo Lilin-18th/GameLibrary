@@ -281,6 +281,97 @@ class GameRepositoryImplTest {
         assertEquals("Connection refused", response.exceptionOrNull()?.message)
     }
 
+    @Test
+    fun `given successful api response when getSearchGameResults is called then return success result`() =
+        runTest {
+            val mockResponse = createMockGamesResponse(7)
+
+            coEvery {
+                apiServices.getGames(
+                    page = 1,
+                    pageSize = 10,
+                    dates = any(),
+                    search = "test",
+                    ordering = "relevance,-metacritic",
+                )
+            } returns Response.success(mockResponse)
+
+            val response =
+                gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
+
+            assertTrue(response.isSuccess)
+            assertEquals(7, response.getOrNull()?.size)
+            coVerify(exactly = 1) {
+                apiServices.getGames(
+                    page = 1,
+                    pageSize = 10,
+                    dates = any(),
+                    search = "test",
+                    ordering = "relevance,-metacritic",
+                )
+            }
+        }
+
+    @Test
+    fun `given successful api response when getSearchGameResults is called then return null body`() =
+        runTest {
+            coEvery {
+                apiServices.getGames(
+                    page = 1,
+                    pageSize = 10,
+                    dates = any(),
+                    search = "test",
+                    ordering = "relevance,-metacritic",
+                )
+            } returns Response.success(null)
+
+            val response =
+                gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
+
+            assertTrue(response.isSuccess)
+            assertTrue(response.getOrNull()?.isEmpty() == true)
+        }
+
+    @Test
+    fun `given api response error when getSearchGameResults is called then return failure result`() =
+        runTest {
+            coEvery {
+                apiServices.getGames(
+                    page = any(),
+                    pageSize = any(),
+                    dates = any(),
+                    search = "test",
+                    ordering = "relevance,-metacritic",
+                )
+            } returns Response.error(404, "Not Found".toResponseBody())
+
+            val response =
+                gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
+
+            assertTrue(response.isFailure)
+            assertTrue(response.exceptionOrNull()?.message?.contains("API Error: 404") == true)
+        }
+
+    @Test
+    fun `given repository throw exception when getSearchGameResults is called then return exception`() =
+        runTest {
+            coEvery {
+                apiServices.getGames(
+                    page = any(),
+                    pageSize = any(),
+                    dates = any(),
+                    search = "test",
+                    ordering = "relevance,-metacritic",
+                )
+            } throws Exception("Network Error")
+
+            val response =
+                gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
+
+            assertTrue(response.isFailure)
+            assertEquals("Network Error", response.exceptionOrNull()?.message)
+        }
+
     private fun createMockGamesResponse(count: Int): GamesResponse {
         val games = (1..count).map { createMockGameDto(it) }
         return GamesResponse(

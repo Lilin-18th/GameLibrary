@@ -38,4 +38,18 @@ interface GameRepository {
         page: Int,
         pageSize: Int,
     ): Result<List<Game>>
+
+    /**
+     * ゲームの検索
+     *
+     * @param page ページ番号（1から始まる）
+     * @param pageSize 1ページあたりの件数
+     * @param searchText 検索キーワード
+     * @return 成功時はゲームのリスト、失敗時はエラー情報を含むResult
+     */
+    suspend fun getSearchGameResults(
+        page: Int,
+        pageSize: Int,
+        searchText: String,
+    ): Result<List<Game>>
 }
