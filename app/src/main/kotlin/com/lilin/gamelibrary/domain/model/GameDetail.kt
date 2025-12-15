@@ -1,7 +1,5 @@
 package com.lilin.gamelibrary.domain.model
 
-import kotlin.text.format
-
 data class GameDetail(
     val id: Int,
     val name: String,

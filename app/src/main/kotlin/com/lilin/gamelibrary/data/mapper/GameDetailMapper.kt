@@ -2,7 +2,6 @@ package com.lilin.gamelibrary.data.mapper
 
 import com.lilin.gamelibrary.data.dto.GameDetailResponse
 import com.lilin.gamelibrary.domain.model.GameDetail
-import kotlin.collections.map
 
 fun GameDetailResponse.toDomain(): GameDetail {
     return GameDetail(

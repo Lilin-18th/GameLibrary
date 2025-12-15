@@ -7,7 +7,6 @@ import com.lilin.gamelibrary.domain.model.Publisher
 import com.lilin.gamelibrary.domain.model.Screenshot
 import com.lilin.gamelibrary.domain.model.Tag
 import com.lilin.gamelibrary.domain.repository.GameDetailRepository
-import io.mockk.MockKMatcherScope
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
