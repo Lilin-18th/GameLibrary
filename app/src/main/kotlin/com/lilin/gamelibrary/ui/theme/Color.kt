@@ -17,3 +17,15 @@ val RatingGold = Color(0xFFFFB300)
 val RatingSilver = Color(0xFFC0C0C0)
 val RatingBronze = Color(0xFFCD7F32)
 val RatingEmpty = Color(0xFFE0E0E0)
+
+// Trending Section Colors
+val TrendingGradientStart = Color(0xFFFF6B6B)
+val TrendingGradientEnd = Color(0xFFFF8E53)
+
+// High Rated Section Colors
+val HighRatedGradientStart = Color(0xFFFFD700)
+val HighRatedGradientEnd = Color(0xFFFFA500)
+
+// New Release Section Colors
+val NewReleaseGradientStart = Color(0xFF26C6DA)
+val NewReleaseGradientEnd = Color(0xFF00BFA5)
