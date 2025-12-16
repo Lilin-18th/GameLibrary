@@ -29,7 +29,7 @@ fun TrendingGamesSection(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
-            items(games) { game ->
+            items(items = games, key = { it.id }) { game ->
                 TrendingGameCard(
                     game = game,
                     onClick = { onGameClick(game) },
@@ -54,7 +54,7 @@ fun HighRatedGamesSection(
         )
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
             items(items = games, key = { it.id }) { game ->
@@ -85,7 +85,7 @@ fun NewReleaseGamesSection(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
-            items(games) { game ->
+            items(items = games, key = { it.id }) { game ->
                 NewReleaseGameCard(
                     game = game,
                     onClick = { onGameClick(game) },
