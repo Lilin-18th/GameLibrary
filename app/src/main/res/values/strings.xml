@@ -12,6 +12,7 @@
     <string name="discover_section_new_release_sub_title">最新リリース</string>
     <string name="discover_trend_card_badge">TREND</string>
     <string name="discover_high_rated_card_badge">HIGH RATED</string>
+    <string name="discover_new_release_card_badge">NEW</string>
     <string name="detail_label_genre">ジャンル</string>
     <string name="detail_label_release_date">発売日</string>
     <string name="detail_label_esrb_rating">ESRB</string>

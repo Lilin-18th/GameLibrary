@@ -3,8 +3,6 @@ package com.lilin.gamelibrary.ui.component.discovery
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -83,13 +81,11 @@ fun NewReleaseGamesSection(
             modifier = Modifier,
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
-            games.forEach { game ->
+            items(games) { game ->
                 NewReleaseGameCard(
                     game = game,
                     onClick = { onGameClick(game) },

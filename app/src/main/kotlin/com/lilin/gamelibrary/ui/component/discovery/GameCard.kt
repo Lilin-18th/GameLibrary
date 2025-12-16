@@ -40,6 +40,8 @@ import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.ui.component.LabeledIcon
 import com.lilin.gamelibrary.ui.theme.HighRatedGradientEnd
 import com.lilin.gamelibrary.ui.theme.HighRatedGradientStart
+import com.lilin.gamelibrary.ui.theme.NewReleaseGradientEnd
+import com.lilin.gamelibrary.ui.theme.NewReleaseGradientStart
 import com.lilin.gamelibrary.ui.theme.RatingBronze
 import com.lilin.gamelibrary.ui.theme.RatingEmpty
 import com.lilin.gamelibrary.ui.theme.RatingGold
@@ -150,6 +152,48 @@ fun HighRatedGameCard(
 }
 
 @Composable
+fun NewReleaseGameCard(
+    game: Game,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        onClick = onClick,
+        modifier = modifier
+            .width(200.dp)
+            .height(220.dp)
+            .shadow(
+                elevation = 16.dp,
+                shape = RoundedCornerShape(16.dp),
+                ambientColor = NewReleaseGradientStart.copy(alpha = 0.3f),
+                spotColor = NewReleaseGradientStart.copy(alpha = 0.3f),
+            ),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(0.dp),
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            GameImageWithOverlay(game.imageUrl)
+
+            NewReleaseBadge(
+                badgeText = stringResource(R.string.discover_new_release_card_badge),
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(12.dp),
+            )
+
+            NewReleaseGameInfoOverlay(
+                name = game.name,
+                releaseDate = game.releaseDate,
+                platforms = game.platforms,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(horizontal = 12.dp, vertical = 16.dp),
+            )
+        }
+    }
+}
+
+@Composable
 private fun GameImageWithOverlay(
     imageUrl: String?,
     modifier: Modifier = Modifier,
@@ -233,6 +277,35 @@ private fun HighRatedBadge(
                     colors = listOf(
                         HighRatedGradientStart,
                         HighRatedGradientEnd,
+                    ),
+                ),
+                shape = RoundedCornerShape(6.dp),
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = badgeText,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+        )
+    }
+}
+
+@Composable
+private fun NewReleaseBadge(
+    badgeText: String,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .width(52.dp)
+            .height(28.dp)
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        NewReleaseGradientStart,
+                        NewReleaseGradientEnd,
                     ),
                 ),
                 shape = RoundedCornerShape(6.dp),
@@ -364,66 +437,42 @@ private fun HighRatedGameInfoOverlay(
 }
 
 @Composable
-fun NewReleaseGameCard(
-    game: Game,
-    onClick: () -> Unit,
+private fun NewReleaseGameInfoOverlay(
+    name: String,
+    releaseDate: String?,
+    platforms: List<String>?,
     modifier: Modifier = Modifier,
 ) {
-    Card(
-        onClick = onClick,
+    Column(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        Text(
+            text = name,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            if (game.imageUrl.isNullOrBlank()) {
-                Image(
-                    painter = painterResource(R.drawable.ic_broken_image),
-                    contentDescription = null,
-                    modifier = Modifier.size(90.dp),
-                    contentScale = ContentScale.Crop,
-                )
-            } else {
-                AsyncImage(
-                    model = game.imageUrl,
-                    contentDescription = game.name,
-                    modifier = Modifier.size(90.dp),
-                    contentScale = ContentScale.Crop,
+            releaseDate?.let { date ->
+                LabeledIcon(
+                    content = date,
+                    imageVector = Icons.Rounded.CalendarMonth,
+                    contentDescription = "Release Date",
                 )
             }
 
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Text(
-                    text = game.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis,
+            platforms?.let { platforms ->
+                LabeledIcon(
+                    content = platforms.joinToString("・"),
+                    imageVector = Icons.Rounded.Games,
+                    contentDescription = "Platform",
                 )
-
-                game.releaseDate?.let {
-                    LabeledIcon(
-                        content = it,
-                        imageVector = Icons.Rounded.CalendarMonth,
-                        contentDescription = "Release Year",
-                    )
-                }
-
-                game.platforms?.let {
-                    LabeledIcon(
-                        content = it.joinToString("・"),
-                        imageVector = Icons.Rounded.Games,
-                        contentDescription = "Platform",
-                    )
-                }
             }
         }
     }
