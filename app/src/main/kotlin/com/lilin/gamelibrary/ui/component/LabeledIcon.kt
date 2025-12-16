@@ -19,6 +19,7 @@ fun LabeledIcon(
     imageVector: ImageVector,
     contentDescription: String,
     modifier: Modifier = Modifier,
+    tint: Color = MaterialTheme.colorScheme.primary,
 ) {
     Row(
         modifier = modifier,
@@ -28,14 +29,14 @@ fun LabeledIcon(
         Icon(
             imageVector = imageVector,
             contentDescription = contentDescription,
-            tint = Color.White.copy(alpha = 0.9f),
+            tint = tint,
             modifier = Modifier.size(16.dp),
         )
 
         Text(
             text = content,
             style = MaterialTheme.typography.bodyMedium,
-            color = Color.White.copy(alpha = 0.9f),
+            color = tint,
         )
     }
 }

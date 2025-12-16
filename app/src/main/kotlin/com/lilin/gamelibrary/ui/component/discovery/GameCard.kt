@@ -211,7 +211,7 @@ private fun GameImageWithOverlay(
         } else {
             AsyncImage(
                 model = imageUrl,
-                contentDescription = "Game Image",
+                contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
             )
@@ -379,12 +379,14 @@ private fun TrendingGameInfoOverlay(
                 content = rating,
                 imageVector = Icons.Rounded.Star,
                 contentDescription = "Rating",
+                tint = Color.White.copy(alpha = 0.9f),
             )
             releaseYear?.let { year ->
                 LabeledIcon(
                     content = year,
                     imageVector = Icons.Rounded.CalendarMonth,
                     contentDescription = "Release Year",
+                    tint = Color.White.copy(alpha = 0.9f),
                 )
             }
         }
@@ -424,12 +426,14 @@ private fun HighRatedGameInfoOverlay(
                 },
                 imageVector = Icons.Rounded.Star,
                 contentDescription = "Rating",
+                tint = Color.White.copy(alpha = 0.9f),
             )
             platforms?.let { platforms ->
                 LabeledIcon(
                     content = platforms.joinToString("・"),
                     imageVector = Icons.Rounded.Games,
                     contentDescription = "Platform",
+                    tint = Color.White.copy(alpha = 0.9f),
                 )
             }
         }
@@ -464,6 +468,7 @@ private fun NewReleaseGameInfoOverlay(
                     content = date,
                     imageVector = Icons.Rounded.CalendarMonth,
                     contentDescription = "Release Date",
+                    tint = Color.White.copy(alpha = 0.9f),
                 )
             }
 
@@ -472,6 +477,7 @@ private fun NewReleaseGameInfoOverlay(
                     content = platforms.joinToString("・"),
                     imageVector = Icons.Rounded.Games,
                     contentDescription = "Platform",
+                    tint = Color.White.copy(alpha = 0.9f),
                 )
             }
         }
@@ -534,7 +540,7 @@ private fun HighRatedGameCardPreview() {
         releaseDate = "2018-12-31",
         rating = 4.5,
         ratingsCount = 1523,
-        metacritic = 80,
+        metacritic = 90,
         isTba = false,
         addedCount = 5000,
         platforms = listOf("Switch", "PS5", "PC"),
