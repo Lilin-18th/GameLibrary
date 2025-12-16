@@ -9,9 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -20,6 +19,7 @@ fun LabeledIcon(
     imageVector: ImageVector,
     contentDescription: String,
     modifier: Modifier = Modifier,
+    tint: Color = MaterialTheme.colorScheme.primary,
 ) {
     Row(
         modifier = modifier,
@@ -29,17 +29,14 @@ fun LabeledIcon(
         Icon(
             imageVector = imageVector,
             contentDescription = contentDescription,
+            tint = tint,
             modifier = Modifier.size(16.dp),
-            tint = MaterialTheme.colorScheme.primary,
         )
 
         Text(
             text = content,
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = tint,
         )
     }
 }
