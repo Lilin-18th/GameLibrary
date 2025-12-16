@@ -120,6 +120,7 @@ dependencies {
     testImplementation(libs.roborazzi.junit.rule)
     testImplementation(libs.coil.test)
     testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.turbine)
     // AndroidTest
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

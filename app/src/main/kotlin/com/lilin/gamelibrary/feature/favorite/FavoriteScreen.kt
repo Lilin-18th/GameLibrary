@@ -1,5 +1,6 @@
 package com.lilin.gamelibrary.feature.favorite
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -206,4 +207,20 @@ private fun FavoriteScreen(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@VisibleForTesting
+@Composable
+internal fun FavoriteScreenSample(
+    uiState: FavoriteUiState,
+    modifier: Modifier = Modifier,
+) {
+    FavoriteScreen(
+        uiState = uiState,
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+        navigateToDetail = {},
+        onClickDelete = {},
+        modifier = modifier,
+    )
 }

@@ -1,5 +1,6 @@
 package com.lilin.gamelibrary.feature.search
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -165,6 +166,25 @@ private fun SearchScreen(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@VisibleForTesting
+@Composable
+internal fun SearchScreenSample(
+    query: String,
+    searchUiState: SearchUiState,
+    modifier: Modifier = Modifier,
+) {
+    SearchScreen(
+        query = query,
+        searchUiState = searchUiState,
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+        onQueryChange = {},
+        onSearch = {},
+        navigateToDetail = {},
+        modifier = modifier,
+    )
 }
 
 @Preview

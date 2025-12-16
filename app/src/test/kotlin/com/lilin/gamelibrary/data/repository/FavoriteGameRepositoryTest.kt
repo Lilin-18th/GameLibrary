@@ -32,7 +32,7 @@ class FavoriteGameRepositoryTest {
     }
 
     @Test
-    fun `getFavoriteGames with NEWEST_FIRST returns correctly mapped games`() = runTest {
+    fun getFavoriteGames_withNewestFirstOrder_returnsCorrectlyMappedGames() = runTest {
         val entities = listOf(
             createMockFavoriteGameEntity(1, "Game 1", 1700000000L),
             createMockFavoriteGameEntity(2, "Game 2", 1700000001L),
@@ -49,7 +49,7 @@ class FavoriteGameRepositoryTest {
     }
 
     @Test
-    fun `getFavoriteGames with OLDEST_FIRST returns correctly mapped games`() = runTest {
+    fun getFavoriteGames_withOldestFirstOrder_returnsCorrectlyMappedGames() = runTest {
         val entities = listOf(
             createMockFavoriteGameEntity(3, "Game 3", 1700000000L),
             createMockFavoriteGameEntity(4, "Game 4", 1700000001L),
@@ -66,7 +66,7 @@ class FavoriteGameRepositoryTest {
     }
 
     @Test
-    fun `getFavoriteGames returns empty list when dao returns empty list`() = runTest {
+    fun getFavoriteGames_whenDaoReturnsEmptyList_returnsEmptyList() = runTest {
         every { favoriteGameDao.getFavoriteGamesNewestFirst() } returns flowOf(emptyList())
 
         val result = favoriteGameRepository.getFavoriteGames(SortOrder.NEWEST_FIRST).toList()
@@ -77,7 +77,7 @@ class FavoriteGameRepositoryTest {
     }
 
     @Test
-    fun `isFavorite returns true when game is favorite`() = runTest {
+    fun isFavorite_whenGameIsFavorite_returnsTrue() = runTest {
         val gameId = 123
         every { favoriteGameDao.isFavorite(gameId) } returns flowOf(true)
 
@@ -89,7 +89,7 @@ class FavoriteGameRepositoryTest {
     }
 
     @Test
-    fun `isFavorite returns false when game is not favorite`() = runTest {
+    fun isFavorite_whenGameIsNotFavorite_returnsFalse() = runTest {
         val gameId = 456
         every { favoriteGameDao.isFavorite(gameId) } returns flowOf(false)
 
@@ -101,7 +101,7 @@ class FavoriteGameRepositoryTest {
     }
 
     @Test
-    fun `insertFavoriteGame calls dao with correct entity`() = runTest {
+    fun insertFavoriteGame_withValidGame_callsDaoWithCorrectEntity() = runTest {
         val favoriteGame = createMockFavoriteGame()
         coEvery { favoriteGameDao.insertFavoriteGame(any()) } returns Unit
 
@@ -117,7 +117,7 @@ class FavoriteGameRepositoryTest {
     }
 
     @Test
-    fun `deleteFavoriteGame calls dao with correct gameId`() = runTest {
+    fun deleteFavoriteGame_withValidGameId_callsDaoWithCorrectGameId() = runTest {
         val gameId = 789
         coEvery { favoriteGameDao.deleteFavoriteGame(gameId) } returns Unit
 

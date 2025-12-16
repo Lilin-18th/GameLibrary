@@ -19,7 +19,7 @@ class RemoveFavoriteGameUseCaseTest {
     }
 
     @Test
-    fun `invoke calls repository deleteFavoriteGame`() = runTest {
+    fun invoke_withValidGameId_callsRepositoryDeleteFavoriteGame() = runTest {
         val gameId = 1
 
         coJustRun { repository.deleteFavoriteGame(gameId) }

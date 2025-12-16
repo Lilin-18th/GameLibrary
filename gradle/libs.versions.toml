@@ -29,6 +29,7 @@ junit5VintageEngine = "5.11.2"
 testCore = "1.7.0"
 kotlinCoroutinesTest = "1.10.2"
 mockk = "1.14.0"
+turbine = "1.2.1"
 # Lint
 detekt = "1.23.8"
 detektCompose = "0.4.28"
@@ -84,6 +85,7 @@ junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", vers
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutinesTest" }
 coil-test = { group = "io.coil-kt.coil3", name = "coil-test", version.ref = "coil" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 # Lint
 detekt-compose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "detektCompose" }

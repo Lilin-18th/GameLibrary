@@ -22,7 +22,7 @@ class GetGameSearchUseCaseTest {
     }
 
     @Test
-    fun `given successful response, when getGameSearch is called, then return a list of games`() =
+    fun invoke_withValidQuery_returnsListOfGames() =
         runTest {
             val mockResponse = listOf(
                 createMockGame(1),
@@ -45,7 +45,7 @@ class GetGameSearchUseCaseTest {
         }
 
     @Test
-    fun `given failure response, when getGameSearch is called, then return a failure result`() =
+    fun invoke_withApiError_returnsFailureResult() =
         runTest {
             val exception = kotlin.Exception("Api Error")
             coEvery {

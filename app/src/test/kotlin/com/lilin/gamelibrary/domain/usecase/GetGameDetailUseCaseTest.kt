@@ -27,7 +27,7 @@ class GetGameDetailUseCaseTest {
     }
 
     @Test
-    fun test_GetGameDetailUseCase_success() = runTest {
+    fun invoke_withValidGameId_returnsSuccessResult() = runTest {
         val gameId = 1
         val expectedGameDetail = createMockGameDetail(gameId)
 
@@ -46,7 +46,7 @@ class GetGameDetailUseCaseTest {
     }
 
     @Test
-    fun test_GetGameDetailUseCase_failure() = runTest {
+    fun invoke_withNetworkError_returnsFailureResult() = runTest {
         val exception = kotlin.Exception("Network error")
 
         coEvery {
@@ -63,7 +63,7 @@ class GetGameDetailUseCaseTest {
     }
 
     @Test
-    fun test_GetGameDetailUseCase_calls_repository_with_correct_game_id() = runTest {
+    fun invoke_withSpecificGameId_callsRepositoryWithCorrectId() = runTest {
         val gameId = 12345
         val expectedGameDetail = createMockGameDetail(gameId)
 
@@ -80,7 +80,7 @@ class GetGameDetailUseCaseTest {
     }
 
     @Test
-    fun test_GetGameDetailUseCase_handles_repository_failure_gracefully() = runTest {
+    fun invoke_withRepositoryFailure_handlesGracefully() = runTest {
         val repositoryError = kotlin.RuntimeException("Database connection failed")
 
         coEvery {
@@ -98,7 +98,7 @@ class GetGameDetailUseCaseTest {
     }
 
     @Test
-    fun test_GetGameDetailUseCase_with_zero_game_id() = runTest {
+    fun invoke_withZeroGameId_returnsSuccessResult() = runTest {
         val expectedGameDetail = createMockGameDetail(0)
 
         coEvery {
@@ -114,7 +114,7 @@ class GetGameDetailUseCaseTest {
     }
 
     @Test
-    fun test_GetGameDetailUseCase_with_negative_game_id() = runTest {
+    fun invoke_withNegativeGameId_returnsSuccessResult() = runTest {
         val expectedGameDetail = createMockGameDetail(-1)
 
         coEvery {

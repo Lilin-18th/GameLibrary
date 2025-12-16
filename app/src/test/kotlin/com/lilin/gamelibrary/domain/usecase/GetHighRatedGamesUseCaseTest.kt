@@ -22,7 +22,7 @@ class GetHighRatedGamesUseCaseTest {
     }
 
     @Test
-    fun test_GetHighMetacriticScoreGamesUseCase_success() = runTest {
+    fun invoke_withValidParameters_returnsSuccessResult() = runTest {
         val mockGames = listOf(createMockGame(1), createMockGame(2))
         coEvery {
             gameRepository.getHighMetacriticScoreGames(any(), any())
@@ -38,7 +38,7 @@ class GetHighRatedGamesUseCaseTest {
     }
 
     @Test
-    fun test_GetHighMetacriticScoreGamesUseCase_failure() = runTest {
+    fun invoke_withApiError_returnsFailureResult() = runTest {
         val exception = Exception("Api Error")
         coEvery {
             gameRepository.getHighMetacriticScoreGames(any(), any())

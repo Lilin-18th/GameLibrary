@@ -21,7 +21,7 @@ class AddFavoriteGameUseCaseTest {
     }
 
     @Test
-    fun `invoke calls repository insertFavoriteGame`() = runTest {
+    fun invoke_withValidGame_callsRepositoryInsertFavoriteGame() = runTest {
         val game = FavoriteGame(
             id = 1,
             name = "Test Game",
@@ -40,7 +40,7 @@ class AddFavoriteGameUseCaseTest {
     }
 
     @Test
-    fun `invoke with null backgroundImage calls repository insertFavoriteGame`() = runTest {
+    fun invoke_withNullBackgroundImage_callsRepositoryInsertFavoriteGame() = runTest {
         val game = FavoriteGame(
             id = 2,
             name = "Test Game 2",
