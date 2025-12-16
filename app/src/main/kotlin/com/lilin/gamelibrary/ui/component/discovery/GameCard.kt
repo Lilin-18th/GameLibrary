@@ -19,7 +19,6 @@ import androidx.compose.material.icons.rounded.Games
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +38,8 @@ import coil3.compose.AsyncImage
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.ui.component.LabeledIcon
+import com.lilin.gamelibrary.ui.theme.HighRatedGradientEnd
+import com.lilin.gamelibrary.ui.theme.HighRatedGradientStart
 import com.lilin.gamelibrary.ui.theme.RatingBronze
 import com.lilin.gamelibrary.ui.theme.RatingEmpty
 import com.lilin.gamelibrary.ui.theme.RatingGold
@@ -86,6 +87,60 @@ fun TrendingGameCard(
                 name = game.name,
                 rating = game.displayRating,
                 releaseYear = game.releaseYear?.toString(),
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(horizontal = 12.dp, vertical = 16.dp),
+            )
+        }
+    }
+}
+
+@Composable
+fun HighRatedGameCard(
+    game: Game,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        onClick = onClick,
+        modifier = modifier
+            .size(200.dp, 220.dp)
+            .shadow(
+                elevation = 16.dp,
+                shape = RoundedCornerShape(16.dp),
+                ambientColor = HighRatedGradientStart.copy(alpha = 0.3f),
+                spotColor = HighRatedGradientStart.copy(alpha = 0.3f),
+            ),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(0.dp),
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            GameImageWithOverlay(
+                imageUrl = game.imageUrl,
+                modifier = Modifier.fillMaxSize(),
+            )
+
+            HighRatedBadge(
+                badgeText = stringResource(R.string.discover_high_rated_card_badge),
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(12.dp),
+            )
+
+            MetacriticBadge(
+                metaScore = game.metacriticScore,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(12.dp),
+            )
+
+            HighRatedGameInfoOverlay(
+                name = game.name,
+                rating = game.displayRating,
+                ratingsCount = game.ratingsCount,
+                platforms = game.platforms,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(horizontal = 12.dp, vertical = 16.dp),
@@ -165,6 +220,65 @@ private fun TrendingBadge(
 }
 
 @Composable
+private fun HighRatedBadge(
+    badgeText: String,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .width(72.dp)
+            .height(28.dp)
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        HighRatedGradientStart,
+                        HighRatedGradientEnd,
+                    ),
+                ),
+                shape = RoundedCornerShape(6.dp),
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = badgeText,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+        )
+    }
+}
+
+@Composable
+private fun MetacriticBadge(
+    metaScore: Int,
+    modifier: Modifier = Modifier,
+) {
+    val badgeColor = getMetacriticColor(metaScore)
+
+    Box(
+        modifier = modifier
+            .size(56.dp, 56.dp)
+            .background(
+                color = badgeColor,
+                shape = RoundedCornerShape(12.dp),
+            )
+            .shadow(
+                elevation = 8.dp,
+                ambientColor = badgeColor.copy(alpha = 0.3f),
+                spotColor = badgeColor.copy(alpha = 0.3f),
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = metaScore.toString(),
+            color = Color.White,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.ExtraBold,
+        )
+    }
+}
+
+@Composable
 private fun TrendingGameInfoOverlay(
     name: String,
     rating: String,
@@ -205,102 +319,45 @@ private fun TrendingGameInfoOverlay(
 }
 
 @Composable
-fun HighRatedGameCard(
-    game: Game,
-    onClick: () -> Unit,
+private fun HighRatedGameInfoOverlay(
+    name: String,
+    rating: String,
+    ratingsCount: Int?,
+    platforms: List<String>?,
     modifier: Modifier = Modifier,
 ) {
-    Card(
-        onClick = onClick,
-        modifier = modifier.width(168.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(160.dp),
-            ) {
-                if (game.imageUrl.isNullOrBlank()) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_broken_image),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                    )
-                } else {
-                    AsyncImage(
-                        model = game.imageUrl,
-                        contentDescription = game.name,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
+        Text(
+            text = name,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
 
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp)
-                        .size(40.dp)
-                        .background(
-                            color = getMetacriticColor(game.metacriticScore),
-                            shape = RoundedCornerShape(8.dp),
-                        ),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = game.metacriticScore.toString(),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-            ) {
-                Text(
-                    text = game.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis,
-                )
-
-                HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                )
-
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            LabeledIcon(
+                content = buildString {
+                    append(rating)
+                    ratingsCount?.let { count ->
+                        append(" (${formatCount(count)})")
+                    }
+                },
+                imageVector = Icons.Rounded.Star,
+                contentDescription = "Rating",
+            )
+            platforms?.let { platforms ->
                 LabeledIcon(
-                    content = buildString {
-                        append(game.displayRating)
-                        game.ratingsCount?.let { count ->
-                            append(" (${formatCount(count)})")
-                        }
-                    },
-                    imageVector = Icons.Rounded.Star,
-                    contentDescription = "Rating",
+                    content = platforms.joinToString("・"),
+                    imageVector = Icons.Rounded.Games,
+                    contentDescription = "Platform",
                 )
-
-                game.platforms?.let {
-                    LabeledIcon(
-                        content = formatPlatformData(it),
-                        imageVector = Icons.Rounded.Games,
-                        contentDescription = "Platform",
-                    )
-                }
-
-                game.releaseYear?.let {
-                    LabeledIcon(
-                        content = it.toString(),
-                        imageVector = Icons.Rounded.CalendarMonth,
-                        contentDescription = "Release Year",
-                    )
-                }
             }
         }
     }
@@ -395,13 +452,6 @@ fun formatCount(count: Int): String {
 
         else -> count.toString()
     }
-}
-
-/**
- * 対象プラットフォームをフォーマット
- */
-fun formatPlatformData(platforms: List<String>): String {
-    return platforms.joinToString("・")
 }
 
 @Preview
