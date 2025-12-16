@@ -18,10 +18,28 @@ class GameSectionHeaderScreenShotTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun gameSectionHeader_ScreenShot() {
-        composeTestRule.captureMultiDevice("GameSectionHeader") {
+    fun gameSectionHeader_Trending() {
+        composeTestRule.captureMultiDevice("GameSectionHeader_Trend") {
             GameSectionHeader(
-                title = "Popular",
+                sectionType = SectionType.TRENDING
+            )
+        }
+    }
+
+    @Test
+    fun gameSectionHeader_HighRated() {
+        composeTestRule.captureMultiDevice("GameSectionHeader_HighRate") {
+            GameSectionHeader(
+                sectionType = SectionType.HIGH_RATED
+            )
+        }
+    }
+
+    @Test
+    fun gameSectionHeader_NewRelease() {
+        composeTestRule.captureMultiDevice("GameSectionHeader_NewRelease") {
+            GameSectionHeader(
+                sectionType = SectionType.NEW_RELEASE
             )
         }
     }
