@@ -21,7 +21,7 @@ class GameSectionHeaderScreenShotTest {
     fun gameSectionHeader_Trending() {
         composeTestRule.captureMultiDevice("GameSectionHeader_Trend") {
             GameSectionHeader(
-                sectionType = SectionType.TRENDING
+                sectionType = SectionType.TRENDING,
             )
         }
     }
@@ -30,7 +30,7 @@ class GameSectionHeaderScreenShotTest {
     fun gameSectionHeader_HighRated() {
         composeTestRule.captureMultiDevice("GameSectionHeader_HighRate") {
             GameSectionHeader(
-                sectionType = SectionType.HIGH_RATED
+                sectionType = SectionType.HIGH_RATED,
             )
         }
     }
@@ -39,7 +39,7 @@ class GameSectionHeaderScreenShotTest {
     fun gameSectionHeader_NewRelease() {
         composeTestRule.captureMultiDevice("GameSectionHeader_NewRelease") {
             GameSectionHeader(
-                sectionType = SectionType.NEW_RELEASE
+                sectionType = SectionType.NEW_RELEASE,
             )
         }
     }
