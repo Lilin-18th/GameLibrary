@@ -18,15 +18,19 @@ import com.lilin.gamelibrary.ui.component.toErrorMessage
 
 @Composable
 fun TrendingGamesSection(
+    isSuccessState: Boolean,
     games: List<Game>,
     onGameClick: (Game) -> Unit,
+    onReload: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
     ) {
         GameSectionHeader(
+            isSuccessState = isSuccessState,
             sectionType = SectionType.TRENDING,
+            onReload = onReload,
             modifier = Modifier,
         )
 
@@ -40,21 +44,34 @@ fun TrendingGamesSection(
                     onClick = { onGameClick(game) },
                 )
             }
+
+            item {
+                SeeMoreCard(
+                    sectionType = SectionType.TRENDING,
+                    onClick = {
+                        // TODO: See More
+                    },
+                )
+            }
         }
     }
 }
 
 @Composable
 fun HighRatedGamesSection(
+    isSuccessState: Boolean,
     games: List<Game>,
     onGameClick: (Game) -> Unit,
+    onReload: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
     ) {
         GameSectionHeader(
+            isSuccessState = isSuccessState,
             sectionType = SectionType.HIGH_RATED,
+            onReload = onReload,
             modifier = Modifier,
         )
 
@@ -68,21 +85,34 @@ fun HighRatedGamesSection(
                     onClick = { onGameClick(game) },
                 )
             }
+
+            item {
+                SeeMoreCard(
+                    sectionType = SectionType.HIGH_RATED,
+                    onClick = {
+                        // TODO: See More
+                    },
+                )
+            }
         }
     }
 }
 
 @Composable
 fun NewReleaseGamesSection(
+    isSuccessState: Boolean,
     games: List<Game>,
     onGameClick: (Game) -> Unit,
+    onReload: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
     ) {
         GameSectionHeader(
+            isSuccessState = isSuccessState,
             sectionType = SectionType.NEW_RELEASE,
+            onReload = onReload,
             modifier = Modifier,
         )
 
@@ -94,6 +124,15 @@ fun NewReleaseGamesSection(
                 NewReleaseGameCard(
                     game = game,
                     onClick = { onGameClick(game) },
+                )
+            }
+
+            item {
+                SeeMoreCard(
+                    sectionType = SectionType.NEW_RELEASE,
+                    onClick = {
+                        // TODO: See More
+                    },
                 )
             }
         }
@@ -110,7 +149,9 @@ fun LoadingGamesSection(
         modifier = modifier,
     ) {
         GameSectionHeader(
+            isSuccessState = false,
             sectionType = sectionType,
+            onReload = { /** no-op **/ },
             modifier = Modifier,
         )
 
@@ -136,7 +177,9 @@ fun ErrorSection(
 ) {
     Column(modifier = modifier) {
         GameSectionHeader(
+            isSuccessState = false,
             sectionType = sectionType,
+            onReload = { /** no-op **/ },
             modifier = Modifier,
         )
 
@@ -181,8 +224,10 @@ private fun TrendingGamesSectionPreview() {
     )
 
     TrendingGamesSection(
+        isSuccessState = true,
         games = sampleGames,
         onGameClick = {},
+        onReload = {},
     )
 }
 
@@ -217,8 +262,10 @@ private fun HighMetacriticGamesSectionPreview() {
     )
 
     HighRatedGamesSection(
+        isSuccessState = true,
         games = sampleGames,
         onGameClick = {},
+        onReload = {},
     )
 }
 
@@ -253,7 +300,9 @@ private fun NewReleaseGamesSectionPreview() {
     )
 
     NewReleaseGamesSection(
+        isSuccessState = true,
         games = sampleGames,
         onGameClick = {},
+        onReload = {},
     )
 }

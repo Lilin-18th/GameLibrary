@@ -117,6 +117,9 @@ fun DiscoveryScreen(
             scrollBehavior = scrollBehavior,
             onNavigateToDetail = onNavigateToDetail,
             loadingAllSection = viewModel::loadAllSections,
+            onReloadTrendSection = viewModel::reloadTrendingGames,
+            onReloadHighRatedSection = viewModel::reloadHighlyRatedGames,
+            onReloadNewReleaseSection = viewModel::reloadNewReleaseGame,
             onRetryTrendSection = viewModel::retryTrendingGames,
             onRetryHighRatedSection = viewModel::retryHighlyRatedGames,
             onRetryNewReleaseSection = viewModel::retryNewReleases,
@@ -135,6 +138,9 @@ private fun DiscoveryScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     onNavigateToDetail: (Int) -> Unit,
     loadingAllSection: () -> Unit,
+    onReloadTrendSection: () -> Unit,
+    onReloadHighRatedSection: () -> Unit,
+    onReloadNewReleaseSection: () -> Unit,
     onRetryTrendSection: () -> Unit,
     onRetryHighRatedSection: () -> Unit,
     onRetryNewReleaseSection: () -> Unit,
@@ -170,6 +176,7 @@ private fun DiscoveryScreen(
                         uiState = trendingState,
                         onNavigateToDetail = onNavigateToDetail,
                         onRetry = onRetryTrendSection,
+                        onReload = onReloadTrendSection,
                         modifier = Modifier,
                     )
                 }
@@ -178,8 +185,9 @@ private fun DiscoveryScreen(
                     HighRatedGames(
                         uiState = highlyRatedState,
                         onNavigateToDetail = onNavigateToDetail,
-                        modifier = Modifier,
                         onRetry = onRetryHighRatedSection,
+                        onReload = onReloadHighRatedSection,
+                        modifier = Modifier,
                     )
                 }
 
@@ -187,8 +195,9 @@ private fun DiscoveryScreen(
                     NewReleaseGames(
                         uiState = newReleasesState,
                         onNavigateToDetail = onNavigateToDetail,
-                        modifier = Modifier,
                         onRetry = onRetryNewReleaseSection,
+                        onReload = onReloadNewReleaseSection,
+                        modifier = Modifier,
                     )
                 }
             }
@@ -273,16 +282,19 @@ private fun FullScreenError(
 private fun TrendingGames(
     uiState: DiscoveryUiState,
     onNavigateToDetail: (Int) -> Unit,
+    onReload: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
         is DiscoveryUiState.Success -> {
             TrendingGamesSection(
+                isSuccessState = true,
                 games = uiState.data,
                 onGameClick = { game ->
                     onNavigateToDetail(game.id)
                 },
+                onReload = onReload,
                 modifier = modifier,
             )
         }
@@ -314,7 +326,16 @@ private fun TrendingGames(
             )
         }
 
-        is DiscoveryUiState.ReLoadingError -> {}
+        is DiscoveryUiState.ReLoadingError -> {
+            ErrorSection(
+                sectionType = SectionType.TRENDING,
+                sectionColor = TrendingGradientStart,
+                sectionIcon = Icons.Filled.Whatshot,
+                throwable = uiState.throwable,
+                onRetry = onRetry,
+                modifier = modifier,
+            )
+        }
         is DiscoveryUiState.InitialLoading -> {
             // no-op
         }
@@ -325,16 +346,19 @@ private fun TrendingGames(
 private fun HighRatedGames(
     uiState: DiscoveryUiState,
     onNavigateToDetail: (Int) -> Unit,
+    onReload: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
         is DiscoveryUiState.Success -> {
             HighRatedGamesSection(
+                isSuccessState = true,
                 games = uiState.data,
                 onGameClick = { game ->
                     onNavigateToDetail(game.id)
                 },
+                onReload = onReload,
                 modifier = modifier,
             )
         }
@@ -366,7 +390,16 @@ private fun HighRatedGames(
             )
         }
 
-        is DiscoveryUiState.ReLoadingError -> {}
+        is DiscoveryUiState.ReLoadingError -> {
+            ErrorSection(
+                sectionType = SectionType.HIGH_RATED,
+                sectionColor = HighRatedGradientStart,
+                sectionIcon = Icons.Filled.Star,
+                throwable = uiState.throwable,
+                onRetry = onRetry,
+                modifier = modifier,
+            )
+        }
         is DiscoveryUiState.InitialLoading -> {
             // no-op
         }
@@ -377,16 +410,19 @@ private fun HighRatedGames(
 private fun NewReleaseGames(
     uiState: DiscoveryUiState,
     onNavigateToDetail: (Int) -> Unit,
+    onReload: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
         is DiscoveryUiState.Success -> {
             NewReleaseGamesSection(
+                isSuccessState = true,
                 games = uiState.data,
                 onGameClick = { game ->
                     onNavigateToDetail(game.id)
                 },
+                onReload = onReload,
                 modifier = modifier,
             )
         }
@@ -409,16 +445,25 @@ private fun NewReleaseGames(
 
         is DiscoveryUiState.Error -> {
             ErrorSection(
-                sectionType = SectionType.HIGH_RATED,
+                sectionType = SectionType.NEW_RELEASE,
                 sectionColor = NewReleaseGradientStart,
-                Icons.Filled.NewReleases,
+                sectionIcon = Icons.Filled.NewReleases,
                 throwable = uiState.throwable,
                 onRetry = onRetry,
                 modifier = modifier,
             )
         }
 
-        is DiscoveryUiState.ReLoadingError -> {}
+        is DiscoveryUiState.ReLoadingError -> {
+            ErrorSection(
+                sectionType = SectionType.NEW_RELEASE,
+                sectionColor = NewReleaseGradientStart,
+                sectionIcon = Icons.Filled.NewReleases,
+                throwable = uiState.throwable,
+                onRetry = onRetry,
+                modifier = modifier,
+            )
+        }
         is DiscoveryUiState.InitialLoading -> {
             // no-op
         }
@@ -442,6 +487,9 @@ internal fun DiscoveryScreenSample(
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         onNavigateToDetail = {},
         loadingAllSection = {},
+        onReloadTrendSection = {},
+        onReloadHighRatedSection = {},
+        onReloadNewReleaseSection = {},
         onRetryTrendSection = {},
         onRetryHighRatedSection = {},
         onRetryNewReleaseSection = {},

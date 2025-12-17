@@ -15,6 +15,7 @@
     <string name="discover_section_trending_sub_title">今話題のゲーム</string>
     <string name="discover_section_high_rated_sub_title">高評価タイトル</string>
     <string name="discover_section_new_release_sub_title">最新リリース</string>
+    <string name="discover_game_card_see_more">もっと見る</string>
     <string name="discover_trend_card_badge">TREND</string>
     <string name="discover_high_rated_card_badge">HIGH RATED</string>
     <string name="discover_new_release_card_badge">NEW</string>
