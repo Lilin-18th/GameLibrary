@@ -3,6 +3,7 @@ package com.lilin.gamelibrary.feature.discovery
 import com.lilin.gamelibrary.domain.model.Game
 
 sealed interface DiscoveryUiState {
+    data object InitialLoading : DiscoveryUiState
     data object Loading : DiscoveryUiState
 
     data class Success(
