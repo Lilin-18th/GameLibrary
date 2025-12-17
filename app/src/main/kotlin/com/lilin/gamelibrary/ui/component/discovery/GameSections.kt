@@ -101,6 +101,31 @@ fun NewReleaseGamesSection(
 }
 
 @Composable
+fun LoadingGamesSection(
+    sectionType: SectionType,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        GameSectionHeader(
+            sectionType = sectionType,
+            modifier = Modifier,
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+        ) {
+            items(4) {
+                content()
+            }
+        }
+    }
+}
+
+@Composable
 fun ErrorSection(
     sectionType: SectionType,
     sectionColor: Color,

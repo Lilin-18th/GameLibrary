@@ -51,8 +51,10 @@ import com.lilin.gamelibrary.ui.component.DiscoveryTopBar
 import com.lilin.gamelibrary.ui.component.GameLibraryNavigationBar
 import com.lilin.gamelibrary.ui.component.discovery.ErrorSection
 import com.lilin.gamelibrary.ui.component.discovery.HighRatedGamesSection
+import com.lilin.gamelibrary.ui.component.discovery.LoadingGamesSection
 import com.lilin.gamelibrary.ui.component.discovery.NewReleaseGamesSection
 import com.lilin.gamelibrary.ui.component.discovery.SectionType
+import com.lilin.gamelibrary.ui.component.discovery.TrendingGameCardLoading
 import com.lilin.gamelibrary.ui.component.discovery.TrendingGamesSection
 import com.lilin.gamelibrary.ui.theme.HighRatedGradientStart
 import com.lilin.gamelibrary.ui.theme.NewReleaseGradientStart
@@ -285,7 +287,22 @@ private fun TrendingGames(
             )
         }
 
-        is DiscoveryUiState.Loading -> {}
+        is DiscoveryUiState.Loading -> {
+            LoadingGamesSection(
+                sectionType = SectionType.TRENDING,
+                modifier = modifier,
+                content = { TrendingGameCardLoading() },
+            )
+        }
+
+        is DiscoveryUiState.ReLoading -> {
+            LoadingGamesSection(
+                sectionType = SectionType.TRENDING,
+                modifier = modifier,
+                content = { TrendingGameCardLoading() },
+            )
+        }
+
         is DiscoveryUiState.Error -> {
             ErrorSection(
                 sectionType = SectionType.TRENDING,
@@ -297,9 +314,10 @@ private fun TrendingGames(
             )
         }
 
-        is DiscoveryUiState.ReLoading -> {}
         is DiscoveryUiState.ReLoadingError -> {}
-        is DiscoveryUiState.InitialLoading -> {}
+        is DiscoveryUiState.InitialLoading -> {
+            // no-op
+        }
     }
 }
 
@@ -321,7 +339,22 @@ private fun HighRatedGames(
             )
         }
 
-        is DiscoveryUiState.Loading -> {}
+        is DiscoveryUiState.Loading -> {
+            LoadingGamesSection(
+                sectionType = SectionType.HIGH_RATED,
+                modifier = modifier,
+                content = { TrendingGameCardLoading() },
+            )
+        }
+
+        is DiscoveryUiState.ReLoading -> {
+            LoadingGamesSection(
+                sectionType = SectionType.HIGH_RATED,
+                modifier = modifier,
+                content = { TrendingGameCardLoading() },
+            )
+        }
+
         is DiscoveryUiState.Error -> {
             ErrorSection(
                 sectionType = SectionType.HIGH_RATED,
@@ -333,9 +366,10 @@ private fun HighRatedGames(
             )
         }
 
-        is DiscoveryUiState.ReLoading -> {}
         is DiscoveryUiState.ReLoadingError -> {}
-        is DiscoveryUiState.InitialLoading -> {}
+        is DiscoveryUiState.InitialLoading -> {
+            // no-op
+        }
     }
 }
 
@@ -357,7 +391,22 @@ private fun NewReleaseGames(
             )
         }
 
-        is DiscoveryUiState.Loading -> {}
+        is DiscoveryUiState.Loading -> {
+            LoadingGamesSection(
+                sectionType = SectionType.NEW_RELEASE,
+                modifier = modifier,
+                content = { TrendingGameCardLoading() },
+            )
+        }
+
+        is DiscoveryUiState.ReLoading -> {
+            LoadingGamesSection(
+                sectionType = SectionType.NEW_RELEASE,
+                modifier = modifier,
+                content = { TrendingGameCardLoading() },
+            )
+        }
+
         is DiscoveryUiState.Error -> {
             ErrorSection(
                 sectionType = SectionType.HIGH_RATED,
@@ -369,9 +418,10 @@ private fun NewReleaseGames(
             )
         }
 
-        is DiscoveryUiState.ReLoading -> {}
         is DiscoveryUiState.ReLoadingError -> {}
-        is DiscoveryUiState.InitialLoading -> {}
+        is DiscoveryUiState.InitialLoading -> {
+            // no-op
+        }
     }
 }
 
