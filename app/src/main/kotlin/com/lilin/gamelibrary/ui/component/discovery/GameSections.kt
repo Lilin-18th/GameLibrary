@@ -3,13 +3,18 @@ package com.lilin.gamelibrary.ui.component.discovery
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lilin.gamelibrary.domain.model.Game
+import com.lilin.gamelibrary.ui.component.ErrorCard
+import com.lilin.gamelibrary.ui.component.toErrorMessage
 
 @Composable
 fun TrendingGamesSection(
@@ -92,6 +97,31 @@ fun NewReleaseGamesSection(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ErrorSection(
+    sectionType: SectionType,
+    sectionColor: Color,
+    sectionIcon: ImageVector,
+    throwable: Throwable,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        GameSectionHeader(
+            sectionType = sectionType,
+            modifier = Modifier,
+        )
+
+        ErrorCard(
+            error = throwable.toErrorMessage(),
+            sectionColor = sectionColor,
+            sectionIcon = sectionIcon,
+            onRetry = onRetry,
+            modifier = Modifier.padding(horizontal = 12.dp),
+        )
     }
 }
 

@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.NewReleases
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
@@ -46,9 +49,14 @@ import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
 import com.lilin.gamelibrary.ui.component.DiscoveryTopBar
 import com.lilin.gamelibrary.ui.component.GameLibraryNavigationBar
+import com.lilin.gamelibrary.ui.component.discovery.ErrorSection
 import com.lilin.gamelibrary.ui.component.discovery.HighRatedGamesSection
 import com.lilin.gamelibrary.ui.component.discovery.NewReleaseGamesSection
+import com.lilin.gamelibrary.ui.component.discovery.SectionType
 import com.lilin.gamelibrary.ui.component.discovery.TrendingGamesSection
+import com.lilin.gamelibrary.ui.theme.HighRatedGradientStart
+import com.lilin.gamelibrary.ui.theme.NewReleaseGradientStart
+import com.lilin.gamelibrary.ui.theme.TrendingGradientStart
 import kotlinx.coroutines.flow.combine
 import kotlinx.serialization.Serializable
 
@@ -85,8 +93,8 @@ fun DiscoveryScreen(
             viewModel.newReleasesState,
         ) { trending, highlyRated, newReleases ->
             trending is DiscoveryUiState.InitialLoading ||
-                    highlyRated is DiscoveryUiState.InitialLoading ||
-                    newReleases is DiscoveryUiState.InitialLoading
+                highlyRated is DiscoveryUiState.InitialLoading ||
+                newReleases is DiscoveryUiState.InitialLoading
         }
     }.collectAsState(initial = true)
 
@@ -107,6 +115,9 @@ fun DiscoveryScreen(
             scrollBehavior = scrollBehavior,
             onNavigateToDetail = onNavigateToDetail,
             loadingAllSection = viewModel::loadAllSections,
+            onRetryTrendSection = viewModel::retryTrendingGames,
+            onRetryHighRatedSection = viewModel::retryHighlyRatedGames,
+            onRetryNewReleaseSection = viewModel::retryNewReleases,
             modifier = Modifier.padding(paddingValues),
         )
     }
@@ -122,9 +133,13 @@ private fun DiscoveryScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     onNavigateToDetail: (Int) -> Unit,
     loadingAllSection: () -> Unit,
+    onRetryTrendSection: () -> Unit,
+    onRetryHighRatedSection: () -> Unit,
+    onRetryNewReleaseSection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isAllError = trendingState is DiscoveryUiState.Error &&
+    val isAllError =
+        trendingState is DiscoveryUiState.Error &&
             highlyRatedState is DiscoveryUiState.Error &&
             newReleasesState is DiscoveryUiState.Error
 
@@ -152,6 +167,7 @@ private fun DiscoveryScreen(
                     TrendingGames(
                         uiState = trendingState,
                         onNavigateToDetail = onNavigateToDetail,
+                        onRetry = onRetryTrendSection,
                         modifier = Modifier,
                     )
                 }
@@ -161,6 +177,7 @@ private fun DiscoveryScreen(
                         uiState = highlyRatedState,
                         onNavigateToDetail = onNavigateToDetail,
                         modifier = Modifier,
+                        onRetry = onRetryHighRatedSection,
                     )
                 }
 
@@ -169,6 +186,7 @@ private fun DiscoveryScreen(
                         uiState = newReleasesState,
                         onNavigateToDetail = onNavigateToDetail,
                         modifier = Modifier,
+                        onRetry = onRetryNewReleaseSection,
                     )
                 }
             }
@@ -253,6 +271,7 @@ private fun FullScreenError(
 private fun TrendingGames(
     uiState: DiscoveryUiState,
     onNavigateToDetail: (Int) -> Unit,
+    onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
@@ -267,7 +286,17 @@ private fun TrendingGames(
         }
 
         is DiscoveryUiState.Loading -> {}
-        is DiscoveryUiState.Error -> {}
+        is DiscoveryUiState.Error -> {
+            ErrorSection(
+                sectionType = SectionType.TRENDING,
+                sectionColor = TrendingGradientStart,
+                sectionIcon = Icons.Filled.Whatshot,
+                throwable = uiState.throwable,
+                onRetry = onRetry,
+                modifier = modifier,
+            )
+        }
+
         is DiscoveryUiState.ReLoading -> {}
         is DiscoveryUiState.ReLoadingError -> {}
         is DiscoveryUiState.InitialLoading -> {}
@@ -278,6 +307,7 @@ private fun TrendingGames(
 private fun HighRatedGames(
     uiState: DiscoveryUiState,
     onNavigateToDetail: (Int) -> Unit,
+    onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
@@ -292,7 +322,17 @@ private fun HighRatedGames(
         }
 
         is DiscoveryUiState.Loading -> {}
-        is DiscoveryUiState.Error -> {}
+        is DiscoveryUiState.Error -> {
+            ErrorSection(
+                sectionType = SectionType.HIGH_RATED,
+                sectionColor = HighRatedGradientStart,
+                sectionIcon = Icons.Filled.Star,
+                throwable = uiState.throwable,
+                onRetry = onRetry,
+                modifier = modifier,
+            )
+        }
+
         is DiscoveryUiState.ReLoading -> {}
         is DiscoveryUiState.ReLoadingError -> {}
         is DiscoveryUiState.InitialLoading -> {}
@@ -303,6 +343,7 @@ private fun HighRatedGames(
 private fun NewReleaseGames(
     uiState: DiscoveryUiState,
     onNavigateToDetail: (Int) -> Unit,
+    onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
@@ -317,7 +358,17 @@ private fun NewReleaseGames(
         }
 
         is DiscoveryUiState.Loading -> {}
-        is DiscoveryUiState.Error -> {}
+        is DiscoveryUiState.Error -> {
+            ErrorSection(
+                sectionType = SectionType.HIGH_RATED,
+                sectionColor = NewReleaseGradientStart,
+                Icons.Filled.NewReleases,
+                throwable = uiState.throwable,
+                onRetry = onRetry,
+                modifier = modifier,
+            )
+        }
+
         is DiscoveryUiState.ReLoading -> {}
         is DiscoveryUiState.ReLoadingError -> {}
         is DiscoveryUiState.InitialLoading -> {}
@@ -341,6 +392,9 @@ internal fun DiscoveryScreenSample(
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         onNavigateToDetail = {},
         loadingAllSection = {},
+        onRetryTrendSection = {},
+        onRetryHighRatedSection = {},
+        onRetryNewReleaseSection = {},
         modifier = modifier,
     )
 }
