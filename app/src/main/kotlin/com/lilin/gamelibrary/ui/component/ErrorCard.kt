@@ -69,7 +69,7 @@ fun ErrorCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .defaultMinSize(minHeight = 180.dp)
+                    .defaultMinSize(minHeight = 220.dp)
                     .padding(20.dp),
             ) {
                 Icon(
