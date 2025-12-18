@@ -2,6 +2,10 @@ package com.lilin.gamelibrary.ui.component.discovery
 
 import android.content.Context
 import androidx.activity.ComponentActivity
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.NewReleases
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -15,6 +19,9 @@ import coil3.asImage
 import coil3.test.FakeImageLoaderEngine
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.Game
+import com.lilin.gamelibrary.ui.theme.HighRatedGradientStart
+import com.lilin.gamelibrary.ui.theme.NewReleaseGradientStart
+import com.lilin.gamelibrary.ui.theme.TrendingGradientStart
 import com.lilin.gamelibrary.util.captureMultiDevice
 import org.junit.Before
 import org.junit.Rule
@@ -54,8 +61,10 @@ class GameSectionsScreenShotTest {
     fun trendingGamesSection_ScreenShot() {
         composeTestRule.captureMultiDevice("TrendingGamesSection") {
             TrendingGamesSection(
+                isSuccessState = true,
                 games = GAMES,
                 onGameClick = {},
+                onReload = {},
             )
         }
     }
@@ -64,8 +73,10 @@ class GameSectionsScreenShotTest {
     fun highRatedGamesSection_ScreenShot() {
         composeTestRule.captureMultiDevice("HighRatedGamesSection") {
             HighRatedGamesSection(
+                isSuccessState = true,
                 games = GAMES,
                 onGameClick = {},
+                onReload = {},
             )
         }
     }
@@ -74,8 +85,82 @@ class GameSectionsScreenShotTest {
     fun newReleaseGamesSection_ScreenShot() {
         composeTestRule.captureMultiDevice("NewReleaseGamesSection") {
             NewReleaseGamesSection(
+                isSuccessState = true,
                 games = GAMES,
                 onGameClick = {},
+                onReload = {},
+            )
+        }
+    }
+
+    @Test
+    fun trendingGamesSection_ScreenShot_isSuccessState_false() {
+        composeTestRule.captureMultiDevice("TrendingGamesSection_false") {
+            TrendingGamesSection(
+                isSuccessState = false,
+                games = GAMES,
+                onGameClick = {},
+                onReload = {},
+            )
+        }
+    }
+
+    @Test
+    fun highRatedGamesSection_ScreenShot_isSuccessState_false() {
+        composeTestRule.captureMultiDevice("HighRatedGamesSection_false") {
+            HighRatedGamesSection(
+                isSuccessState = false,
+                games = GAMES,
+                onGameClick = {},
+                onReload = {},
+            )
+        }
+    }
+
+    @Test
+    fun newReleaseGamesSection_ScreenShot_isSuccessState_false() {
+        composeTestRule.captureMultiDevice("NewReleaseGamesSection_false") {
+            NewReleaseGamesSection(
+                isSuccessState = false,
+                games = GAMES,
+                onGameClick = {},
+                onReload = {},
+            )
+        }
+    }
+
+    fun errorSection_TrendingGames_ScreenShot() {
+        composeTestRule.captureMultiDevice("ErrorSection_TrendingGames") {
+            ErrorSection(
+                sectionType = SectionType.TRENDING,
+                sectionColor = TrendingGradientStart,
+                sectionIcon = Icons.Filled.Whatshot,
+                throwable = Throwable(),
+                onRetry = {},
+            )
+        }
+    }
+
+    fun errorSection_HighRatedGames_ScreenShot() {
+        composeTestRule.captureMultiDevice("ErrorSection_HighRatedGames") {
+            ErrorSection(
+                sectionType = SectionType.HIGH_RATED,
+                sectionColor = HighRatedGradientStart,
+                sectionIcon = Icons.Filled.Star,
+                throwable = Throwable(),
+                onRetry = {},
+            )
+        }
+    }
+
+    fun errorSection_NewReleaseGames_ScreenShot() {
+        composeTestRule.captureMultiDevice("ErrorSection_NewReleaseGames") {
+            ErrorSection(
+                sectionType = SectionType.NEW_RELEASE,
+                sectionColor = NewReleaseGradientStart,
+                sectionIcon = Icons.Filled.NewReleases,
+                throwable = Throwable(),
+                onRetry = {},
             )
         }
     }
