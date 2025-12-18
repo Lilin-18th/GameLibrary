@@ -151,7 +151,9 @@ fun LoadingGamesSection(
         GameSectionHeader(
             isSuccessState = false,
             sectionType = sectionType,
-            onReload = { /** no-op **/ },
+            onReload = {
+                // no-op
+            },
             modifier = Modifier,
         )
 
@@ -179,7 +181,9 @@ fun ErrorSection(
         GameSectionHeader(
             isSuccessState = false,
             sectionType = sectionType,
-            onReload = { /** no-op **/ },
+            onReload = {
+                // no-op
+            },
             modifier = Modifier,
         )
 
