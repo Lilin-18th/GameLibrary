@@ -55,6 +55,7 @@ fun NavGraphBuilder.navigateDetailScreen(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("unused") // デザイン改善対応後削除
 @Composable
 fun GameDetailScreen(
     onBackClick: () -> Unit,
@@ -72,14 +73,6 @@ fun GameDetailScreen(
                     else -> ""
                 },
                 scrollBehavior = scrollBehavior,
-                onBackClick = onBackClick,
-                onStarClick = { viewModel.toggleFavorite() },
-                onShareClick = { /*TODO*/ },
-                isFavorite = if (uiState is GameDetailUiState.Success) {
-                    (uiState as GameDetailUiState.Success).isFavorite
-                } else {
-                    false
-                },
             )
         },
         contentWindowInsets = WindowInsets.navigationBars,
