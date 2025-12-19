@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.ui.theme.DetailDescriptionGradientEnd
@@ -73,7 +73,7 @@ fun DetailSectionHeader(
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun DetailSectionHeaderRatingPreview() {
     DetailSectionHeader(
@@ -84,7 +84,7 @@ private fun DetailSectionHeaderRatingPreview() {
     )
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun DetailSectionHeaderDescriptionPreview() {
     DetailSectionHeader(
@@ -95,7 +95,7 @@ private fun DetailSectionHeaderDescriptionPreview() {
     )
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun DetailSectionHeaderTagsPreview() {
     DetailSectionHeader(
