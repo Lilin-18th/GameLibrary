@@ -19,6 +19,10 @@
     <string name="detail_label_description">説明</string>
     <string name="detail_description_button_collapse">折りたたむ ▲</string>
     <string name="detail_description_button_expand">もっと見る ▼</string>
+    <string name="detail_section_rating_title">評価・詳細情報</string>
+    <string name="detail_section_description_title">ゲーム説明</string>
+    <string name="detail_section_tags_title">タグ</string>
+    <string name="detail_section_screenshots_title">スクリーンショット</string>
     <string name="search_screen_title">さがす</string>
     <string name="search_field_hit">探したいゲームタイトルを入力してください</string>
     <string name="favorite_screen_title">お気に入り</string>

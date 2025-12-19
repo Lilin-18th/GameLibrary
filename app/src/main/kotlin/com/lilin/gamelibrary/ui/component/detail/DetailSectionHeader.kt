@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,11 +20,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.lilin.gamelibrary.R
+import com.lilin.gamelibrary.ui.theme.DetailDescriptionGradientEnd
+import com.lilin.gamelibrary.ui.theme.DetailDescriptionGradientStart
 import com.lilin.gamelibrary.ui.theme.DetailRatingGradientEnd
 import com.lilin.gamelibrary.ui.theme.DetailRatingGradientStart
+import com.lilin.gamelibrary.ui.theme.DetailTagGradientEnd
+import com.lilin.gamelibrary.ui.theme.DetailTagGradientStart
 
 @Composable
 fun DetailSectionHeader(
@@ -66,13 +73,35 @@ fun DetailSectionHeader(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
-private fun DetailSectionHeaderPreview() {
+private fun DetailSectionHeaderRatingPreview() {
     DetailSectionHeader(
-        title = "評価・詳細情報",
+        title = stringResource(R.string.detail_section_rating_title),
         icon = Icons.Filled.Star,
         gradientColors = Pair(DetailRatingGradientStart, DetailRatingGradientEnd),
-        modifier = Modifier,
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+@PreviewLightDark
+@Composable
+private fun DetailSectionHeaderDescriptionPreview() {
+    DetailSectionHeader(
+        title = stringResource(R.string.detail_section_description_title),
+        icon = Icons.Filled.Star,
+        gradientColors = Pair(DetailDescriptionGradientStart, DetailDescriptionGradientEnd),
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+@PreviewLightDark
+@Composable
+private fun DetailSectionHeaderTagsPreview() {
+    DetailSectionHeader(
+        title = stringResource(R.string.detail_section_tags_title),
+        icon = Icons.Filled.Star,
+        gradientColors = Pair(DetailTagGradientStart, DetailTagGradientEnd),
+        modifier = Modifier.fillMaxWidth(),
     )
 }
