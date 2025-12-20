@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">GameLibrary</string>
+    <string name="common_retry_button_text">再読み込み</string>
+    <string name="common_network_error_title">ネットワークエラー</string>
+    <string name="common_network_error_subtitle">インターネット接続を確認してください</string>
+    <string name="common_timeout_error_title">接続がタイムアウトしました</string>
+    <string name="common_timeout_error_subtitle">もう一度試すか、しばらく待ってください</string>
+    <string name="common_unknown_error_title">データの取得に失敗しました</string>
+    <string name="common_unknown_error_subtitle">しばらくしてからもう一度お試しください</string>
+
     <string name="navigation_label_home">Home</string>
     <string name="navigation_label_search">Search</string>
     <string name="navigation_label_favorite">Favorite</string>
@@ -7,7 +15,6 @@
     <string name="discovery_loading_message">読み込み中...</string>
     <string name="discovery_error_message">データの読み込みに失敗しました</string>
     <string name="discovery_error_submessage">インターネット接続を確認して\nもう一度お試しください</string>
-    <string name="discovery_retry_button_text">再読み込み</string>
     <string name="discovery_retry_section_button_text">もう一度試す</string>
     <string name="discovery_trending_section_title">トレンドゲーム</string>
     <string name="discovery_metacritic_section_title">メタスコア殿堂入り</string>
@@ -32,6 +39,7 @@
     <string name="detail_bottom_bar_back">戻る</string>
     <string name="detail_bottom_bar_favorite">お気に入り</string>
     <string name="detail_bottom_bar_share">共有</string>
+    <string name="detail_loading_message">ゲーム情報を読み込み中...</string>
     <string name="search_screen_title">さがす</string>
     <string name="search_field_hit">探したいゲームタイトルを入力してください</string>
     <string name="favorite_screen_title">お気に入り</string>

@@ -88,7 +88,7 @@ fun ErrorCard(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        text = error.title,
+                        text = stringResource(error.title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -99,9 +99,8 @@ fun ErrorCard(
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    // サブタイトル（中央寄せ）
                     Text(
-                        text = error.subtitle,
+                        text = stringResource(error.subtitle),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
@@ -111,7 +110,6 @@ fun ErrorCard(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // リトライボタン（中央）
                     Button(
                         onClick = onRetry,
                         colors = ButtonDefaults.buttonColors(
@@ -142,8 +140,8 @@ fun ErrorCard(
 private fun ErrorCardPreview() {
     ErrorCard(
         error = ErrorMessage(
-            title = "Error Title",
-            subtitle = "Error Message",
+            title = R.string.common_network_error_title,
+            subtitle = R.string.common_network_error_subtitle,
         ),
         sectionColor = Color(0xFFFF6B6B),
         sectionIcon = Icons.Filled.Whatshot,
