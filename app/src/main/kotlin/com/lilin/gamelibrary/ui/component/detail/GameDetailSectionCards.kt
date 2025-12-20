@@ -192,15 +192,24 @@ fun GameInfoCard(
 ) {
     Card(
         modifier = modifier
-            .padding(horizontal = 16.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
-        shape = RoundedCornerShape(12.dp),
+            .padding(horizontal = 20.dp)
+            .shadow(
+                elevation = 8.dp,
+                shape = RoundedCornerShape(16.dp),
+                ambientColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+            ),
+        elevation = CardDefaults.cardElevation(0.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .padding(16.dp),
+                .padding(20.dp),
         ) {
             GameRatingSummary(
                 rating = rating,
@@ -475,6 +484,19 @@ private fun GameBackgroundImage50ScorePreview() {
         imageUrl = null,
         contentDescription = "The Witcher 3: Wild Hunt",
         metacriticScore = 50,
+    )
+}
+
+@Preview
+@Composable
+private fun GameInfoCardPreview() {
+    GameInfoCard(
+        rating = 5.50,
+        ratingsCount = 1500,
+        platforms = listOf("Switch", "PS5", "xbox"),
+        genres = listOf("Action", "Adventure", "RPG"),
+        releaseDate = "2023-05-15",
+        esrbRating = "E10+",
     )
 }
 
