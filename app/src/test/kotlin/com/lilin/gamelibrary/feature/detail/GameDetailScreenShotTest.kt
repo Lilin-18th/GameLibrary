@@ -122,6 +122,26 @@ class GameDetailScreenShotTest {
         }
     }
 
+    @Test
+    fun gameDetailScreen_loading_screenShot() {
+        composeTestRule.captureMultiDevice("GameDetailScreen_Loading") {
+            GameDetailScreenSample(
+                uiState = GameDetailUiState.Loading,
+            )
+        }
+    }
+
+    @Test
+    fun gameDetailScreen_error_screenShot() {
+        composeTestRule.captureMultiDevice("GameDetailScreen_Error") {
+            GameDetailScreenSample(
+                uiState = GameDetailUiState.Error(
+                    throwable = Exception("Test error"),
+                ),
+            )
+        }
+    }
+
     private fun createMockGameDetail(
         name: String = "Test Game",
         backgroundImage: String? = null,
