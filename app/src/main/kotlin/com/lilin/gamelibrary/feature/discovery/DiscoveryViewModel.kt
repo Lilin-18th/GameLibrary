@@ -18,13 +18,13 @@ class DiscoveryViewModel @Inject constructor(
     private val getHighRatedGamesUseCase: GetHighMetacriticScoreGamesUseCase,
     private val getNewReleasesUseCase: GetNewReleasesUseCase,
 ) : ViewModel() {
-    private val _trendingState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.Loading)
+    private val _trendingState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.InitialLoading)
     val trendingState = _trendingState.asStateFlow()
 
-    private val _highlyRatedState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.Loading)
+    private val _highlyRatedState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.InitialLoading)
     val highlyRatedState = _highlyRatedState.asStateFlow()
 
-    private val _newReleasesState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.Loading)
+    private val _newReleasesState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.InitialLoading)
     val newReleasesState = _newReleasesState.asStateFlow()
 
     init {
@@ -73,7 +73,11 @@ class DiscoveryViewModel @Inject constructor(
         }
     }
 
-    private fun loadAllSections() {
+    fun loadAllSections() {
+        _trendingState.value = DiscoveryUiState.InitialLoading
+        _highlyRatedState.value = DiscoveryUiState.InitialLoading
+        _newReleasesState.value = DiscoveryUiState.InitialLoading
+
         loadTrendingGames()
         loadHighlyRatedGames()
         loadNewReleaseGames()

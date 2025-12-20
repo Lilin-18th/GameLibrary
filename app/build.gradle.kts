@@ -102,6 +102,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
+    implementation(libs.compose.shimmer)
 
     // UnitTest
     testImplementation(libs.androidx.test.core)

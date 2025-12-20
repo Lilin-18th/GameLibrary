@@ -14,8 +14,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocalFireDepartment
 import androidx.compose.material.icons.rounded.NewReleases
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Stars
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,7 +40,9 @@ import com.lilin.gamelibrary.ui.theme.TrendingGradientStart
 
 @Composable
 fun GameSectionHeader(
+    isSuccessState: Boolean,
     sectionType: SectionType,
+    onReload: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -83,6 +87,16 @@ fun GameSectionHeader(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+
+        if (isSuccessState) {
+            IconButton(onClick = onReload) {
+                Icon(
+                    imageVector = Icons.Rounded.Refresh,
+                    contentDescription = "Reload",
+                    tint = sectionType.gradientEnd,
+                )
+            }
+        }
     }
 }
 
@@ -123,7 +137,9 @@ enum class SectionType(
 @Composable
 private fun GameSectionHeaderTrendingPreview() {
     GameSectionHeader(
+        isSuccessState = true,
         sectionType = SectionType.TRENDING,
+        onReload = {},
     )
 }
 
@@ -134,7 +150,9 @@ private fun GameSectionHeaderTrendingPreview() {
 @Composable
 private fun GameSectionHeaderHighRatedPreview() {
     GameSectionHeader(
+        isSuccessState = true,
         sectionType = SectionType.HIGH_RATED,
+        onReload = {},
     )
 }
 
@@ -145,6 +163,8 @@ private fun GameSectionHeaderHighRatedPreview() {
 @Composable
 private fun GameSectionHeaderNewReleasePreview() {
     GameSectionHeader(
+        isSuccessState = true,
         sectionType = SectionType.NEW_RELEASE,
+        onReload = {},
     )
 }
