@@ -90,6 +90,7 @@ fun GameDetailScreen(
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val context = LocalContext.current
+    val isSuccessState = uiState is GameDetailUiState.Success
 
     Scaffold(
         topBar = {
@@ -99,19 +100,18 @@ fun GameDetailScreen(
             )
         },
         bottomBar = {
-            if (uiState is GameDetailUiState.Success) {
-                GameDetailBottomBar(
-                    onBackClick = onBackClick,
-                    onFavoriteClick = { viewModel.toggleFavorite() },
-                    onShareClick = {
-                        shareGameWebSite(
-                            context = context,
-                            url = shareUrl,
-                        )
-                    },
-                    isFavorite = (uiState as GameDetailUiState.Success).isFavorite,
-                )
-            }
+            GameDetailBottomBar(
+                onBackClick = onBackClick,
+                onFavoriteClick = { viewModel.toggleFavorite() },
+                onShareClick = {
+                    shareGameWebSite(
+                        context = context,
+                        url = shareUrl,
+                    )
+                },
+                isSuccessState = isSuccessState,
+                isFavorite = if (isSuccessState) (uiState as GameDetailUiState.Success).isFavorite else false,
+            )
         },
         contentWindowInsets = WindowInsets.navigationBars,
         modifier = modifier,
