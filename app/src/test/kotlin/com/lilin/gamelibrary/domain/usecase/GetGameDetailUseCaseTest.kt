@@ -136,6 +136,7 @@ class GetGameDetailUseCaseTest {
             backgroundImage = "https://example.com/image$gameId.jpg",
             releaseDate = "2024-01-01",
             metacritic = 85,
+            websiteUrl = "https://example.com/game$gameId",
             rating = 4.5,
             ratingsCount = 1000,
             platformNames = listOf("PC", "PlayStation 5"),

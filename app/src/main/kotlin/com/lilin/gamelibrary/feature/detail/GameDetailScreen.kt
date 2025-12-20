@@ -1,5 +1,7 @@
 package com.lilin.gamelibrary.feature.detail
 
+import android.content.Context
+import android.content.Intent
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +28,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
@@ -36,6 +40,7 @@ import com.lilin.gamelibrary.ui.component.GameDetailTopAppBar
 import com.lilin.gamelibrary.ui.component.detail.GameBackgroundImageSection
 import com.lilin.gamelibrary.ui.component.detail.GameBasicInfoSection
 import com.lilin.gamelibrary.ui.component.detail.GameDescriptionSection
+import com.lilin.gamelibrary.ui.component.detail.GameDetailBottomBar
 import com.lilin.gamelibrary.ui.component.detail.GameRatingSummarySection
 import com.lilin.gamelibrary.ui.component.detail.GameTagsSection
 import kotlinx.serialization.Serializable
@@ -62,34 +67,46 @@ fun GameDetailScreen(
     viewModel: GameDetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.state.collectAsState()
+    val gameTitle by viewModel.gameTitle.collectAsState()
+    val shareUrl by viewModel.shareUrl.collectAsState()
+
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
             GameDetailTopAppBar(
-                title = when (uiState) {
-                    is GameDetailUiState.Success -> (uiState as GameDetailUiState.Success).gameDetail.name
-                    else -> ""
-                },
+                title = gameTitle,
                 scrollBehavior = scrollBehavior,
+            )
+        },
+        bottomBar = {
+            GameDetailBottomBar(
                 onBackClick = onBackClick,
-                onStarClick = { viewModel.toggleFavorite() },
-                onShareClick = { /*TODO*/ },
-                isFavorite = if (uiState is GameDetailUiState.Success) {
-                    (uiState as GameDetailUiState.Success).isFavorite
-                } else {
-                    false
+                onFavoriteClick = { viewModel.toggleFavorite() },
+                onShareClick = {
+                    shareGameWebSite(
+                        context = context,
+                        url = shareUrl,
+                    )
+                },
+                isFavorite = when (uiState) {
+                    is GameDetailUiState.Success -> (uiState as GameDetailUiState.Success).isFavorite
+                    else -> false
                 },
             )
         },
         contentWindowInsets = WindowInsets.navigationBars,
         modifier = modifier,
-    ) {
+    ) { paddingValues ->
         GameDetailScreen(
             uiState = uiState,
             scrollBehavior = scrollBehavior,
             onRetry = viewModel::retryLoadGameDetail,
-            modifier = Modifier.padding(it),
+            bottomBarPadding = paddingValues.calculateBottomPadding(),
+            modifier = Modifier.padding(
+                top = paddingValues.calculateTopPadding(),
+            ),
         )
     }
 }
@@ -100,6 +117,7 @@ private fun GameDetailScreen(
     uiState: GameDetailUiState,
     scrollBehavior: TopAppBarScrollBehavior,
     onRetry: () -> Unit,
+    bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
@@ -114,6 +132,7 @@ private fun GameDetailScreen(
             GameDetailSuccessContent(
                 gameDetail = uiState.gameDetail,
                 scrollBehavior = scrollBehavior,
+                bottomBarPadding = bottomBarPadding,
                 modifier = modifier,
             )
         }
@@ -148,13 +167,14 @@ fun GameDetailLoadingContent(
 private fun GameDetailSuccessContent(
     gameDetail: GameDetail,
     scrollBehavior: TopAppBarScrollBehavior,
+    bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
-        contentPadding = PaddingValues(bottom = 12.dp),
+        contentPadding = PaddingValues(bottom = bottomBarPadding),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
@@ -222,6 +242,17 @@ private fun GameDetailErrorContent(
     }
 }
 
+private fun shareGameWebSite(context: Context, url: String) {
+    val sendIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, url)
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+
+    context.startActivity(shareIntent)
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @VisibleForTesting
 @Composable
@@ -233,6 +264,7 @@ internal fun GameDetailScreenSample(
         uiState = uiState,
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         onRetry = {},
+        bottomBarPadding = 90.dp,
         modifier = modifier,
     )
 }

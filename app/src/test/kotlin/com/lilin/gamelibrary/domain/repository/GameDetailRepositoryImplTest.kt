@@ -70,6 +70,7 @@ class GameDetailRepositoryImplTest {
             backgroundImage = null,
             released = "2023-01-01",
             metacritic = 80,
+            website = "https://example.com",
             rating = 4.5,
             ratingsCount = 5,
             descriptionRaw = "Game Description",

@@ -92,3 +92,15 @@ val SuccessColor = Color(0xFF00C853)
 val WarningColor = Color(0xFFFF9800)
 val InfoColor = Color(0xFF0066CC)
 val LoadingColor = Color(0xFFCCCCCC)
+
+// 評価セクション
+val DetailRatingGradientStart = Color(0xFF7C4DFF)
+val DetailRatingGradientEnd = Color(0xFFB47CFF)
+
+// 説明セクション
+val DetailDescriptionGradientStart = Color(0xFFFF6B6B)
+val DetailDescriptionGradientEnd = Color(0xFFFFB74D)
+
+// タグセクション
+val DetailTagGradientStart = Color(0xFF26C6DA)
+val DetailTagGradientEnd = Color(0xFF7C4DFF)

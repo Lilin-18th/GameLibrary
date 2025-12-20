@@ -10,6 +10,7 @@ fun GameDetailResponse.toDomain(): GameDetail {
         backgroundImage = backgroundImage,
         releaseDate = released,
         metacritic = metacritic,
+        websiteUrl = website,
         rating = rating,
         ratingsCount = ratingsCount,
         platformNames = platforms.map { it.toPlatformName() },
