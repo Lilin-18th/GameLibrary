@@ -25,8 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lilin.gamelibrary.R
 
 @Composable
 fun GameDetailBottomBar(
@@ -82,7 +84,7 @@ fun GameDetailBottomBar(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = "戻る",
+                            contentDescription = stringResource(R.string.detail_bottom_bar_back),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -95,7 +97,7 @@ fun GameDetailBottomBar(
                             } else {
                                 Icons.Rounded.FavoriteBorder
                             },
-                            contentDescription = "お気に入り",
+                            contentDescription = stringResource(R.string.detail_bottom_bar_favorite),
                             tint = if (isFavorite) {
                                 MaterialTheme.colorScheme.primary
                             } else {
@@ -107,7 +109,7 @@ fun GameDetailBottomBar(
                     IconButton(onClick = onShareClick) {
                         Icon(
                             imageVector = Icons.Rounded.Share,
-                            contentDescription = "共有",
+                            contentDescription = stringResource(R.string.detail_bottom_bar_share),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }

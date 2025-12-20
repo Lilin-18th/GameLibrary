@@ -368,13 +368,6 @@ fun GameDescription(
         modifier = modifier.padding(16.dp),
     ) {
         Text(
-            text = stringResource(R.string.detail_label_description),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(Modifier.height(8.dp))
-        Text(
             text = description,
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
@@ -415,14 +408,6 @@ fun GameTags(
     Column(
         modifier = modifier.padding(16.dp),
     ) {
-        Text(
-            text = "タグ",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-
-        Spacer(Modifier.height(8.dp))
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
