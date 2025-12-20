@@ -28,6 +28,8 @@ data class GameDetailResponse(
     val released: String? = null,
     @SerialName("metacritic")
     val metacritic: Int? = null,
+    @SerialName("website")
+    val website: String,
     @SerialName("rating")
     val rating: Double = 0.0,
     @SerialName("ratings_count")

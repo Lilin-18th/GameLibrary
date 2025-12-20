@@ -6,6 +6,7 @@ data class GameDetail(
     val backgroundImage: String?,
     val releaseDate: String?,
     val metacritic: Int?,
+    val websiteUrl: String,
     val rating: Double,
     val ratingsCount: Int,
     val platformNames: List<String>,
