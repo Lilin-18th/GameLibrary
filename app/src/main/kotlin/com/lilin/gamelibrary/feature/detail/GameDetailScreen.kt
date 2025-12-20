@@ -109,7 +109,7 @@ fun GameDetailScreen(
                             url = shareUrl,
                         )
                     },
-                    isFavorite = (uiState as GameDetailUiState.Success).isFavorite
+                    isFavorite = (uiState as GameDetailUiState.Success).isFavorite,
                 )
             }
         },
