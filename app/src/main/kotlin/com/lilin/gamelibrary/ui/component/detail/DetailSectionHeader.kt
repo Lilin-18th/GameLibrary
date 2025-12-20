@@ -57,7 +57,7 @@ fun DetailSectionHeader(
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = null,
+                contentDescription = title,
                 modifier = Modifier
                     .size(28.dp),
                 tint = Color.White,
