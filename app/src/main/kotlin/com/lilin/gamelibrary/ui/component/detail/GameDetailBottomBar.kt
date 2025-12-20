@@ -35,6 +35,7 @@ fun GameDetailBottomBar(
     onBackClick: () -> Unit,
     onFavoriteClick: () -> Unit,
     onShareClick: () -> Unit,
+    isSuccessState: Boolean,
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -90,7 +91,10 @@ fun GameDetailBottomBar(
                     }
 
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = onFavoriteClick) {
+                    IconButton(
+                        onClick = onFavoriteClick,
+                        enabled = isSuccessState,
+                    ) {
                         Icon(
                             imageVector = if (isFavorite) {
                                 Icons.Rounded.Favorite
@@ -98,19 +102,30 @@ fun GameDetailBottomBar(
                                 Icons.Rounded.FavoriteBorder
                             },
                             contentDescription = stringResource(R.string.detail_bottom_bar_favorite),
-                            tint = if (isFavorite) {
-                                MaterialTheme.colorScheme.primary
+                            tint = if (isSuccessState) {
+                                if (isFavorite) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                }
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                             },
                         )
                     }
 
-                    IconButton(onClick = onShareClick) {
+                    IconButton(
+                        onClick = onShareClick,
+                        enabled = isSuccessState,
+                    ) {
                         Icon(
                             imageVector = Icons.Rounded.Share,
                             contentDescription = stringResource(R.string.detail_bottom_bar_share),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = if (isSuccessState) {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            } else {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                            },
                         )
                     }
                 }
@@ -126,6 +141,7 @@ private fun GameDetailBottomBarPreview() {
         onBackClick = {},
         onFavoriteClick = {},
         onShareClick = {},
+        isSuccessState = false,
         isFavorite = false,
     )
 }
@@ -137,6 +153,7 @@ private fun GameDetailBottomBarFavoritePreview() {
         onBackClick = {},
         onFavoriteClick = {},
         onShareClick = {},
+        isSuccessState = true,
         isFavorite = true,
     )
 }

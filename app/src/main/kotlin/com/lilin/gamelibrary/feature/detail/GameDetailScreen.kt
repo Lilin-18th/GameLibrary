@@ -7,16 +7,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -29,20 +35,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.GameDetail
+import com.lilin.gamelibrary.ui.component.ErrorMessage
 import com.lilin.gamelibrary.ui.component.GameDetailTopAppBar
 import com.lilin.gamelibrary.ui.component.detail.GameBackgroundImageSection
+import com.lilin.gamelibrary.ui.component.detail.GameBackgroundImageSectionLoading
 import com.lilin.gamelibrary.ui.component.detail.GameBasicInfoSection
+import com.lilin.gamelibrary.ui.component.detail.GameBasicInfoSectionLoading
 import com.lilin.gamelibrary.ui.component.detail.GameDescriptionSection
 import com.lilin.gamelibrary.ui.component.detail.GameDetailBottomBar
+import com.lilin.gamelibrary.ui.component.detail.GameDetailLoadingIndicator
 import com.lilin.gamelibrary.ui.component.detail.GameRatingSummarySection
+import com.lilin.gamelibrary.ui.component.detail.GameRatingSummarySectionLoading
 import com.lilin.gamelibrary.ui.component.detail.GameTagsSection
+import com.lilin.gamelibrary.ui.component.toErrorMessage
+import com.valentinilk.shimmer.ShimmerBounds
+import com.valentinilk.shimmer.rememberShimmer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -72,6 +90,7 @@ fun GameDetailScreen(
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val context = LocalContext.current
+    val isSuccessState = uiState is GameDetailUiState.Success
 
     Scaffold(
         topBar = {
@@ -90,10 +109,8 @@ fun GameDetailScreen(
                         url = shareUrl,
                     )
                 },
-                isFavorite = when (uiState) {
-                    is GameDetailUiState.Success -> (uiState as GameDetailUiState.Success).isFavorite
-                    else -> false
-                },
+                isSuccessState = isSuccessState,
+                isFavorite = if (isSuccessState) (uiState as GameDetailUiState.Success).isFavorite else false,
             )
         },
         contentWindowInsets = WindowInsets.navigationBars,
@@ -124,6 +141,7 @@ private fun GameDetailScreen(
         is GameDetailUiState.Loading -> {
             GameDetailLoadingContent(
                 scrollBehavior = scrollBehavior,
+                bottomBarPadding = bottomBarPadding,
                 modifier = modifier,
             )
         }
@@ -139,7 +157,7 @@ private fun GameDetailScreen(
 
         is GameDetailUiState.Error -> {
             GameDetailErrorContent(
-                throwable = uiState.throwable,
+                error = uiState.throwable.toErrorMessage(),
                 onRetry = onRetry,
                 modifier = modifier,
             )
@@ -151,15 +169,34 @@ private fun GameDetailScreen(
 @Composable
 fun GameDetailLoadingContent(
     scrollBehavior: TopAppBarScrollBehavior,
+    bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
+    val shimmer = rememberShimmer(shimmerBounds = ShimmerBounds.Window)
+
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
-        contentPadding = PaddingValues(bottom = 12.dp),
+        contentPadding = PaddingValues(bottom = bottomBarPadding),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {}
+    ) {
+        item {
+            GameBackgroundImageSectionLoading(shimmer)
+        }
+
+        item {
+            GameBasicInfoSectionLoading(shimmer)
+        }
+
+        item {
+            GameRatingSummarySectionLoading(shimmer)
+        }
+
+        item {
+            GameDetailLoadingIndicator()
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -201,7 +238,7 @@ private fun GameDetailSuccessContent(
 
 @Composable
 private fun GameDetailErrorContent(
-    throwable: Throwable,
+    error: ErrorMessage,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -209,34 +246,43 @@ private fun GameDetailErrorContent(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(32.dp),
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Text(
-                    text = "エラーが発生しました",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.error,
-                )
+            Icon(
+                imageVector = Icons.Rounded.ErrorOutline,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.error,
+            )
 
-                Text(
-                    text = throwable.message ?: "不明なエラーが発生しました",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
+            Text(
+                text = stringResource(error.title),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+            )
 
-                Button(onClick = onRetry) {
-                    Text("再試行")
-                }
+            Text(
+                text = stringResource(error.subtitle),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(onClick = onRetry) {
+                Icon(
+                    imageVector = Icons.Rounded.Refresh,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(stringResource(R.string.common_retry_button_text))
             }
         }
     }

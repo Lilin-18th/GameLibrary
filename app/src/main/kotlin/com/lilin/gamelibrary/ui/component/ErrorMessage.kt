@@ -1,27 +1,29 @@
 package com.lilin.gamelibrary.ui.component
 
+import androidx.annotation.StringRes
+import com.lilin.gamelibrary.R
 import java.io.IOException
 
 data class ErrorMessage(
-    val title: String,
-    val subtitle: String,
+    @param:StringRes val title: Int,
+    @param:StringRes val subtitle: Int,
 )
 
 fun Throwable.toErrorMessage(): ErrorMessage {
     return when {
         this is IOException -> ErrorMessage(
-            title = "ネットワークエラー",
-            subtitle = "インターネット接続を確認してください",
+            title = R.string.common_network_error_title,
+            subtitle = R.string.common_network_error_subtitle,
         )
 
         message?.contains("timeout", ignoreCase = true) == true -> ErrorMessage(
-            title = "接続がタイムアウトしました",
-            subtitle = "もう一度試すか、しばらく待ってください",
+            title = R.string.common_timeout_error_title,
+            subtitle = R.string.common_timeout_error_subtitle,
         )
 
         else -> ErrorMessage(
-            title = "データの取得に失敗しました",
-            subtitle = "しばらくしてからもう一度お試しください",
+            title = R.string.common_unknown_error_title,
+            subtitle = R.string.common_unknown_error_subtitle,
         )
     }
 }
