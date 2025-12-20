@@ -29,21 +29,27 @@ fun GameLibraryApp(
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
 
+    val isTopLevelDestination = currentDestination?.route?.let { route ->
+        TOP_LEVEL_ROUTES.any { it.route::class.qualifiedName == route.substringBefore("/") }
+    } ?: true
+
     Scaffold(
         bottomBar = {
-            GameLibraryNavigationBar(
-                topLevelRoute = TOP_LEVEL_ROUTES,
-                currentDestination = currentDestination,
-                onNavigateToRoute = { route ->
-                    navController.navigate(route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+            if (isTopLevelDestination) {
+                GameLibraryNavigationBar(
+                    topLevelRoute = TOP_LEVEL_ROUTES,
+                    currentDestination = currentDestination,
+                    onNavigateToRoute = { route ->
+                        navController.navigate(route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-            )
+                    },
+                )
+            }
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         modifier = modifier,

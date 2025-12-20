@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
@@ -26,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
@@ -36,6 +36,7 @@ import com.lilin.gamelibrary.ui.component.GameDetailTopAppBar
 import com.lilin.gamelibrary.ui.component.detail.GameBackgroundImageSection
 import com.lilin.gamelibrary.ui.component.detail.GameBasicInfoSection
 import com.lilin.gamelibrary.ui.component.detail.GameDescriptionSection
+import com.lilin.gamelibrary.ui.component.detail.GameDetailBottomBar
 import com.lilin.gamelibrary.ui.component.detail.GameRatingSummarySection
 import com.lilin.gamelibrary.ui.component.detail.GameTagsSection
 import kotlinx.serialization.Serializable
@@ -55,7 +56,6 @@ fun NavGraphBuilder.navigateDetailScreen(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress("unused") // デザイン改善対応後削除
 @Composable
 fun GameDetailScreen(
     onBackClick: () -> Unit,
@@ -75,14 +75,28 @@ fun GameDetailScreen(
                 scrollBehavior = scrollBehavior,
             )
         },
-        contentWindowInsets = WindowInsets.navigationBars,
+        bottomBar = {
+            GameDetailBottomBar(
+                onBackClick = onBackClick,
+                onFavoriteClick = { viewModel.toggleFavorite() },
+                onShareClick = {},
+                isFavorite = when (uiState) {
+                    is GameDetailUiState.Success -> (uiState as GameDetailUiState.Success).isFavorite
+                    else -> false
+                },
+            )
+        },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         modifier = modifier,
-    ) {
+    ) { paddingValues ->
         GameDetailScreen(
             uiState = uiState,
             scrollBehavior = scrollBehavior,
             onRetry = viewModel::retryLoadGameDetail,
-            modifier = Modifier.padding(it),
+            bottomBarPadding = paddingValues.calculateBottomPadding(),
+            modifier = Modifier.padding(
+                top = paddingValues.calculateTopPadding(),
+            ),
         )
     }
 }
@@ -93,6 +107,7 @@ private fun GameDetailScreen(
     uiState: GameDetailUiState,
     scrollBehavior: TopAppBarScrollBehavior,
     onRetry: () -> Unit,
+    bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
@@ -107,6 +122,7 @@ private fun GameDetailScreen(
             GameDetailSuccessContent(
                 gameDetail = uiState.gameDetail,
                 scrollBehavior = scrollBehavior,
+                bottomBarPadding = bottomBarPadding,
                 modifier = modifier,
             )
         }
@@ -141,13 +157,14 @@ fun GameDetailLoadingContent(
 private fun GameDetailSuccessContent(
     gameDetail: GameDetail,
     scrollBehavior: TopAppBarScrollBehavior,
+    bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
-        contentPadding = PaddingValues(bottom = 12.dp),
+        contentPadding = PaddingValues(bottom = bottomBarPadding),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
@@ -226,6 +243,7 @@ internal fun GameDetailScreenSample(
         uiState = uiState,
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         onRetry = {},
+        bottomBarPadding = 90.dp,
         modifier = modifier,
     )
 }
