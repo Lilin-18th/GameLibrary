@@ -264,6 +264,7 @@ class GameDetailSectionsScreenShotTest {
             backgroundImage = backgroundImage,
             releaseDate = releaseDate,
             metacritic = metacriticScore,
+            websiteUrl = "https://example.com",
             rating = rating,
             ratingsCount = ratingsCount,
             platformNames = platformNames,

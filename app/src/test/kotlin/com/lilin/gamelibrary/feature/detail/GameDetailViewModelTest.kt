@@ -179,6 +179,7 @@ class GameDetailViewModelTest {
             backgroundImage = "https://example.com/image.jpg",
             releaseDate = "2024-01-01",
             metacritic = 85,
+            websiteUrl = "https://example.com",
             rating = 4.5,
             ratingsCount = 1000,
             platformNames = listOf("PC", "PlayStation"),
