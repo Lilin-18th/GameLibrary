@@ -11,7 +11,11 @@ import com.lilin.gamelibrary.domain.usecase.favorite.IsFavoriteGameUseCase
 import com.lilin.gamelibrary.domain.usecase.favorite.RemoveFavoriteGameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +29,24 @@ class GameDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow<GameDetailUiState>(GameDetailUiState.Loading)
     val state = _state.asStateFlow()
+
+    val gameTitle = _state
+        .filterIsInstance<GameDetailUiState.Success>()
+        .map { it.gameDetail.name }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = "",
+        )
+
+    val shareUrl = _state
+        .filterIsInstance<GameDetailUiState.Success>()
+        .map { it.gameDetail.websiteUrl }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = "",
+        )
 
     val gameId = checkNotNull(savedStateHandle.get<Int>("gameId"))
 

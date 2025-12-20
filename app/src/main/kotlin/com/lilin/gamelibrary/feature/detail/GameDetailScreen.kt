@@ -1,5 +1,7 @@
 package com.lilin.gamelibrary.feature.detail
 
+import android.content.Context
+import android.content.Intent
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -63,15 +66,16 @@ fun GameDetailScreen(
     viewModel: GameDetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.state.collectAsState()
+    val gameTitle by viewModel.gameTitle.collectAsState()
+    val shareUrl by viewModel.shareUrl.collectAsState()
+
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
             GameDetailTopAppBar(
-                title = when (uiState) {
-                    is GameDetailUiState.Success -> (uiState as GameDetailUiState.Success).gameDetail.name
-                    else -> ""
-                },
+                title = gameTitle,
                 scrollBehavior = scrollBehavior,
             )
         },
@@ -79,7 +83,12 @@ fun GameDetailScreen(
             GameDetailBottomBar(
                 onBackClick = onBackClick,
                 onFavoriteClick = { viewModel.toggleFavorite() },
-                onShareClick = {},
+                onShareClick = {
+                    shareGameWebSite(
+                        context = context,
+                        url = shareUrl,
+                    )
+                },
                 isFavorite = when (uiState) {
                     is GameDetailUiState.Success -> (uiState as GameDetailUiState.Success).isFavorite
                     else -> false
@@ -230,6 +239,17 @@ private fun GameDetailErrorContent(
             }
         }
     }
+}
+
+private fun shareGameWebSite(context: Context, url: String) {
+    val sendIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, url)
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+
+    context.startActivity(shareIntent)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
