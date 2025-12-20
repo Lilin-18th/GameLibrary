@@ -272,7 +272,7 @@ private fun FullScreenError(
                     modifier = Modifier.size(20.dp),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(R.string.discovery_retry_button_text))
+                Text(stringResource(R.string.common_retry_button_text))
             }
         }
     }
