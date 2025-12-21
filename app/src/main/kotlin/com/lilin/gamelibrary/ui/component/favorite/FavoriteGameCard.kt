@@ -11,19 +11,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Score
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,6 +51,14 @@ import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.FavoriteGame
 import com.lilin.gamelibrary.ui.component.LabeledIcon
 import com.lilin.gamelibrary.ui.theme.FavoriteGradientStart
+import com.lilin.gamelibrary.ui.theme.RatingBronze
+import com.lilin.gamelibrary.ui.theme.RatingEmpty
+import com.lilin.gamelibrary.ui.theme.RatingGold
+import com.lilin.gamelibrary.ui.theme.RatingSilver
+
+private const val METACRITIC_GOLD_THRESHOLD = 90
+private const val METACRITIC_SILVER_THRESHOLD = 70
+private const val METACRITIC_BRONZE_THRESHOLD = 50
 
 @Composable
 fun FavoriteGameCard(
@@ -60,13 +70,14 @@ fun FavoriteGameCard(
     var isPressed by remember { mutableStateOf(false) }
 
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1.0f,
+        targetValue = if (isPressed) 0.98f else 1.0f,
         animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing),
-        label = "search_card_press",
+        label = "favorite_card_press",
     )
 
     Card(
         modifier = modifier
+            .fillMaxWidth()
             .scale(scale)
             .shadow(
                 elevation = 16.dp,
@@ -87,32 +98,34 @@ fun FavoriteGameCard(
                 )
             },
         shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
         elevation = CardDefaults.cardElevation(0.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Box(
                 modifier = Modifier
-                    .size(90.dp)
-                    .clip(RoundedCornerShape(16.dp)),
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(12.dp)),
             ) {
                 if (game.backgroundImage.isNullOrBlank()) {
                     Image(
                         painter = painterResource(R.drawable.ic_broken_image),
                         contentDescription = null,
-                        modifier = Modifier.size(90.dp),
+                        modifier = Modifier.size(100.dp),
                         contentScale = ContentScale.Crop,
                     )
                 } else {
                     AsyncImage(
                         model = game.backgroundImage,
                         contentDescription = game.name,
-                        modifier = Modifier.size(90.dp),
+                        modifier = Modifier.size(100.dp),
                         contentScale = ContentScale.Crop,
                     )
                 }
@@ -124,82 +137,135 @@ fun FavoriteGameCard(
                             brush = Brush.verticalGradient(
                                 colors = listOf(
                                     Color.Transparent,
-                                    Color.Black.copy(alpha = 0.2f),
+                                    Color.Black.copy(alpha = 0.3f),
                                 ),
                             ),
                         ),
                 )
-            }
 
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Text(
-                    text = game.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                game.metacritic?.let { metacritic ->
+                    val badgeColor = when {
+                        metacritic >= METACRITIC_GOLD_THRESHOLD -> RatingGold
+                        metacritic >= METACRITIC_SILVER_THRESHOLD -> RatingSilver
+                        metacritic >= METACRITIC_BRONZE_THRESHOLD -> RatingBronze
+                        else -> RatingEmpty
+                    }
 
-                game.released?.let {
-                    LabeledIcon(
-                        content = it,
-                        imageVector = Icons.Rounded.CalendarMonth,
-                        contentDescription = "Release Year",
-                    )
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    LabeledIcon(
-                        content = game.rating.toString(),
-                        imageVector = Icons.Rounded.Star,
-                        contentDescription = "Rating",
-                    )
-
-                    game.metacritic?.let { metacritic ->
-                        LabeledIcon(
-                            content = metacritic.toString(),
-                            imageVector = Icons.Rounded.Score,
-                            contentDescription = "Metacritic Score",
+                    Surface(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(6.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        color = badgeColor,
+                    ) {
+                        Text(
+                            text = metacritic.toString(),
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
                         )
                     }
                 }
             }
 
-            IconButton(
-                onClick = {
-                    onClickDelete(game.id)
-                },
+            Column(
                 modifier = Modifier
-                    .background(
-                        color = MaterialTheme.colorScheme.errorContainer,
-                        shape = RoundedCornerShape(12.dp),
-                    ),
+                    .weight(1f)
+                    .height(100.dp),
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Cancel,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error,
+                Text(
+                    text = game.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    game.released?.let {
+                        LabeledIcon(
+                            content = it,
+                            imageVector = Icons.Rounded.CalendarMonth,
+                            contentDescription = "Release Date",
+                        )
+                    }
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        LabeledIcon(
+                            content = String.format("%.1f", game.rating),
+                            imageVector = Icons.Rounded.Star,
+                            contentDescription = "Rating",
+                        )
+                    }
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.errorContainer,
+                                MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.8f),
+                            ),
+                        ),
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                IconButton(
+                    onClick = { onClickDelete(game.id) },
+                    modifier = Modifier.size(48.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Cancel,
+                        contentDescription = "Delete",
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
             }
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun FavoriteGameListItemPreview() {
+private fun FavoriteGameCardPreview() {
     val game = FavoriteGame(
         id = 1,
         name = "The Legend of Zelda: Breath of the Wild",
         backgroundImage = null,
-        rating = 4.5,
-        metacritic = 90,
+        rating = 4.64,
+        metacritic = 92,
         released = "2017-03-03",
+        addedAt = System.currentTimeMillis(),
+    )
+    FavoriteGameCard(
+        game = game,
+        onClick = {},
+        onClickDelete = {},
+    )
+}
+
+@Preview(showBackground = true, name = "Low Score")
+@Composable
+private fun FavoriteGameCardLowScorePreview() {
+    val game = FavoriteGame(
+        id = 2,
+        name = "Low Score Game with Very Long Title That Should Be Truncated",
+        backgroundImage = null,
+        rating = 2.5,
+        metacritic = 45,
+        released = "2023-12-01",
         addedAt = System.currentTimeMillis(),
     )
     FavoriteGameCard(
