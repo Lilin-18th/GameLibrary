@@ -108,3 +108,7 @@ val DetailTagGradientEnd = Color(0xFF7C4DFF)
 // フォーカス時
 val OutlineColor = Color(0xFF7C4DFF)
 val IconTint = Color(0xFF7C4DFF)
+
+// FavoriteSection
+val FavoriteGradientStart = Color(0xFF7C4DFF)
+val FavoriteGradientEnd = Color(0xFFFFD700)

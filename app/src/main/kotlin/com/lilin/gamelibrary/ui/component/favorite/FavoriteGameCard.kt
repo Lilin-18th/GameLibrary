@@ -1,7 +1,13 @@
 package com.lilin.gamelibrary.ui.component.favorite
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Score
 import androidx.compose.material.icons.rounded.Star
@@ -20,8 +26,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,40 +48,86 @@ import coil3.compose.AsyncImage
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.FavoriteGame
 import com.lilin.gamelibrary.ui.component.LabeledIcon
+import com.lilin.gamelibrary.ui.theme.FavoriteGradientStart
 
 @Composable
-fun FavoriteGameListItem(
+fun FavoriteGameCard(
     game: FavoriteGame,
     onClick: (Int) -> Unit,
     onClickDelete: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isPressed by remember { mutableStateOf(false) }
+
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.95f else 1.0f,
+        animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing),
+        label = "search_card_press",
+    )
+
     Card(
-        modifier = modifier,
-        onClick = { onClick(game.id) },
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
+        modifier = modifier
+            .scale(scale)
+            .shadow(
+                elevation = 16.dp,
+                shape = RoundedCornerShape(16.dp),
+                spotColor = FavoriteGradientStart.copy(alpha = 0.3f),
+                ambientColor = FavoriteGradientStart.copy(alpha = 0.3f),
+            )
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onPress = {
+                        isPressed = true
+                        val released = tryAwaitRelease()
+                        isPressed = false
+                        if (released) {
+                            onClick(game.id)
+                        }
+                    },
+                )
+            },
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(0.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (game.backgroundImage.isNullOrBlank()) {
-                Image(
-                    painter = painterResource(R.drawable.ic_broken_image),
-                    contentDescription = null,
-                    modifier = Modifier.size(90.dp),
-                    contentScale = ContentScale.Crop,
-                )
-            } else {
-                AsyncImage(
-                    model = game.backgroundImage,
-                    contentDescription = game.name,
-                    modifier = Modifier.size(90.dp),
-                    contentScale = ContentScale.Crop,
+            Box(
+                modifier = Modifier
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(16.dp)),
+            ) {
+                if (game.backgroundImage.isNullOrBlank()) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_broken_image),
+                        contentDescription = null,
+                        modifier = Modifier.size(90.dp),
+                        contentScale = ContentScale.Crop,
+                    )
+                } else {
+                    AsyncImage(
+                        model = game.backgroundImage,
+                        contentDescription = game.name,
+                        modifier = Modifier.size(90.dp),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    Color.Black.copy(alpha = 0.2f),
+                                ),
+                            ),
+                        ),
                 )
             }
 
@@ -112,10 +174,16 @@ fun FavoriteGameListItem(
                 onClick = {
                     onClickDelete(game.id)
                 },
+                modifier = Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.errorContainer,
+                        shape = RoundedCornerShape(12.dp),
+                    ),
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Delete,
+                    imageVector = Icons.Filled.Cancel,
                     contentDescription = null,
+                    tint = MaterialTheme.colorScheme.error,
                 )
             }
         }
@@ -134,7 +202,7 @@ private fun FavoriteGameListItemPreview() {
         released = "2017-03-03",
         addedAt = System.currentTimeMillis(),
     )
-    FavoriteGameListItem(
+    FavoriteGameCard(
         game = game,
         onClick = {},
         onClickDelete = {},
