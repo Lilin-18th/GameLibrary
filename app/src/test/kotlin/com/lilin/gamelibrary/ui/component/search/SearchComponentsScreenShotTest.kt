@@ -57,7 +57,7 @@ class SearchComponentsScreenShotTest {
     @Test
     fun searchField_empty_screenShot() {
         composeTestRule.captureMultiDevice("SearchField_Empty") {
-            SearchField(
+            SearchBottomBar(
                 query = "",
                 onQueryChange = {},
                 onSearch = {},
@@ -68,7 +68,7 @@ class SearchComponentsScreenShotTest {
     @Test
     fun searchField_withQuery_screenShot() {
         composeTestRule.captureMultiDevice("SearchField_WithQuery") {
-            SearchField(
+            SearchBottomBar(
                 query = "The Witcher",
                 onQueryChange = {},
                 onSearch = {},
@@ -131,7 +131,7 @@ class SearchComponentsScreenShotTest {
     fun searchComponents_combined_screenShot() {
         composeTestRule.captureMultiDevice("SearchComponents_Combined") {
             Column {
-                SearchField(
+                SearchBottomBar(
                     query = "cyberpunk",
                     onQueryChange = {},
                     onSearch = {},

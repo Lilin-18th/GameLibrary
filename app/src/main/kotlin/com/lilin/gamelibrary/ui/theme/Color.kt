@@ -104,3 +104,7 @@ val DetailDescriptionGradientEnd = Color(0xFFFFB74D)
 // タグセクション
 val DetailTagGradientStart = Color(0xFF26C6DA)
 val DetailTagGradientEnd = Color(0xFF7C4DFF)
+
+// フォーカス時
+val OutlineColor = Color(0xFF7C4DFF)
+val IconTint = Color(0xFF7C4DFF)
