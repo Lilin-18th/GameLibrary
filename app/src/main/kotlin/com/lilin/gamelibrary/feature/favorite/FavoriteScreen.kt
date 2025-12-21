@@ -42,7 +42,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.SortOrder
-import com.lilin.gamelibrary.ui.component.favorite.FavoriteGameListItem
+import com.lilin.gamelibrary.ui.component.favorite.FavoriteGameCard
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -172,7 +172,7 @@ private fun FavoriteScreen(
                     items = uiState.games,
                     key = { it.id },
                 ) {
-                    FavoriteGameListItem(
+                    FavoriteGameCard(
                         game = it,
                         onClick = { gameId ->
                             navigateToDetail(gameId)

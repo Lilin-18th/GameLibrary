@@ -26,7 +26,7 @@ import org.robolectric.annotation.GraphicsMode
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [35])
-class FavoriteGameListItemScreenShotTest {
+class FavoriteGameCardScreenShotTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -51,9 +51,9 @@ class FavoriteGameListItemScreenShotTest {
     }
 
     @Test
-    fun favoriteGameListItem_withImage_screenShot() {
-        composeTestRule.captureMultiDevice("FavoriteGameListItem_WithImage") {
-            FavoriteGameListItem(
+    fun favoriteGameCard_withImage_screenShot() {
+        composeTestRule.captureMultiDevice("FavoriteGameCard_WithImage") {
+            FavoriteGameCard(
                 game = createMockFavoriteGame(
                     name = "The Legend of Zelda: Breath of the Wild",
                     backgroundImage = "https://example.com/image.jpg",
@@ -68,9 +68,9 @@ class FavoriteGameListItemScreenShotTest {
     }
 
     @Test
-    fun favoriteGameListItem_withoutImage_screenShot() {
-        composeTestRule.captureMultiDevice("FavoriteGameListItem_WithoutImage") {
-            FavoriteGameListItem(
+    fun favoriteGameCard_withoutImage_screenShot() {
+        composeTestRule.captureMultiDevice("FavoriteGameCard_WithoutImage") {
+            FavoriteGameCard(
                 game = createMockFavoriteGame(
                     name = "Stardew Valley",
                     backgroundImage = null,
@@ -85,9 +85,9 @@ class FavoriteGameListItemScreenShotTest {
     }
 
     @Test
-    fun favoriteGameListItem_longGameName_screenShot() {
-        composeTestRule.captureMultiDevice("FavoriteGameListItem_LongGameName") {
-            FavoriteGameListItem(
+    fun favoriteGameCard_longGameName_screenShot() {
+        composeTestRule.captureMultiDevice("FavoriteGameCard_LongGameName") {
+            FavoriteGameCard(
                 game = createMockFavoriteGame(
                     name = "The Elder Scrolls V: Skyrim Special Edition Anniversary Edition",
                     backgroundImage = "https://example.com/image.jpg",
