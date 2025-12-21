@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +48,7 @@ import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
 import com.lilin.gamelibrary.ui.component.DiscoveryTopBar
 import com.lilin.gamelibrary.ui.component.GameLibraryNavigationBar
+import com.lilin.gamelibrary.ui.component.LoadingScreen
 import com.lilin.gamelibrary.ui.component.discovery.ErrorSection
 import com.lilin.gamelibrary.ui.component.discovery.HighRatedGamesSection
 import com.lilin.gamelibrary.ui.component.discovery.LoadingGamesSection
@@ -153,7 +153,7 @@ private fun DiscoveryScreen(
 
     when {
         isInitialLoading -> {
-            InitialLoadingScreen(
+            LoadingScreen(
                 modifier = modifier,
             )
         }
@@ -201,29 +201,6 @@ private fun DiscoveryScreen(
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun InitialLoadingScreen(
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            CircularProgressIndicator()
-            Text(
-                text = stringResource(R.string.discovery_loading_message),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
         }
     }
 }
@@ -336,6 +313,7 @@ private fun TrendingGames(
                 modifier = modifier,
             )
         }
+
         is DiscoveryUiState.InitialLoading -> {
             // no-op
         }
@@ -400,6 +378,7 @@ private fun HighRatedGames(
                 modifier = modifier,
             )
         }
+
         is DiscoveryUiState.InitialLoading -> {
             // no-op
         }
@@ -464,6 +443,7 @@ private fun NewReleaseGames(
                 modifier = modifier,
             )
         }
+
         is DiscoveryUiState.InitialLoading -> {
             // no-op
         }
