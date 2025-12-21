@@ -49,7 +49,8 @@
     <string name="favorite_screen_title">お気に入り</string>
     <string name="favorite_header_subtitle">%1$d件のゲームをコレクション中</string>
     <string name="favorite_header_subtitle_empty">お気に入りを追加しましょう</string>
+    <string name="favorite_empty_title">まだお気に入りがありません</string>
+    <string name="favorite_empty_message">気になるゲームを探してみよう!</string>
     <string name="favorite_order_newest">新しい順</string>
     <string name="favorite_order_oldest">古い順</string>
-    <string name="favorite_empty_message">お気に入りがありません</string>
 </resources>
