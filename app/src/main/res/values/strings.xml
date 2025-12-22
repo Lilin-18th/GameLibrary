@@ -47,7 +47,14 @@
     <string name="search_no_result_suggestion">別のキーワードで試してみましょう</string>
     <string name="search_error_title">エラーが発生しました</string>
     <string name="favorite_screen_title">お気に入り</string>
+    <string name="favorite_header_subtitle">%1$d件のゲームをコレクション中</string>
+    <string name="favorite_header_subtitle_empty">お気に入りを追加しましょう</string>
+    <string name="favorite_empty_title">まだお気に入りがありません</string>
+    <string name="favorite_empty_message">気になるゲームを探してみよう!</string>
     <string name="favorite_order_newest">新しい順</string>
     <string name="favorite_order_oldest">古い順</string>
-    <string name="favorite_empty_message">お気に入りがありません</string>
+    <string name="favorite_sort_newest">追加日</string>
+    <string name="favorite_sort_oldest">追加日</string>
+    <string name="favorite_sort_newest_description">新しい順に並び替え</string>
+    <string name="favorite_sort_oldest_description">古い順に並び替え</string>
 </resources>
