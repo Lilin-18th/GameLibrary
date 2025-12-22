@@ -9,6 +9,8 @@ sealed interface SearchUiState {
 
     data class Success(
         val data: List<Game>,
+        val isLoadingMore: Boolean = false,
+        val hasNextPage: Boolean = false,
     ) : SearchUiState
 
     data class Error(
