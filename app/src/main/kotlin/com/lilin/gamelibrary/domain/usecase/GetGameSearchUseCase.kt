@@ -1,6 +1,6 @@
 package com.lilin.gamelibrary.domain.usecase
 
-import com.lilin.gamelibrary.domain.model.Game
+import com.lilin.gamelibrary.domain.model.SearchResult
 import com.lilin.gamelibrary.domain.repository.GameRepository
 
 class GetGameSearchUseCase(
@@ -14,7 +14,11 @@ class GetGameSearchUseCase(
      * @param searchText 検索キーワード
      * @return 成功時はゲームのリスト、失敗時はエラー情報を含むResult
      */
-    suspend operator fun invoke(page: Int, pageSize: Int, searchText: String): Result<List<Game>> {
+    suspend operator fun invoke(
+        page: Int,
+        pageSize: Int,
+        searchText: String,
+    ): Result<SearchResult> {
         return gameRepository.getSearchGameResults(page, pageSize, searchText)
     }
 }
