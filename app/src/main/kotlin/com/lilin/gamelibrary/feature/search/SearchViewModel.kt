@@ -19,19 +19,58 @@ class SearchViewModel @Inject constructor(
     private val _query = MutableStateFlow("")
     val query = _query.asStateFlow()
 
+    private var currentPage = INITIAL_PAGE
+    private var isLoadingMore = false
+
     fun search() {
         val currentQuery = _query.value.trim()
         if (currentQuery.isEmpty()) return
 
+        currentPage = INITIAL_PAGE
+        isLoadingMore = false
+
         viewModelScope.launch {
             _searchUiState.value = SearchUiState.Loading
 
-            getGameSearchUseCase(INITIAL_PAGE, PAGE_SIZE, currentQuery)
+            getGameSearchUseCase(currentPage, PAGE_SIZE, currentQuery)
                 .onSuccess { result ->
-                    _searchUiState.value = SearchUiState.Success(result)
+                    _searchUiState.value = SearchUiState.Success(
+                        data = result.games,
+                        hasNextPage = result.hasNextPage,
+                    )
                 }
                 .onFailure { throwable ->
                     _searchUiState.value = SearchUiState.Error(throwable)
+                }
+        }
+    }
+
+    fun loadNextPage() {
+        val currentState = _searchUiState.value
+        if (currentState !is SearchUiState.Success) return
+        if (!currentState.hasNextPage || isLoadingMore) return
+
+        isLoadingMore = true
+        currentPage++
+
+        val currentQuery = _query.value.trim()
+
+        viewModelScope.launch {
+            _searchUiState.value = currentState.copy(isLoadingMore = true)
+
+            getGameSearchUseCase(currentPage, PAGE_SIZE, currentQuery)
+                .onSuccess { result ->
+                    _searchUiState.value = SearchUiState.Success(
+                        data = currentState.data + result.games,
+                        hasNextPage = result.hasNextPage,
+                        isLoadingMore = false,
+                    )
+                    isLoadingMore = false
+                }
+                .onFailure { throwable ->
+                    currentPage--
+                    _searchUiState.value = currentState.copy(isLoadingMore = false)
+                    isLoadingMore = false
                 }
         }
     }
