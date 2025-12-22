@@ -11,6 +11,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -282,101 +283,128 @@ class GameRepositoryImplTest {
     }
 
     @Test
-    fun getSearchGameResults_withValidQuery_returnsSuccessResult() =
-        runTest {
-            val mockResponse = createMockGamesResponse(7)
+    fun getSearchGameResults_withValidQuery_returnsSearchResultWithGames() = runTest {
+        val mockResponse = createMockGamesResponse(7, hasNext = true)
 
-            coEvery {
-                apiServices.getGames(
-                    page = 1,
-                    pageSize = 10,
-                    dates = any(),
-                    search = "test",
-                    ordering = "relevance,-metacritic",
-                )
-            } returns Response.success(mockResponse)
+        coEvery {
+            apiServices.getGames(
+                page = 1,
+                pageSize = 10,
+                dates = any(),
+                search = "test",
+                ordering = "relevance,-metacritic",
+            )
+        } returns Response.success(mockResponse)
 
-            val response =
-                gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
+        val response =
+            gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
 
-            assertTrue(response.isSuccess)
-            assertEquals(7, response.getOrNull()?.size)
-            coVerify(exactly = 1) {
-                apiServices.getGames(
-                    page = 1,
-                    pageSize = 10,
-                    dates = any(),
-                    search = "test",
-                    ordering = "relevance,-metacritic",
-                )
-            }
+        assertTrue(response.isSuccess)
+        val result = response.getOrNull()!!
+        assertEquals(7, result.games.size)
+        assertEquals(1, result.currentPage)
+        assertTrue(result.hasNextPage)
+
+        coVerify(exactly = 1) {
+            apiServices.getGames(
+                page = 1,
+                pageSize = 10,
+                dates = any(),
+                search = "test",
+                ordering = "relevance,-metacritic",
+            )
         }
+    }
 
     @Test
-    fun getSearchGameResults_withNullBody_returnsEmptyList() =
-        runTest {
-            coEvery {
-                apiServices.getGames(
-                    page = 1,
-                    pageSize = 10,
-                    dates = any(),
-                    search = "test",
-                    ordering = "relevance,-metacritic",
-                )
-            } returns Response.success(null)
+    fun getSearchGameResults_withLastPage_returnsSearchResultWithoutNextPage() = runTest {
+        val mockResponse = createMockGamesResponse(5, hasNext = false)
 
-            val response =
-                gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
+        coEvery {
+            apiServices.getGames(
+                page = 2,
+                pageSize = 10,
+                dates = any(),
+                search = "test",
+                ordering = "relevance,-metacritic",
+            )
+        } returns Response.success(mockResponse)
 
-            assertTrue(response.isSuccess)
-            assertTrue(response.getOrNull()?.isEmpty() == true)
-        }
+        val response =
+            gameRepository.getSearchGameResults(page = 2, pageSize = 10, searchText = "test")
 
-    @Test
-    fun getSearchGameResults_withApiError_returnsFailureResult() =
-        runTest {
-            coEvery {
-                apiServices.getGames(
-                    page = any(),
-                    pageSize = any(),
-                    dates = any(),
-                    search = "test",
-                    ordering = "relevance,-metacritic",
-                )
-            } returns Response.error(404, "Not Found".toResponseBody())
-
-            val response =
-                gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
-
-            assertTrue(response.isFailure)
-            assertTrue(response.exceptionOrNull()?.message?.contains("API Error: 404") == true)
-        }
+        assertTrue(response.isSuccess)
+        val result = response.getOrNull()!!
+        assertEquals(5, result.games.size)
+        assertEquals(2, result.currentPage)
+        assertFalse(result.hasNextPage)
+    }
 
     @Test
-    fun getSearchGameResults_withNetworkException_returnsFailureResult() =
-        runTest {
-            coEvery {
-                apiServices.getGames(
-                    page = any(),
-                    pageSize = any(),
-                    dates = any(),
-                    search = "test",
-                    ordering = "relevance,-metacritic",
-                )
-            } throws Exception("Network Error")
+    fun getSearchGameResults_withNullBody_returnsEmptySearchResult() = runTest {
+        coEvery {
+            apiServices.getGames(
+                page = 1,
+                pageSize = 10,
+                dates = any(),
+                search = "test",
+                ordering = "relevance,-metacritic",
+            )
+        } returns Response.success(null)
 
-            val response =
-                gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
+        val response =
+            gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
 
-            assertTrue(response.isFailure)
-            assertEquals("Network Error", response.exceptionOrNull()?.message)
-        }
+        assertTrue(response.isSuccess)
+        val result = response.getOrNull()!!
+        assertTrue(result.games.isEmpty())
+        assertEquals(1, result.currentPage)
+        assertFalse(result.hasNextPage)
+    }
 
-    private fun createMockGamesResponse(count: Int): GamesResponse {
+    @Test
+    fun getSearchGameResults_withApiError_returnsFailureResult() = runTest {
+        coEvery {
+            apiServices.getGames(
+                page = any(),
+                pageSize = any(),
+                dates = any(),
+                search = "test",
+                ordering = "relevance,-metacritic",
+            )
+        } returns Response.error(404, "Not Found".toResponseBody())
+
+        val response =
+            gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
+
+        assertTrue(response.isFailure)
+        assertTrue(response.exceptionOrNull()?.message?.contains("API Error: 404") == true)
+    }
+
+    @Test
+    fun getSearchGameResults_withNetworkException_returnsFailureResult() = runTest {
+        coEvery {
+            apiServices.getGames(
+                page = any(),
+                pageSize = any(),
+                dates = any(),
+                search = "test",
+                ordering = "relevance,-metacritic",
+            )
+        } throws Exception("Network Error")
+
+        val response =
+            gameRepository.getSearchGameResults(page = 1, pageSize = 10, searchText = "test")
+
+        assertTrue(response.isFailure)
+        assertEquals("Network Error", response.exceptionOrNull()?.message)
+    }
+
+    private fun createMockGamesResponse(count: Int, hasNext: Boolean = false): GamesResponse {
         val games = (1..count).map { createMockGameDto(it) }
         return GamesResponse(
             count = count,
-            next = null,
+            next = if (hasNext) "https://api.rawg.io/api/games?page=2" else null,
             previous = null,
             results = games,
         )

@@ -1,12 +1,14 @@
 package com.lilin.gamelibrary.domain.usecase
 
 import com.lilin.gamelibrary.domain.model.Game
+import com.lilin.gamelibrary.domain.model.SearchResult
 import com.lilin.gamelibrary.domain.repository.GameRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -22,41 +24,92 @@ class GetGameSearchUseCaseTest {
     }
 
     @Test
-    fun invoke_withValidQuery_returnsListOfGames() =
-        runTest {
-            val mockResponse = listOf(
-                createMockGame(1),
-                createMockGame(2),
-                createMockGame(3),
-            )
+    fun invoke_withValidQuery_returnsSearchResultWithGames() = runTest {
+        val mockGames = listOf(
+            createMockGame(1),
+            createMockGame(2),
+            createMockGame(3),
+        )
+        val mockSearchResult = SearchResult(
+            games = mockGames,
+            currentPage = 1,
+            hasNextPage = true,
+        )
 
-            coEvery {
-                gameRepository.getSearchGameResults(1, 10, "testGame")
-            } returns Result.success(mockResponse)
+        coEvery {
+            gameRepository.getSearchGameResults(1, 10, "testGame")
+        } returns Result.success(mockSearchResult)
 
-            val response = useCase(1, 10, "testGame")
-            assertTrue(response.isSuccess)
-            assertEquals(3, response.getOrNull()?.size)
-            assertEquals("Test Game 1", response.getOrNull()?.get(0)?.name)
-            assertEquals(1, response.getOrNull()?.get(0)?.id)
-            coVerify(exactly = 1) {
-                gameRepository.getSearchGameResults(1, 10, "testGame")
-            }
+        val response = useCase(1, 10, "testGame")
+
+        assertTrue(response.isSuccess)
+        val result = response.getOrNull()!!
+        assertEquals(3, result.games.size)
+        assertEquals(1, result.currentPage)
+        assertTrue(result.hasNextPage)
+        assertEquals("Test Game 1", result.games[0].name)
+        assertEquals(1, result.games[0].id)
+
+        coVerify(exactly = 1) {
+            gameRepository.getSearchGameResults(1, 10, "testGame")
         }
+    }
 
     @Test
-    fun invoke_withApiError_returnsFailureResult() =
-        runTest {
-            val exception = kotlin.Exception("Api Error")
-            coEvery {
-                gameRepository.getSearchGameResults(1, 10, "testGame")
-            } returns Result.failure(exception)
+    fun invoke_withLastPage_returnsSearchResultWithoutNextPage() = runTest {
+        val mockGames = listOf(createMockGame(1))
+        val mockSearchResult = SearchResult(
+            games = mockGames,
+            currentPage = 3,
+            hasNextPage = false,
+        )
 
-            val response = useCase(1, 10, "testGame")
+        coEvery {
+            gameRepository.getSearchGameResults(3, 10, "testGame")
+        } returns Result.success(mockSearchResult)
 
-            assertTrue(response.isFailure)
-            assertEquals("Api Error", response.exceptionOrNull()?.message)
-        }
+        val response = useCase(3, 10, "testGame")
+
+        assertTrue(response.isSuccess)
+        val result = response.getOrNull()!!
+        assertEquals(1, result.games.size)
+        assertEquals(3, result.currentPage)
+        assertFalse(result.hasNextPage)
+    }
+
+    @Test
+    fun invoke_withEmptyResult_returnsEmptySearchResult() = runTest {
+        val mockSearchResult = SearchResult(
+            games = emptyList(),
+            currentPage = 1,
+            hasNextPage = false,
+        )
+
+        coEvery {
+            gameRepository.getSearchGameResults(1, 10, "nonexistent")
+        } returns Result.success(mockSearchResult)
+
+        val response = useCase(1, 10, "nonexistent")
+
+        assertTrue(response.isSuccess)
+        val result = response.getOrNull()!!
+        assertTrue(result.games.isEmpty())
+        assertFalse(result.hasNextPage)
+    }
+
+    @Test
+    fun invoke_withApiError_returnsFailureResult() = runTest {
+        val exception = kotlin.Exception("Api Error")
+
+        coEvery {
+            gameRepository.getSearchGameResults(1, 10, "testGame")
+        } returns Result.failure(exception)
+
+        val response = useCase(1, 10, "testGame")
+
+        assertTrue(response.isFailure)
+        assertEquals("Api Error", response.exceptionOrNull()?.message)
+    }
 
     private fun createMockGame(id: Int): Game {
         return Game(
