@@ -20,6 +20,9 @@ class FavoriteViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<FavoriteUiState>(FavoriteUiState.Loading)
     val uiState: StateFlow<FavoriteUiState> = _uiState.asStateFlow()
 
+    private val _sortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
+    val sortOrder: StateFlow<SortOrder> = _sortOrder.asStateFlow()
+
     init {
         getFavoriteGames(SortOrder.NEWEST_FIRST)
     }
@@ -33,6 +36,7 @@ class FavoriteViewModel @Inject constructor(
                     _uiState.value = if (games.isEmpty()) {
                         FavoriteUiState.Empty
                     } else {
+                        _sortOrder.value = sortOrder
                         FavoriteUiState.Success(games, sortOrder)
                     }
                 }

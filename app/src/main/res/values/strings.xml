@@ -53,4 +53,8 @@
     <string name="favorite_empty_message">気になるゲームを探してみよう!</string>
     <string name="favorite_order_newest">新しい順</string>
     <string name="favorite_order_oldest">古い順</string>
+    <string name="favorite_sort_newest">追加日</string>
+    <string name="favorite_sort_oldest">追加日</string>
+    <string name="favorite_sort_newest_description">新しい順に並び替え</string>
+    <string name="favorite_sort_oldest_description">古い順に並び替え</string>
 </resources>
