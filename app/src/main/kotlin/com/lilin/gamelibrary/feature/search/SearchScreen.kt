@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,6 +22,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -87,9 +90,7 @@ fun SearchScreen(
 
     var isBottomBarVisible by remember { mutableStateOf(true) }
 
-    val isScrollInProgress by remember {
-        derivedStateOf { listState.isScrollInProgress }
-    }
+    val isScrollInProgress = listState.isScrollInProgress
 
     LaunchedEffect(listState) {
         var previousIndex = listState.firstVisibleItemIndex
@@ -151,6 +152,7 @@ fun SearchScreen(
             },
             bottomBarPadding = paddingValues.calculateBottomPadding(),
             listState = listState,
+            onLoadNextPage = viewModel::loadNextPage,
             modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
         )
     }
@@ -162,6 +164,7 @@ private fun SearchScreen(
     searchUiState: SearchUiState,
     query: String,
     navigateToDetail: (Int) -> Unit,
+    onLoadNextPage: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     bottomBarPadding: Dp,
     listState: LazyListState,
@@ -184,6 +187,24 @@ private fun SearchScreen(
                         modifier = Modifier.fillMaxSize(),
                     )
                 } else {
+                    val shouldLoadMore by remember(searchUiState) {
+                        derivedStateOf {
+                            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+                            val totalItems = listState.layoutInfo.totalItemsCount
+
+                            lastVisibleItem != null &&
+                                lastVisibleItem.index >= totalItems - 3 &&
+                                searchUiState.hasNextPage &&
+                                !searchUiState.isLoadingMore
+                        }
+                    }
+
+                    LaunchedEffect(shouldLoadMore, onLoadNextPage) {
+                        if (shouldLoadMore) {
+                            onLoadNextPage()
+                        }
+                    }
+
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
@@ -207,6 +228,28 @@ private fun SearchScreen(
                                     navigateToDetail(game.id)
                                 },
                             )
+                        }
+
+                        if (searchUiState.isLoadingMore) {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 16.dp),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(32.dp),
+                                        color = MaterialTheme.colorScheme.primary,
+                                    )
+                                }
+                            }
+                        }
+
+                        if (!searchUiState.isLoadingMore && !searchUiState.hasNextPage) {
+                            item {
+                                Spacer(modifier = Modifier.height(90.dp))
+                            }
                         }
                     }
                 }
@@ -278,6 +321,7 @@ internal fun SearchScreenSample(
         navigateToDetail = {},
         bottomBarPadding = 0.dp,
         listState = listState,
+        onLoadNextPage = {},
         modifier = modifier,
     )
 }

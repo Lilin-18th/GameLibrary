@@ -3,6 +3,7 @@ package com.lilin.gamelibrary.domain.repository
 import com.lilin.gamelibrary.data.api.ApiServices
 import com.lilin.gamelibrary.data.mapper.toDomainList
 import com.lilin.gamelibrary.domain.model.Game
+import com.lilin.gamelibrary.domain.model.SearchResult
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
@@ -43,11 +44,30 @@ class GameRepositoryImpl @Inject constructor(
         page: Int,
         pageSize: Int,
         searchText: String,
-    ): Result<List<Game>> {
+    ): Result<SearchResult> {
         val search = searchText.ifBlank { null }
 
         return runCatching {
-            fetchGames(page, pageSize, null, null, search, "relevance,-metacritic")
+            val response = apiService.getGames(
+                page = page,
+                pageSize = pageSize,
+                dates = null,
+                search = search,
+                ordering = "relevance,-metacritic",
+            )
+
+            return runCatching {
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    SearchResult(
+                        games = body?.toDomainList() ?: emptyList(),
+                        currentPage = page,
+                        hasNextPage = body?.next != null,
+                    )
+                } else {
+                    throw IOException("API Error: ${response.code()}")
+                }
+            }
         }
     }
 

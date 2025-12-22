@@ -1,6 +1,7 @@
 package com.lilin.gamelibrary.domain.repository
 
 import com.lilin.gamelibrary.domain.model.Game
+import com.lilin.gamelibrary.domain.model.SearchResult
 
 interface GameRepository {
     /**
@@ -51,5 +52,5 @@ interface GameRepository {
         page: Int,
         pageSize: Int,
         searchText: String,
-    ): Result<List<Game>>
+    ): Result<SearchResult>
 }
