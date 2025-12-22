@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
@@ -43,6 +42,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -199,7 +199,7 @@ fun FavoriteGameCard(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         LabeledIcon(
-                            content = String.format("%.1f", game.rating),
+                            content = String.format(Locale.current.platformLocale, "%.1f", game.rating),
                             imageVector = Icons.Rounded.Star,
                             contentDescription = "Rating",
                         )
