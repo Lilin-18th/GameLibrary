@@ -41,8 +41,9 @@
     <string name="detail_bottom_bar_share">共有</string>
     <string name="detail_loading_message">ゲーム情報を読み込み中...</string>
     <string name="search_screen_title">さがす</string>
+    <string name="search_empty_title">ゲームを検索</string>
     <string name="search_field_hit">ゲームを検索...</string>
-    <string name="search_empty_description">タイトル、ジャンル、プラットフォームで検索</string>
+    <string name="search_empty_description">タイトルで検索</string>
     <string name="search_no_result_title">"%1$s" の検索結果はありません</string>
     <string name="search_no_result_suggestion">別のキーワードで試してみましょう</string>
     <string name="search_error_title">エラーが発生しました</string>
