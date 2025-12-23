@@ -58,4 +58,5 @@
     <string name="favorite_sort_oldest">追加日</string>
     <string name="favorite_sort_newest_description">新しい順に並び替え</string>
     <string name="favorite_sort_oldest_description">古い順に並び替え</string>
+    <string name="section_detail_total_count">全%1$d件</string>
 </resources>
