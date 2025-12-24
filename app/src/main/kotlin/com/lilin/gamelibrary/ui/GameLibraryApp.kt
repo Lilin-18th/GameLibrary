@@ -18,6 +18,8 @@ import com.lilin.gamelibrary.feature.discovery.DiscoveryScreen
 import com.lilin.gamelibrary.feature.discovery.navigateDiscoveryScreen
 import com.lilin.gamelibrary.feature.favorite.navigateFavoriteScreen
 import com.lilin.gamelibrary.feature.search.navigateSearchScreen
+import com.lilin.gamelibrary.feature.sectiondetail.SectionDetailScreen
+import com.lilin.gamelibrary.feature.sectiondetail.navigateSectionDetailScreen
 import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
 import com.lilin.gamelibrary.ui.component.GameLibraryNavigationBar
 
@@ -74,6 +76,16 @@ private fun AppNavHost(
         modifier = modifier,
     ) {
         navigateDiscoveryScreen(
+            onNavigateToDetail = { gameId ->
+                navController.navigate(GameDetailScreen(gameId))
+            },
+            onNavigateToSectionDetail = { sectionType ->
+                navController.navigate(SectionDetailScreen(sectionTypeName = sectionType.name))
+            },
+        )
+
+        navigateSectionDetailScreen(
+            onBackClick = navController::popBackStack,
             onNavigateToDetail = { gameId ->
                 navController.navigate(GameDetailScreen(gameId))
             },
