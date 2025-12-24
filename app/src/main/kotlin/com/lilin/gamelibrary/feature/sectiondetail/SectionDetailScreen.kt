@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.lilin.gamelibrary.feature.sectiondetail
 
 import androidx.annotation.VisibleForTesting
@@ -151,6 +153,7 @@ private fun SectionDetailScreen(
                         modifier = modifier,
                     )
                 }
+
                 DisplayMode.LIST -> {
                     GameListContent(
                         games = uiState.data,
@@ -343,15 +346,35 @@ internal fun SectionDetailScreenSample(
     sectionType: SectionType,
     modifier: Modifier = Modifier,
 ) {
-    SectionDetailScreen(
-        uiState = uiState,
-        sectionType = sectionType,
-        displayMode = DisplayMode.GRID_COLUMN,
-        onNavigateToDetail = {},
-        onRetry = {},
-        bottomBarPadding = 90.dp,
+    Scaffold(
+        topBar = {
+            SectionDetailTopAppBar(
+                sectionType = sectionType,
+                gameCount = 2,
+                scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+            )
+        },
+        bottomBar = {
+            SectionDetailBottomBar(
+                currentDisplayMode = DisplayMode.GRID_COLUMN,
+                onBackClick = {},
+                onDisplayModeChange = {},
+                modifier = Modifier,
+            )
+        },
+        contentWindowInsets = WindowInsets.navigationBars,
         modifier = modifier,
-    )
+    ) { paddingValues ->
+        SectionDetailScreen(
+            uiState = uiState,
+            sectionType = sectionType,
+            displayMode = DisplayMode.GRID_COLUMN,
+            onNavigateToDetail = {},
+            onRetry = {},
+            bottomBarPadding = 90.dp,
+            modifier = Modifier.padding(paddingValues),
+        )
+    }
 }
 
 @Preview(showSystemUi = true)
