@@ -64,6 +64,7 @@ class GameSectionsScreenShotTest {
                 isSuccessState = true,
                 games = GAMES,
                 onGameClick = {},
+                onSeeMoreClick = {},
                 onReload = {},
             )
         }
@@ -76,6 +77,7 @@ class GameSectionsScreenShotTest {
                 isSuccessState = true,
                 games = GAMES,
                 onGameClick = {},
+                onSeeMoreClick = {},
                 onReload = {},
             )
         }
@@ -88,6 +90,7 @@ class GameSectionsScreenShotTest {
                 isSuccessState = true,
                 games = GAMES,
                 onGameClick = {},
+                onSeeMoreClick = {},
                 onReload = {},
             )
         }
@@ -100,6 +103,7 @@ class GameSectionsScreenShotTest {
                 isSuccessState = false,
                 games = GAMES,
                 onGameClick = {},
+                onSeeMoreClick = {},
                 onReload = {},
             )
         }
@@ -112,6 +116,7 @@ class GameSectionsScreenShotTest {
                 isSuccessState = false,
                 games = GAMES,
                 onGameClick = {},
+                onSeeMoreClick = {},
                 onReload = {},
             )
         }
@@ -124,6 +129,7 @@ class GameSectionsScreenShotTest {
                 isSuccessState = false,
                 games = GAMES,
                 onGameClick = {},
+                onSeeMoreClick = {},
                 onReload = {},
             )
         }

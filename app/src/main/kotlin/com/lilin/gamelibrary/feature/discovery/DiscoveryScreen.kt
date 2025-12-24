@@ -67,12 +67,14 @@ object DiscoveryScreen
 
 fun NavGraphBuilder.navigateDiscoveryScreen(
     onNavigateToDetail: (Int) -> Unit,
+    onNavigateToSectionDetail: (SectionType) -> Unit,
 ) {
     composable<DiscoveryScreen> {
         DiscoveryScreen(
             onNavigateToDetail = { gameId ->
                 onNavigateToDetail(gameId)
             },
+            onNavigateToSectionDetail = onNavigateToSectionDetail,
         )
     }
 }
@@ -81,6 +83,7 @@ fun NavGraphBuilder.navigateDiscoveryScreen(
 @Composable
 fun DiscoveryScreen(
     onNavigateToDetail: (Int) -> Unit,
+    onNavigateToSectionDetail: (SectionType) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DiscoveryViewModel = hiltViewModel(),
 ) {
@@ -116,6 +119,7 @@ fun DiscoveryScreen(
             isInitialLoading = isInitialLoading,
             scrollBehavior = scrollBehavior,
             onNavigateToDetail = onNavigateToDetail,
+            onNavigateToSectionDetail = onNavigateToSectionDetail,
             loadingAllSection = viewModel::loadAllSections,
             onReloadTrendSection = viewModel::reloadTrendingGames,
             onReloadHighRatedSection = viewModel::reloadHighlyRatedGames,
@@ -137,6 +141,7 @@ private fun DiscoveryScreen(
     isInitialLoading: Boolean,
     scrollBehavior: TopAppBarScrollBehavior,
     onNavigateToDetail: (Int) -> Unit,
+    onNavigateToSectionDetail: (SectionType) -> Unit,
     loadingAllSection: () -> Unit,
     onReloadTrendSection: () -> Unit,
     onReloadHighRatedSection: () -> Unit,
@@ -175,6 +180,7 @@ private fun DiscoveryScreen(
                     TrendingGames(
                         uiState = trendingState,
                         onNavigateToDetail = onNavigateToDetail,
+                        onNavigateToSectionDetail = onNavigateToSectionDetail,
                         onRetry = onRetryTrendSection,
                         onReload = onReloadTrendSection,
                         modifier = Modifier,
@@ -185,6 +191,7 @@ private fun DiscoveryScreen(
                     HighRatedGames(
                         uiState = highlyRatedState,
                         onNavigateToDetail = onNavigateToDetail,
+                        onNavigateToSectionDetail = onNavigateToSectionDetail,
                         onRetry = onRetryHighRatedSection,
                         onReload = onReloadHighRatedSection,
                         modifier = Modifier,
@@ -195,6 +202,7 @@ private fun DiscoveryScreen(
                     NewReleaseGames(
                         uiState = newReleasesState,
                         onNavigateToDetail = onNavigateToDetail,
+                        onNavigateToSectionDetail = onNavigateToSectionDetail,
                         onRetry = onRetryNewReleaseSection,
                         onReload = onReloadNewReleaseSection,
                         modifier = Modifier,
@@ -259,6 +267,7 @@ private fun FullScreenError(
 private fun TrendingGames(
     uiState: DiscoveryUiState,
     onNavigateToDetail: (Int) -> Unit,
+    onNavigateToSectionDetail: (SectionType) -> Unit,
     onReload: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
@@ -270,6 +279,9 @@ private fun TrendingGames(
                 games = uiState.data,
                 onGameClick = { game ->
                     onNavigateToDetail(game.id)
+                },
+                onSeeMoreClick = {
+                    onNavigateToSectionDetail(SectionType.TRENDING)
                 },
                 onReload = onReload,
                 modifier = modifier,
@@ -324,6 +336,7 @@ private fun TrendingGames(
 private fun HighRatedGames(
     uiState: DiscoveryUiState,
     onNavigateToDetail: (Int) -> Unit,
+    onNavigateToSectionDetail: (SectionType) -> Unit,
     onReload: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
@@ -335,6 +348,9 @@ private fun HighRatedGames(
                 games = uiState.data,
                 onGameClick = { game ->
                     onNavigateToDetail(game.id)
+                },
+                onSeeMoreClick = {
+                    onNavigateToSectionDetail(SectionType.HIGH_RATED)
                 },
                 onReload = onReload,
                 modifier = modifier,
@@ -389,6 +405,7 @@ private fun HighRatedGames(
 private fun NewReleaseGames(
     uiState: DiscoveryUiState,
     onNavigateToDetail: (Int) -> Unit,
+    onNavigateToSectionDetail: (SectionType) -> Unit,
     onReload: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
@@ -400,6 +417,9 @@ private fun NewReleaseGames(
                 games = uiState.data,
                 onGameClick = { game ->
                     onNavigateToDetail(game.id)
+                },
+                onSeeMoreClick = {
+                    onNavigateToSectionDetail(SectionType.NEW_RELEASE)
                 },
                 onReload = onReload,
                 modifier = modifier,
@@ -466,6 +486,7 @@ internal fun DiscoveryScreenSample(
         isInitialLoading = false,
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
         onNavigateToDetail = {},
+        onNavigateToSectionDetail = {},
         loadingAllSection = {},
         onReloadTrendSection = {},
         onReloadHighRatedSection = {},

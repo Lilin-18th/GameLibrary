@@ -21,6 +21,7 @@ fun TrendingGamesSection(
     isSuccessState: Boolean,
     games: List<Game>,
     onGameClick: (Game) -> Unit,
+    onSeeMoreClick: () -> Unit,
     onReload: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -48,9 +49,7 @@ fun TrendingGamesSection(
             item {
                 SeeMoreCard(
                     sectionType = SectionType.TRENDING,
-                    onClick = {
-                        // TODO: See More
-                    },
+                    onClick = onSeeMoreClick,
                 )
             }
         }
@@ -62,6 +61,7 @@ fun HighRatedGamesSection(
     isSuccessState: Boolean,
     games: List<Game>,
     onGameClick: (Game) -> Unit,
+    onSeeMoreClick: () -> Unit,
     onReload: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -89,9 +89,7 @@ fun HighRatedGamesSection(
             item {
                 SeeMoreCard(
                     sectionType = SectionType.HIGH_RATED,
-                    onClick = {
-                        // TODO: See More
-                    },
+                    onClick = onSeeMoreClick,
                 )
             }
         }
@@ -103,6 +101,7 @@ fun NewReleaseGamesSection(
     isSuccessState: Boolean,
     games: List<Game>,
     onGameClick: (Game) -> Unit,
+    onSeeMoreClick: () -> Unit,
     onReload: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -130,9 +129,7 @@ fun NewReleaseGamesSection(
             item {
                 SeeMoreCard(
                     sectionType = SectionType.NEW_RELEASE,
-                    onClick = {
-                        // TODO: See More
-                    },
+                    onClick = onSeeMoreClick,
                 )
             }
         }
@@ -231,6 +228,7 @@ private fun TrendingGamesSectionPreview() {
         isSuccessState = true,
         games = sampleGames,
         onGameClick = {},
+        onSeeMoreClick = {},
         onReload = {},
     )
 }
@@ -269,6 +267,7 @@ private fun HighMetacriticGamesSectionPreview() {
         isSuccessState = true,
         games = sampleGames,
         onGameClick = {},
+        onSeeMoreClick = {},
         onReload = {},
     )
 }
@@ -307,6 +306,7 @@ private fun NewReleaseGamesSectionPreview() {
         isSuccessState = true,
         games = sampleGames,
         onGameClick = {},
+        onSeeMoreClick = {},
         onReload = {},
     )
 }
