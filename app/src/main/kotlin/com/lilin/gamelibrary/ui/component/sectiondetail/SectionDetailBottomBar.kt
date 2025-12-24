@@ -1,6 +1,7 @@
 package com.lilin.gamelibrary.ui.component.sectiondetail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ViewList
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,12 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lilin.gamelibrary.R
-import com.lilin.gamelibrary.ui.component.discovery.SectionType
+import com.lilin.gamelibrary.feature.sectiondetail.DisplayMode
 
 @Composable
 fun SectionDetailBottomBar(
-    sectionType: SectionType,
+    currentDisplayMode: DisplayMode,
     onBackClick: () -> Unit,
+    onDisplayModeChange: (DisplayMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
@@ -85,9 +89,37 @@ fun SectionDetailBottomBar(
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    // Phase 2, 3で追加予定：
-                    // - グリッド切り替えボタン
-                    // - フィルターボタン
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        IconButton(
+                            onClick = { onDisplayModeChange(DisplayMode.GRID_COLUMN) },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.GridView,
+                                contentDescription = "2列グリッド",
+                                tint = if (currentDisplayMode == DisplayMode.GRID_COLUMN) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                },
+                            )
+                        }
+
+                        IconButton(
+                            onClick = { onDisplayModeChange(DisplayMode.LIST) },
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ViewList,
+                                contentDescription = "リスト表示",
+                                tint = if (currentDisplayMode == DisplayMode.LIST) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                },
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -96,27 +128,20 @@ fun SectionDetailBottomBar(
 
 @Preview
 @Composable
-private fun SectionDetailBottomBarTrendingPreview() {
+private fun SectionDetailBottomBarListPreview() {
     SectionDetailBottomBar(
-        sectionType = SectionType.TRENDING,
+        currentDisplayMode = DisplayMode.LIST,
         onBackClick = {},
+        onDisplayModeChange = {},
     )
 }
 
 @Preview
 @Composable
-private fun SectionDetailBottomBarHighRatedPreview() {
+private fun SectionDetailBottomBarGridPreview() {
     SectionDetailBottomBar(
-        sectionType = SectionType.HIGH_RATED,
+        currentDisplayMode = DisplayMode.GRID_COLUMN,
         onBackClick = {},
-    )
-}
-
-@Preview
-@Composable
-private fun SectionDetailBottomBarNewReleasePreview() {
-    SectionDetailBottomBar(
-        sectionType = SectionType.NEW_RELEASE,
-        onBackClick = {},
+        onDisplayModeChange = {},
     )
 }
