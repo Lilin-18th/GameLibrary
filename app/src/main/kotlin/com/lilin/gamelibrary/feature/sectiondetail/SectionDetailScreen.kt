@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Refresh
@@ -50,6 +52,7 @@ import com.lilin.gamelibrary.ui.component.discovery.HighRatedGameCard
 import com.lilin.gamelibrary.ui.component.discovery.NewReleaseGameCard
 import com.lilin.gamelibrary.ui.component.discovery.SectionType
 import com.lilin.gamelibrary.ui.component.discovery.TrendingGameCard
+import com.lilin.gamelibrary.ui.component.sectiondetail.GameListCard
 import com.lilin.gamelibrary.ui.component.sectiondetail.SectionDetailBottomBar
 import com.lilin.gamelibrary.ui.component.toErrorMessage
 import kotlinx.serialization.Serializable
@@ -80,6 +83,7 @@ fun SectionDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val displayMode by viewModel.displayMode.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -95,8 +99,9 @@ fun SectionDetailScreen(
         },
         bottomBar = {
             SectionDetailBottomBar(
-                sectionType = viewModel.sectionType,
+                currentDisplayMode = displayMode,
                 onBackClick = onBackClick,
+                onDisplayModeChange = viewModel::changeDisplayMode,
                 modifier = Modifier,
             )
         },
@@ -106,6 +111,7 @@ fun SectionDetailScreen(
         SectionDetailScreen(
             uiState = uiState,
             sectionType = viewModel.sectionType,
+            displayMode = displayMode,
             onNavigateToDetail = onNavigateToDetail,
             onRetry = viewModel::retry,
             bottomBarPadding = paddingValues.calculateBottomPadding(),
@@ -120,6 +126,7 @@ fun SectionDetailScreen(
 private fun SectionDetailScreen(
     uiState: SectionDetailUiState,
     sectionType: SectionType,
+    displayMode: DisplayMode,
     onNavigateToDetail: (Int) -> Unit,
     onRetry: () -> Unit,
     bottomBarPadding: Dp,
@@ -134,13 +141,25 @@ private fun SectionDetailScreen(
         }
 
         is SectionDetailUiState.Success -> {
-            SectionDetailSuccessContent(
-                sectionType = sectionType,
-                games = uiState.data,
-                onGameClick = onNavigateToDetail,
-                bottomBarPadding = bottomBarPadding,
-                modifier = modifier,
-            )
+            when (displayMode) {
+                DisplayMode.GRID_COLUMN -> {
+                    GameGridContent(
+                        sectionType = sectionType,
+                        games = uiState.data,
+                        onGameClick = onNavigateToDetail,
+                        bottomBarPadding = bottomBarPadding,
+                        modifier = modifier,
+                    )
+                }
+                DisplayMode.LIST -> {
+                    GameListContent(
+                        games = uiState.data,
+                        bottomBarPadding = bottomBarPadding,
+                        onGameClick = onNavigateToDetail,
+                        modifier = modifier,
+                    )
+                }
+            }
         }
 
         is SectionDetailUiState.Error -> {
@@ -158,26 +177,30 @@ private fun SectionDetailLoadingContent(
     sectionType: SectionType,
     modifier: Modifier = Modifier,
 ) {
-    Column(
+    Box(
         modifier = modifier
-            .fillMaxSize()
-            .statusBarsPadding(),
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center,
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             CircularProgressIndicator(
-                modifier = Modifier.size(64.dp),
                 color = sectionType.gradientStart,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            )
+            Text(
+                text = stringResource(R.string.discovery_loading_message),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
 }
 
 @Composable
-private fun SectionDetailSuccessContent(
+private fun GameGridContent(
     sectionType: SectionType,
     games: List<Game>,
     onGameClick: (Int) -> Unit,
@@ -224,6 +247,32 @@ private fun SectionDetailSuccessContent(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun GameListContent(
+    games: List<Game>,
+    bottomBarPadding: Dp,
+    onGameClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            end = 20.dp,
+            top = 16.dp,
+            bottom = bottomBarPadding,
+        ),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier.fillMaxSize(),
+    ) {
+        items(items = games, key = { it.id }) { game ->
+            GameListCard(
+                game = game,
+                onGameClick = onGameClick,
+            )
         }
     }
 }
@@ -297,6 +346,7 @@ internal fun SectionDetailScreenSample(
     SectionDetailScreen(
         uiState = uiState,
         sectionType = sectionType,
+        displayMode = DisplayMode.GRID_COLUMN,
         onNavigateToDetail = {},
         onRetry = {},
         bottomBarPadding = 90.dp,

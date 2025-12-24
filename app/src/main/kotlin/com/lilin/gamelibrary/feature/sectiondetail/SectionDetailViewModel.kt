@@ -10,6 +10,7 @@ import com.lilin.gamelibrary.domain.usecase.GetTrendingGamesUseCase
 import com.lilin.gamelibrary.ui.component.discovery.SectionType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +27,9 @@ class SectionDetailViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<SectionDetailUiState>(SectionDetailUiState.Loading)
     val uiState = _uiState.asStateFlow()
+
+    private val _displayMode = MutableStateFlow(DisplayMode.GRID_COLUMN)
+    val displayMode: StateFlow<DisplayMode> = _displayMode.asStateFlow()
 
     init {
         loadGames()
@@ -80,5 +84,9 @@ class SectionDetailViewModel @Inject constructor(
 
     fun retry() {
         loadGames()
+    }
+
+    fun changeDisplayMode(mode: DisplayMode) {
+        _displayMode.value = mode
     }
 }
