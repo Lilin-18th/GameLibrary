@@ -1,5 +1,6 @@
 package com.lilin.gamelibrary.feature.sectiondetail
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -20,12 +22,13 @@ import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,23 +36,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.Game
-import com.lilin.gamelibrary.ui.component.ErrorMessage
+import com.lilin.gamelibrary.ui.component.SectionDetailTopAppBar
 import com.lilin.gamelibrary.ui.component.discovery.HighRatedGameCard
 import com.lilin.gamelibrary.ui.component.discovery.NewReleaseGameCard
 import com.lilin.gamelibrary.ui.component.discovery.SectionType
 import com.lilin.gamelibrary.ui.component.discovery.TrendingGameCard
 import com.lilin.gamelibrary.ui.component.sectiondetail.SectionDetailBottomBar
-import com.lilin.gamelibrary.ui.component.sectiondetail.SectionDetailHeader
 import com.lilin.gamelibrary.ui.component.toErrorMessage
 import kotlinx.serialization.Serializable
-import org.jetbrains.annotations.VisibleForTesting
 
 @Serializable
 data class SectionDetailScreen(val sectionTypeName: String)
@@ -67,6 +70,7 @@ fun NavGraphBuilder.navigateSectionDetailScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SectionDetailScreen(
     onBackClick: () -> Unit,
@@ -74,13 +78,26 @@ fun SectionDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: SectionDetailViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
+        topBar = {
+            SectionDetailTopAppBar(
+                sectionType = viewModel.sectionType,
+                gameCount = if (uiState is SectionDetailUiState.Success) {
+                    (uiState as SectionDetailUiState.Success).totalCount
+                } else {
+                    0
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
         bottomBar = {
             SectionDetailBottomBar(
                 sectionType = viewModel.sectionType,
                 onBackClick = onBackClick,
+                modifier = Modifier,
             )
         },
         contentWindowInsets = WindowInsets.navigationBars,
@@ -91,9 +108,9 @@ fun SectionDetailScreen(
             sectionType = viewModel.sectionType,
             onNavigateToDetail = onNavigateToDetail,
             onRetry = viewModel::retry,
+            bottomBarPadding = paddingValues.calculateBottomPadding(),
             modifier = Modifier.padding(
                 top = paddingValues.calculateTopPadding(),
-                bottom = paddingValues.calculateBottomPadding(),
             ),
         )
     }
@@ -105,6 +122,7 @@ private fun SectionDetailScreen(
     sectionType: SectionType,
     onNavigateToDetail: (Int) -> Unit,
     onRetry: () -> Unit,
+    bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
@@ -119,16 +137,15 @@ private fun SectionDetailScreen(
             SectionDetailSuccessContent(
                 sectionType = sectionType,
                 games = uiState.data,
-                totalCount = uiState.totalCount,
                 onGameClick = onNavigateToDetail,
+                bottomBarPadding = bottomBarPadding,
                 modifier = modifier,
             )
         }
 
         is SectionDetailUiState.Error -> {
             SectionDetailErrorContent(
-                sectionType = sectionType,
-                errorMessage = uiState.throwable.toErrorMessage(),
+                throwable = uiState.throwable,
                 onRetry = onRetry,
                 modifier = modifier,
             )
@@ -142,13 +159,10 @@ private fun SectionDetailLoadingContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
     ) {
-        SectionDetailHeader(
-            sectionType = sectionType,
-            gameCount = 0,
-        )
-
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
@@ -166,54 +180,46 @@ private fun SectionDetailLoadingContent(
 private fun SectionDetailSuccessContent(
     sectionType: SectionType,
     games: List<Game>,
-    totalCount: Int,
     onGameClick: (Int) -> Unit,
+    bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize(),
     ) {
-        SectionDetailHeader(
-            sectionType = sectionType,
-            gameCount = totalCount,
-        )
-
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
-                horizontal = 20.dp,
-                vertical = 16.dp,
+                start = 20.dp,
+                end = 20.dp,
+                top = 16.dp,
+                bottom = bottomBarPadding,
             ),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(items = games, key = { it.id }) { game ->
                 when (sectionType) {
                     SectionType.TRENDING -> {
                         TrendingGameCard(
                             game = game,
-                            onClick = {
-                                onGameClick(game.id)
-                            },
+                            onClick = { onGameClick(game.id) },
                         )
                     }
 
                     SectionType.HIGH_RATED -> {
                         HighRatedGameCard(
                             game = game,
-                            onClick = {
-                                onGameClick(game.id)
-                            },
+                            onClick = { onGameClick(game.id) },
                         )
                     }
 
                     SectionType.NEW_RELEASE -> {
                         NewReleaseGameCard(
                             game = game,
-                            onClick = {
-                                onGameClick(game.id)
-                            },
+                            onClick = { onGameClick(game.id) },
                         )
                     }
                 }
@@ -224,19 +230,15 @@ private fun SectionDetailSuccessContent(
 
 @Composable
 private fun SectionDetailErrorContent(
-    sectionType: SectionType,
-    errorMessage: ErrorMessage,
+    throwable: Throwable,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
     ) {
-        SectionDetailHeader(
-            sectionType = sectionType,
-            gameCount = 0,
-        )
-
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
@@ -253,7 +255,7 @@ private fun SectionDetailErrorContent(
                     tint = MaterialTheme.colorScheme.error,
                 )
 
-
+                val errorMessage = throwable.toErrorMessage()
                 Text(
                     text = stringResource(errorMessage.title),
                     style = MaterialTheme.typography.titleLarge,
@@ -271,19 +273,14 @@ private fun SectionDetailErrorContent(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Button(
-                    onClick = onRetry,
-                ) {
+                Button(onClick = onRetry) {
                     Icon(
                         imageVector = Icons.Rounded.Refresh,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
                     )
-
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(R.string.common_retry_button_text),
-                    )
+                    Text(stringResource(R.string.common_retry_button_text))
                 }
             }
         }
@@ -302,11 +299,12 @@ internal fun SectionDetailScreenSample(
         sectionType = sectionType,
         onNavigateToDetail = {},
         onRetry = {},
+        bottomBarPadding = 90.dp,
         modifier = modifier,
     )
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 private fun SectionDetailScreenTrendingPreview() {
     val sampleGames = listOf(
