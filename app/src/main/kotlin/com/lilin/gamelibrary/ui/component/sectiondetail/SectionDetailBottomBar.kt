@@ -37,7 +37,7 @@ fun SectionDetailBottomBar(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(90.dp)
+                .height(100.dp)
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
