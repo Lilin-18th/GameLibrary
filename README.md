@@ -1,9 +1,9 @@
 # GameLibrary App
 Rawg Apiを用いたゲーム情報を取得できるアプリケーションです。ユーザーの視認性と操作性を重視して構築しました。
 
-![Version](https://img.shields.io/badge/Version-1.0.0--alpha-blue)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue)
 
-![Kotlin](https://img.shields.io/badge/Kotlin-2.x-7F52FF?logo=kotlin&logoColor=white)![Jetpack Compose](https://img.shields.io/badge/UI-Compose%20M3-4285F4?logo=jetpackcompose&logoColor=white)![Hilt](https://img.shields.io/badge/DI-Hilt-yellow?logo=google&logoColor=white)![Testing](https://img.shields.io/badge/Test-JUnit5%20%2F%20Roborazzi-brightgreen)![Linter](https://img.shields.io/badge/Lint-Detekt-red)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.2.21-7F52FF?logo=kotlin&logoColor=white) ![Jetpack Compose](https://img.shields.io/badge/UI-Compose%20M3-4285F4?logo=jetpackcompose&logoColor=white) ![Hilt](https://img.shields.io/badge/DI-Hilt-yellow?logo=google&logoColor=white) ![Testing](https://img.shields.io/badge/Test-JUnit5%20%2F%20Roborazzi-brightgreen) ![Linter](https://img.shields.io/badge/Lint-Detekt-red)
 
 ## Features（主要機能）
 - DiscoveryScreen, SectionDetailScreen
@@ -22,9 +22,9 @@ Rawg Apiを用いたゲーム情報を取得できるアプリケーションで
 
 |DiscoveryScreen|SectionDetailScreen|DetailScreen|
 |---|---|---|
-|<img width=240 src="">|<img width=240 src="">|<img width=240 src="">|
+|<img width=240 alt="discover" src="https://github.com/user-attachments/assets/9348ae2d-a523-4fed-b110-71fff28dff39">|<img width=240 alt="sectionDetail" src="https://github.com/user-attachments/assets/013c8dc4-b4d6-4e02-9a9d-67f9280a31a4">|<img width=240 alt="detail" src="https://github.com/user-attachments/assets/10e23c0d-d556-4e00-9086-4a4a58b69626">|
 |SearchScreen|FavoriteScreen||
-|<img width=240 src="">|<img width=240 src="">|<img width=240 src="">|
+|<img width=240 alt="search" src="https://github.com/user-attachments/assets/17f814e4-2de7-4d21-91d7-5f15a948f7e0">|<img width=240 alt="favorite" src="https://github.com/user-attachments/assets/25933e1b-536b-4fbd-80e7-cab47d7fe74c">||
 
 ## Architecture
 Clean Architecture + MVVM
