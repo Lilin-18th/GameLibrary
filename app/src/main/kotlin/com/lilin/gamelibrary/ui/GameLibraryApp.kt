@@ -1,6 +1,7 @@
 package com.lilin.gamelibrary.ui
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -109,7 +110,7 @@ private fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
     navigation<BottomNavGraph>(
         startDestination = DiscoveryScreen,
         enterTransition = {
-            if (isDetailScreen(initialState, targetState)) {
+            if (involvesDetailScreen(initialState, targetState)) {
                 fadeIn(tween(DURATION_MILLIS))
             } else {
                 slideIntoContainer(
@@ -119,17 +120,17 @@ private fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
             }
         },
         exitTransition = {
-            if (isDetailScreen(initialState, targetState)) {
+            if (involvesDetailScreen(initialState, targetState)) {
                 fadeOut(tween(DURATION_MILLIS))
             } else {
                 slideOutOfContainer(
                     towards = getSlideDirection(initialState, targetState),
                     animationSpec = tween(DURATION_MILLIS),
-                )
+                ) + ExitTransition.KeepUntilTransitionsFinished
             }
         },
         popEnterTransition = {
-            if (isDetailScreen(initialState, targetState)) {
+            if (involvesDetailScreen(initialState, targetState)) {
                 fadeIn(tween(DURATION_MILLIS))
             } else {
                 slideIntoContainer(
@@ -139,13 +140,13 @@ private fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
             }
         },
         popExitTransition = {
-            if (isDetailScreen(initialState, targetState)) {
+            if (involvesDetailScreen(initialState, targetState)) {
                 fadeOut(tween(DURATION_MILLIS))
             } else {
                 slideOutOfContainer(
                     towards = getSlideDirection(initialState, targetState),
                     animationSpec = tween(DURATION_MILLIS),
-                )
+                ) + ExitTransition.KeepUntilTransitionsFinished
             }
         },
     ) {
@@ -172,20 +173,25 @@ private fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
     }
 }
 
-private fun isDetailScreen(
+/**
+ * 画面遷移に詳細画面が含まれているか確認
+ * @param initialState 現在の状態
+ * @param targetState 新しい状態
+ * @return 詳細画面が含まれている場合はtrue
+ */
+private fun involvesDetailScreen(
     initialState: NavBackStackEntry,
     targetState: NavBackStackEntry,
 ): Boolean {
-    // 詳細画面からの遷移
-    val isInitialMoveGameDetailScreen = initialState.destination.hasRoute<GameDetailScreen>()
-    val isInitialMoveSectionDetailScreen = initialState.destination.hasRoute<SectionDetailScreen>()
-    // 詳細画面への遷移
-    val isTargetMoveGameDetailScreen = targetState.destination.hasRoute<GameDetailScreen>()
-    val isTargetMoveSectionDetailScreen = targetState.destination.hasRoute<SectionDetailScreen>()
-
-    return (isInitialMoveGameDetailScreen || isInitialMoveSectionDetailScreen) || (isTargetMoveGameDetailScreen || isTargetMoveSectionDetailScreen)
+    return initialState.isDetailScreen() || targetState.isDetailScreen()
 }
 
+/**
+ * top level navigationの遷移方向を取得
+ * @param from 現在の状態
+ * @param to 新しい状態
+ * @return スライド方向
+ */
 private fun getSlideDirection(
     from: NavBackStackEntry,
     to: NavBackStackEntry,
@@ -198,6 +204,11 @@ private fun getSlideDirection(
     } else {
         AnimatedContentTransitionScope.SlideDirection.End
     }
+}
+
+private fun NavBackStackEntry.isDetailScreen(): Boolean {
+    return destination.hasRoute<GameDetailScreen>() ||
+        destination.hasRoute<SectionDetailScreen>()
 }
 
 private fun getScreenIndex(entry: NavBackStackEntry): Int {
