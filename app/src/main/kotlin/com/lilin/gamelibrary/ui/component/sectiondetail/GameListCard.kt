@@ -1,5 +1,8 @@
 package com.lilin.gamelibrary.ui.component.sectiondetail
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,94 +37,107 @@ import coil3.compose.AsyncImage
 import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.ui.component.LabeledIcon
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun GameListCard(
     game: Game,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     onGameClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(100.dp)
-            .clickable { onGameClick(game.id) },
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp,
-        ),
-    ) {
-        Row(
-            modifier = Modifier
+    with(sharedTransitionScope) {
+        Card(
+            modifier = modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                .height(100.dp)
+                .clickable { onGameClick(game.id) }
+                .sharedElement(
+                    sharedContentState = rememberSharedContentState(key = "game-${game.id}"),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                ),
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 2.dp,
+            ),
         ) {
-            AsyncImage(
-                model = game.imageUrl,
-                contentDescription = game.name,
+            Row(
                 modifier = Modifier
-                    .size(76.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color(0xFF1A1A1A),
-                                Color(0xFF2A2A2A),
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                AsyncImage(
+                    model = game.imageUrl,
+                    contentDescription = game.name,
+                    modifier = Modifier
+                        .size(76.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(0xFF1A1A1A),
+                                    Color(0xFF2A2A2A),
+                                ),
                             ),
                         ),
-                    ),
-                contentScale = ContentScale.Crop,
-            )
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(
-                    text = game.name,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
+                    contentScale = ContentScale.Crop,
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        tint = Color(0xFFFFD700),
-                        modifier = Modifier.size(16.dp),
-                    )
                     Text(
-                        text = String.format(Locale.current.platformLocale, "%.1f", game.rating),
-                        style = MaterialTheme.typography.bodySmall,
+                        text = game.name,
+                        style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
                     )
-                }
 
-                game.releaseDate?.let { released ->
-                    Text(
-                        text = released,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                    Spacer(modifier = Modifier.height(4.dp))
 
-                game.platforms?.let { platforms ->
-                    LabeledIcon(
-                        content = platforms.joinToString("・"),
-                        imageVector = Icons.Rounded.Games,
-                        contentDescription = "Platform",
-                        tint = Color.White.copy(alpha = 0.9f),
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = null,
+                            tint = Color(0xFFFFD700),
+                            modifier = Modifier.size(16.dp),
+                        )
+                        Text(
+                            text = String.format(
+                                Locale.current.platformLocale,
+                                "%.1f",
+                                game.rating,
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+
+                    game.releaseDate?.let { released ->
+                        Text(
+                            text = released,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+
+                    game.platforms?.let { platforms ->
+                        LabeledIcon(
+                            content = platforms.joinToString("・"),
+                            imageVector = Icons.Rounded.Games,
+                            contentDescription = "Platform",
+                            tint = Color.White.copy(alpha = 0.9f),
+                        )
+                    }
                 }
             }
         }

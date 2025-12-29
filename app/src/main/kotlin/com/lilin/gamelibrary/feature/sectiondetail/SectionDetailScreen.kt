@@ -1,8 +1,13 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 
 package com.lilin.gamelibrary.feature.sectiondetail
 
 import androidx.annotation.VisibleForTesting
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,10 +22,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Refresh
@@ -33,6 +42,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,12 +60,12 @@ import androidx.navigation.toRoute
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.ui.component.SectionDetailTopAppBar
-import com.lilin.gamelibrary.ui.component.discovery.HighRatedGameCard
-import com.lilin.gamelibrary.ui.component.discovery.NewReleaseGameCard
 import com.lilin.gamelibrary.ui.component.discovery.SectionType
-import com.lilin.gamelibrary.ui.component.discovery.TrendingGameCard
 import com.lilin.gamelibrary.ui.component.sectiondetail.GameListCard
+import com.lilin.gamelibrary.ui.component.sectiondetail.HighRatedGameCard
+import com.lilin.gamelibrary.ui.component.sectiondetail.NewReleaseGameCard
 import com.lilin.gamelibrary.ui.component.sectiondetail.SectionDetailBottomBar
+import com.lilin.gamelibrary.ui.component.sectiondetail.TrendingGameCard
 import com.lilin.gamelibrary.ui.component.toErrorMessage
 import kotlinx.serialization.Serializable
 
@@ -87,6 +97,21 @@ fun SectionDetailScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val displayMode by viewModel.displayMode.collectAsStateWithLifecycle()
 
+    val gridScrollState = rememberLazyGridState()
+    val listScrollState = rememberLazyListState()
+
+    LaunchedEffect(displayMode) {
+        when (displayMode) {
+            DisplayMode.GRID_COLUMN -> {
+                gridScrollState.scrollToItem(listScrollState.firstVisibleItemIndex)
+            }
+
+            DisplayMode.LIST -> {
+                listScrollState.scrollToItem(gridScrollState.firstVisibleItemIndex)
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             SectionDetailTopAppBar(
@@ -115,6 +140,8 @@ fun SectionDetailScreen(
             sectionType = viewModel.sectionType,
             displayMode = displayMode,
             onNavigateToDetail = onNavigateToDetail,
+            gridScrollState = gridScrollState,
+            listScrollState = listScrollState,
             onRetry = viewModel::retry,
             bottomBarPadding = paddingValues.calculateBottomPadding(),
             modifier = Modifier.padding(
@@ -124,14 +151,17 @@ fun SectionDetailScreen(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun SectionDetailScreen(
     uiState: SectionDetailUiState,
     sectionType: SectionType,
     displayMode: DisplayMode,
+    gridScrollState: LazyGridState,
+    listScrollState: LazyListState,
+    bottomBarPadding: Dp,
     onNavigateToDetail: (Int) -> Unit,
     onRetry: () -> Unit,
-    bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
@@ -143,24 +173,36 @@ private fun SectionDetailScreen(
         }
 
         is SectionDetailUiState.Success -> {
-            when (displayMode) {
-                DisplayMode.GRID_COLUMN -> {
-                    GameGridContent(
-                        sectionType = sectionType,
-                        games = uiState.data,
-                        onGameClick = onNavigateToDetail,
-                        bottomBarPadding = bottomBarPadding,
-                        modifier = modifier,
-                    )
-                }
+            SharedTransitionLayout {
+                AnimatedContent(
+                    targetState = displayMode,
+                ) { mode ->
+                    when (mode) {
+                        DisplayMode.GRID_COLUMN -> {
+                            GameGridContent(
+                                sectionType = sectionType,
+                                gridScrollState = gridScrollState,
+                                games = uiState.data,
+                                onGameClick = onNavigateToDetail,
+                                bottomBarPadding = bottomBarPadding,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                modifier = modifier,
+                            )
+                        }
 
-                DisplayMode.LIST -> {
-                    GameListContent(
-                        games = uiState.data,
-                        bottomBarPadding = bottomBarPadding,
-                        onGameClick = onNavigateToDetail,
-                        modifier = modifier,
-                    )
+                        DisplayMode.LIST -> {
+                            GameListContent(
+                                games = uiState.data,
+                                bottomBarPadding = bottomBarPadding,
+                                listScrollState = listScrollState,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                onGameClick = onNavigateToDetail,
+                                modifier = modifier,
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -208,6 +250,9 @@ private fun GameGridContent(
     games: List<Game>,
     onGameClick: (Int) -> Unit,
     bottomBarPadding: Dp,
+    gridScrollState: LazyGridState,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -215,6 +260,7 @@ private fun GameGridContent(
             .fillMaxSize(),
     ) {
         LazyVerticalGrid(
+            state = gridScrollState,
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
@@ -231,6 +277,8 @@ private fun GameGridContent(
                     SectionType.TRENDING -> {
                         TrendingGameCard(
                             game = game,
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope,
                             onClick = { onGameClick(game.id) },
                         )
                     }
@@ -238,6 +286,8 @@ private fun GameGridContent(
                     SectionType.HIGH_RATED -> {
                         HighRatedGameCard(
                             game = game,
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope,
                             onClick = { onGameClick(game.id) },
                         )
                     }
@@ -245,6 +295,8 @@ private fun GameGridContent(
                     SectionType.NEW_RELEASE -> {
                         NewReleaseGameCard(
                             game = game,
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope,
                             onClick = { onGameClick(game.id) },
                         )
                     }
@@ -258,10 +310,14 @@ private fun GameGridContent(
 private fun GameListContent(
     games: List<Game>,
     bottomBarPadding: Dp,
+    listScrollState: LazyListState,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     onGameClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
+        state = listScrollState,
         contentPadding = PaddingValues(
             start = 20.dp,
             end = 20.dp,
@@ -274,6 +330,8 @@ private fun GameListContent(
         items(items = games, key = { it.id }) { game ->
             GameListCard(
                 game = game,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
                 onGameClick = onGameClick,
             )
         }
@@ -346,6 +404,8 @@ internal fun SectionDetailScreenSample(
     sectionType: SectionType,
     modifier: Modifier = Modifier,
 ) {
+    val gridScrollState = rememberLazyGridState()
+    val listScrollState = rememberLazyListState()
     Scaffold(
         topBar = {
             SectionDetailTopAppBar(
@@ -369,9 +429,11 @@ internal fun SectionDetailScreenSample(
             uiState = uiState,
             sectionType = sectionType,
             displayMode = DisplayMode.GRID_COLUMN,
+            gridScrollState = gridScrollState,
+            listScrollState = listScrollState,
+            bottomBarPadding = 90.dp,
             onNavigateToDetail = {},
             onRetry = {},
-            bottomBarPadding = 90.dp,
             modifier = Modifier.padding(paddingValues),
         )
     }

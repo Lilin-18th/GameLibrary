@@ -10,12 +10,16 @@ import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.feature.discovery.DiscoveryScreen
 import com.lilin.gamelibrary.feature.favorite.FavoriteScreen
 import com.lilin.gamelibrary.feature.search.SearchScreen
+import kotlinx.serialization.Serializable
 
 data class TopLevelDestination<T : Any>(
     val route: T,
     val icon: ImageVector,
     @param:StringRes val label: Int,
 )
+
+@Serializable
+object BottomNavGraph
 
 val TOP_LEVEL_ROUTES = listOf(
     TopLevelDestination(
