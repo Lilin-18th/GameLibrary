@@ -25,7 +25,7 @@ jobs:
         run: echo "api_key=dummy_key_for_unit_tests" > local.properties
 
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testLocalDebugUnitTest
 
       - name: Upload test results
         if: always()
