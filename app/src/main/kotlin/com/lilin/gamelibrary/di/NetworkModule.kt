@@ -11,14 +11,13 @@ import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://api.rawg.io/api/"
-
     @Provides
     @Singleton
     fun provideJson(): Json = Json {
@@ -27,11 +26,30 @@ object NetworkModule {
         coerceInputValues = true
     }
 
+    /**
+     * ログ出力用Interceptor
+     */
+    @Provides
+    @Singleton
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        }
+    }
+
     @Provides
     @Singleton
     fun provideApiKeyInterceptor(): Interceptor {
         return Interceptor { chain ->
             val request = chain.request()
+            if (!BuildConfig.USE_API_KEY) {
+                return@Interceptor chain.proceed(request)
+            }
+
             val url = request.url.newBuilder()
                 .addQueryParameter("key", BuildConfig.api_key)
                 .build()
@@ -46,9 +64,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(apiKeyInterceptor: Interceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        apiKeyInterceptor: Interceptor,
+        loggingInterceptor: HttpLoggingInterceptor,
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(apiKeyInterceptor)
+            .addInterceptor(loggingInterceptor)
             .build()
     }
 
@@ -59,7 +81,7 @@ object NetworkModule {
         okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(
                 json.asConverterFactory("application/json".toMediaType()),

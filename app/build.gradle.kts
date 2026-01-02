@@ -32,7 +32,33 @@ android {
         buildConfigField("String", "api_key", "\"${properties.getProperty("api_key")}\"")
     }
 
+    flavorDimensions += "env"
+    productFlavors {
+        create("local") {
+            dimension = "env"
+            applicationIdSuffix = ".local"
+            versionNameSuffix = "-local"
+
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080/api/\"")
+            buildConfigField("String", "API_KEY", "\"\"")
+            buildConfigField("boolean", "USE_API_KEY", "false")
+        }
+        create("prod") {
+            dimension = "env"
+
+            val properties = Properties()
+            properties.load(project.rootProject.file("local.properties").inputStream())
+            buildConfigField("String", "BASE_URL", "\"https://api.rawg.io/api/\"")
+            buildConfigField("String", "API_KEY", "\"${properties.getProperty("api_key")}\"")
+            buildConfigField("boolean", "USE_API_KEY", "true")
+        }
+    }
+
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -99,6 +125,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
