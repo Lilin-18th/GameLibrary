@@ -43,6 +43,18 @@ android {
             buildConfigField("String", "API_KEY", "\"\"")
             buildConfigField("boolean", "USE_API_KEY", "false")
         }
+        create("mock") {
+            dimension = "env"
+            applicationIdSuffix = ".mock"
+            versionNameSuffix = "-mock"
+
+            val properties = Properties()
+            properties.load(project.rootProject.file("local.properties").inputStream())
+
+            buildConfigField("String", "BASE_URL", "\"${properties.getProperty("rawg_mock_server")}\"")
+            buildConfigField("String", "API_KEY", "\"\"")
+            buildConfigField("boolean", "USE_API_KEY", "false")
+        }
         create("prod") {
             dimension = "env"
 
