@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
@@ -137,6 +138,14 @@ detekt {
         "src/test/kotlin",
         "src/androidTest/kotlin",
     )
+}
+
+tasks.withType<Detekt>().configureEach {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        sarif.required.set(true)
+    }
 }
 
 dependencies {
