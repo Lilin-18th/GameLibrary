@@ -19,3 +19,70 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# ==========================================
+# Kotlinx Serialization
+# ==========================================
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt
+
+# Keep Serializers
+-keepclassmembers class kotlinx.serialization.json.** {
+    *** Companion;
+}
+-keepclasseswithmembers class kotlinx.serialization.json.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Keep @Serializable annotated classes
+-keep,includedescriptorclasses class **$$serializer { *; }
+-keepclassmembers class * {
+    *** Companion;
+}
+-keepclasseswithmembers class * {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Keep all Serializable classes in navigation and feature packages
+-keep @kotlinx.serialization.Serializable class com.lilin.gamelibrary.navigation.** { *; }
+-keep @kotlinx.serialization.Serializable class com.lilin.gamelibrary.feature.**.* { *; }
+
+# ==========================================
+# Jetpack Compose Navigation - Type-Safe Routes
+# ==========================================
+# Keep all classes in feature packages (for navigation routes)
+-keep class com.lilin.gamelibrary.feature.** { *; }
+-keep class com.lilin.gamelibrary.navigation.** { *; }
+
+# ==========================================
+# Kotlin Reflection (Required for Navigation)
+# ==========================================
+-keep class kotlin.Metadata { *; }
+-keep class kotlin.reflect.** { *; }
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+
+# ==========================================
+# Hilt (Dependency Injection)
+# ==========================================
+-keep class dagger.hilt.** { *; }
+-keep class javax.inject.** { *; }
+
+# ==========================================
+# Retrofit & OkHttp
+# ==========================================
+-keepattributes Signature, InnerClasses, EnclosingMethod
+-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+
+# ==========================================
+# Room Database
+# ==========================================
+-keep class * extends androidx.room.RoomDatabase
+-keep @androidx.room.Entity class *
+-keepclassmembers class * extends androidx.room.RoomDatabase {
+    public static ** getDatabase(...);
+}

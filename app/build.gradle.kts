@@ -51,7 +51,11 @@ android {
             val properties = Properties()
             properties.load(project.rootProject.file("local.properties").inputStream())
 
-            buildConfigField("String", "BASE_URL", "\"${properties.getProperty("rawg_mock_server")}\"")
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${properties.getProperty("rawg_mock_server")}\"",
+            )
             buildConfigField("String", "API_KEY", "\"\"")
             buildConfigField("boolean", "USE_API_KEY", "false")
         }
@@ -66,13 +70,30 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            val properties = Properties()
+            val file = rootProject.file("local.properties")
+            if (file.exists()) {
+                properties.load(file.inputStream())
+                storeFile = file(properties.getProperty("KEY_PATH"))
+                storePassword = properties.getProperty("KEY_PASSWORD")
+                keyAlias = properties.getProperty("ALIAS")
+                keyPassword = properties.getProperty("ALIAS_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             isMinifyEnabled = false
             isDebuggable = true
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
