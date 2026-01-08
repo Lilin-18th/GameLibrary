@@ -145,6 +145,7 @@ tasks.withType<Detekt>().configureEach {
         xml.required.set(true)
         html.required.set(true)
         sarif.required.set(true)
+        sarif.outputLocation.set(file("build/reports/detekt/detekt.sarif"))
     }
 }
 
