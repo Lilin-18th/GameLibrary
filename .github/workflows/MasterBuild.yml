@@ -17,6 +17,14 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Create local.properties
+        run: |
+          echo "api_key=dummy_key_for_mock_build" > local.properties
+          echo "rawg_mock_server=${{ secrets.RAWG_MOCK_SERVER }}" >> local.properties
+          echo "KEY_PATH=upload.keystore" >> local.properties
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> local.properties
+          echo "ALIAS=${{ secrets.ALIAS }}" >> local.properties
+          echo "ALIAS_PASSWORD=${{ secrets.ALIAS_PASSWORD }}" >> local.properties
       - name: Run unit tests
         run: ./gradlew testLocalDebugUnitTest
 
