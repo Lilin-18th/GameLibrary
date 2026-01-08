@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
@@ -32,9 +33,72 @@ android {
         buildConfigField("String", "api_key", "\"${properties.getProperty("api_key")}\"")
     }
 
+    flavorDimensions += "env"
+    productFlavors {
+        create("local") {
+            dimension = "env"
+            applicationIdSuffix = ".local"
+            versionNameSuffix = "-local"
+
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080/api/\"")
+            buildConfigField("String", "API_KEY", "\"\"")
+            buildConfigField("boolean", "USE_API_KEY", "false")
+        }
+        create("mock") {
+            dimension = "env"
+            applicationIdSuffix = ".mock"
+            versionNameSuffix = "-mock"
+
+            val properties = Properties()
+            properties.load(project.rootProject.file("local.properties").inputStream())
+
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${properties.getProperty("rawg_mock_server")}\"",
+            )
+            buildConfigField("String", "API_KEY", "\"\"")
+            buildConfigField("boolean", "USE_API_KEY", "false")
+        }
+        create("prod") {
+            dimension = "env"
+
+            val properties = Properties()
+            properties.load(project.rootProject.file("local.properties").inputStream())
+            buildConfigField("String", "BASE_URL", "\"https://api.rawg.io/api/\"")
+            buildConfigField("String", "API_KEY", "\"${properties.getProperty("api_key")}\"")
+            buildConfigField("boolean", "USE_API_KEY", "true")
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            val properties = Properties()
+            val file = rootProject.file("local.properties")
+            if (file.exists()) {
+                properties.load(file.inputStream())
+
+                val keyPath = properties.getProperty("KEY_PATH")
+                if (keyPath != null) {
+                    storeFile = file(keyPath)
+                    storePassword = properties.getProperty("KEY_PASSWORD")
+                    keyAlias = properties.getProperty("ALIAS")
+                    keyPassword = properties.getProperty("ALIAS_PASSWORD")
+                }
+            }
+        }
+    }
+
     buildTypes {
-        release {
+        debug {
             isMinifyEnabled = false
+            isDebuggable = true
+        }
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -99,6 +163,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
