@@ -77,10 +77,14 @@ android {
             val file = rootProject.file("local.properties")
             if (file.exists()) {
                 properties.load(file.inputStream())
-                storeFile = file(properties.getProperty("KEY_PATH"))
-                storePassword = properties.getProperty("KEY_PASSWORD")
-                keyAlias = properties.getProperty("ALIAS")
-                keyPassword = properties.getProperty("ALIAS_PASSWORD")
+
+                val keyPath = properties.getProperty("KEY_PATH")
+                if (keyPath != null) {
+                    storeFile = file(keyPath)
+                    storePassword = properties.getProperty("KEY_PASSWORD")
+                    keyAlias = properties.getProperty("ALIAS")
+                    keyPassword = properties.getProperty("ALIAS_PASSWORD")
+                }
             }
         }
     }
