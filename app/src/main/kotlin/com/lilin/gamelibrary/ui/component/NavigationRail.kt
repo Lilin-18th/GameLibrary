@@ -16,7 +16,7 @@ import com.lilin.gamelibrary.navigation.TopLevelDestination
 
 @Composable
 fun GameLibraryNavigationRail(
-    topLevelRoute: List<TopLevelDestination<*>>,
+    topLevelRoutes: List<TopLevelDestination<*>>,
     currentDestination: NavDestination?,
     onNavigateToRoute: (Any) -> Unit,
     modifier: Modifier = Modifier,
@@ -24,22 +24,22 @@ fun GameLibraryNavigationRail(
     NavigationRail(
         modifier = modifier,
     ) {
-        topLevelRoute.forEach { topLevelRoute ->
+        topLevelRoutes.forEach { destination ->
             val selected = currentDestination?.hierarchy?.any {
-                it.hasRoute(topLevelRoute.route::class)
+                it.hasRoute(destination.route::class)
             } ?: false
 
             NavigationRailItem(
                 selected = selected,
-                onClick = { onNavigateToRoute(topLevelRoute.route) },
+                onClick = { onNavigateToRoute(destination.route) },
                 icon = {
                     Icon(
-                        imageVector = topLevelRoute.icon,
-                        contentDescription = stringResource(topLevelRoute.label),
+                        imageVector = destination.icon,
+                        contentDescription = stringResource(destination.label),
                     )
                 },
                 label = {
-                    Text(text = stringResource(topLevelRoute.label))
+                    Text(text = stringResource(destination.label))
                 },
                 alwaysShowLabel = true,
             )
@@ -51,7 +51,7 @@ fun GameLibraryNavigationRail(
 @Composable
 private fun GameLibraryNavigationRailPreview() {
     GameLibraryNavigationRail(
-        topLevelRoute = TOP_LEVEL_ROUTES,
+        topLevelRoutes = TOP_LEVEL_ROUTES,
         currentDestination = null,
         onNavigateToRoute = {},
     )

@@ -27,7 +27,7 @@ import com.lilin.gamelibrary.navigation.TopLevelDestination
 
 @Composable
 fun GameLibraryNavigationDrawer(
-    topLevelRoute: List<TopLevelDestination<*>>,
+    topLevelRoutes: List<TopLevelDestination<*>>,
     currentDestination: NavDestination?,
     onNavigateToRoute: (Any) -> Unit,
     modifier: Modifier = Modifier,
@@ -51,22 +51,22 @@ fun GameLibraryNavigationDrawer(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    topLevelRoute.forEach { topLevelRoute ->
+                    topLevelRoutes.forEach { destination ->
                         val selected = currentDestination?.hierarchy?.any {
-                            it.hasRoute(topLevelRoute.route::class)
+                            it.hasRoute(destination.route::class)
                         } ?: false
 
                         NavigationDrawerItem(
                             label = {
-                                Text(text = stringResource(topLevelRoute.label))
+                                Text(text = stringResource(destination.label))
                             },
                             selected = selected,
-                            onClick = { onNavigateToRoute(topLevelRoute.route) },
+                            onClick = { onNavigateToRoute(destination.route) },
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                             icon = {
                                 Icon(
-                                    imageVector = topLevelRoute.icon,
-                                    contentDescription = stringResource(topLevelRoute.label),
+                                    imageVector = destination.icon,
+                                    contentDescription = stringResource(destination.label),
                                 )
                             },
                         )
@@ -83,7 +83,7 @@ fun GameLibraryNavigationDrawer(
 @Composable
 private fun GameLibraryNavigationDrawerPreview() {
     GameLibraryNavigationDrawer(
-        topLevelRoute = TOP_LEVEL_ROUTES,
+        topLevelRoutes = TOP_LEVEL_ROUTES,
         currentDestination = null,
         onNavigateToRoute = {},
         content = {},

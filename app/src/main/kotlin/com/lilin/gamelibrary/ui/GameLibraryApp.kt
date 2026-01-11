@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
@@ -37,6 +38,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.feature.detail.GameDetailScreen
 import com.lilin.gamelibrary.feature.detail.navigateDetailScreen
 import com.lilin.gamelibrary.feature.discovery.DiscoveryScreen
@@ -148,7 +150,7 @@ private fun MediumApp(
             exit = shrinkHorizontally() + fadeOut(),
         ) {
             GameLibraryNavigationRail(
-                topLevelRoute = TOP_LEVEL_ROUTES,
+                topLevelRoutes = TOP_LEVEL_ROUTES,
                 currentDestination = currentDestination,
                 onNavigateToRoute = { route ->
                     navController.navigate(route) {
@@ -174,7 +176,11 @@ private fun MediumApp(
                         } else {
                             Icons.Default.Menu
                         },
-                        contentDescription = if (isRailExpanded) "Hide rail" else "Show rail",
+                        contentDescription = if (isRailExpanded) {
+                            stringResource(R.string.navigation_rail_hide)
+                        } else {
+                            stringResource(R.string.navigation_rail_show)
+                        },
                     )
                 }
             },
@@ -197,7 +203,7 @@ private fun ExpandedApp(
     modifier: Modifier = Modifier,
 ) {
     GameLibraryNavigationDrawer(
-        topLevelRoute = TOP_LEVEL_ROUTES,
+        topLevelRoutes = TOP_LEVEL_ROUTES,
         currentDestination = currentDestination,
         onNavigateToRoute = { route ->
             navController.navigate(route) {
