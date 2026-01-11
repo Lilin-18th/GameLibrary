@@ -168,6 +168,7 @@ dependencies {
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
     implementation(libs.compose.shimmer)
+    implementation(libs.androidx.material3.window.size)
 
     // UnitTest
     testImplementation(libs.androidx.test.core)
