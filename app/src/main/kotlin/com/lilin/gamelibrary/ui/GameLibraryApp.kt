@@ -304,6 +304,7 @@ private fun NavGraphBuilder.bottomNavGraph(
         },
     ) {
         navigateDiscoveryScreen(
+            isAtLeastMedium = isAtLeastMedium,
             onNavigateToDetail = { gameId ->
                 navController.navigate(GameDetailScreen(gameId))
             },

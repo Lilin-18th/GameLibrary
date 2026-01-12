@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.lilin.gamelibrary.feature.discovery
 
 import androidx.annotation.VisibleForTesting
@@ -49,6 +51,7 @@ import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
 import com.lilin.gamelibrary.ui.component.DiscoveryTopBar
 import com.lilin.gamelibrary.ui.component.GameLibraryNavigationBar
 import com.lilin.gamelibrary.ui.component.LoadingScreen
+import com.lilin.gamelibrary.ui.component.discovery.DiscoveryBottomBar
 import com.lilin.gamelibrary.ui.component.discovery.ErrorSection
 import com.lilin.gamelibrary.ui.component.discovery.HighRatedGamesSection
 import com.lilin.gamelibrary.ui.component.discovery.LoadingGamesSection
@@ -66,11 +69,13 @@ import kotlinx.serialization.Serializable
 object DiscoveryScreen
 
 fun NavGraphBuilder.navigateDiscoveryScreen(
+    isAtLeastMedium: Boolean,
     onNavigateToDetail: (Int) -> Unit,
     onNavigateToSectionDetail: (SectionType) -> Unit,
 ) {
     composable<DiscoveryScreen> {
         DiscoveryScreen(
+            isAtLeastMedium = isAtLeastMedium,
             onNavigateToDetail = { gameId ->
                 onNavigateToDetail(gameId)
             },
@@ -79,9 +84,9 @@ fun NavGraphBuilder.navigateDiscoveryScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiscoveryScreen(
+    isAtLeastMedium: Boolean,
     onNavigateToDetail: (Int) -> Unit,
     onNavigateToSectionDetail: (SectionType) -> Unit,
     modifier: Modifier = Modifier,
@@ -109,6 +114,15 @@ fun DiscoveryScreen(
         topBar = {
             DiscoveryTopBar(scrollBehavior = scrollBehavior)
         },
+        bottomBar = {
+            if (isAtLeastMedium) {
+                DiscoveryBottomBar(
+                    onClickTrending = {},
+                    onClickHighRated = {},
+                    onClickNewRelease = {},
+                )
+            }
+        },
         contentWindowInsets = WindowInsets.navigationBars,
         modifier = modifier,
     ) { paddingValues ->
@@ -132,7 +146,6 @@ fun DiscoveryScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DiscoveryScreen(
     trendingState: DiscoveryUiState,
@@ -171,46 +184,85 @@ private fun DiscoveryScreen(
         }
 
         else -> {
-            LazyColumn(
-                modifier = modifier
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
-                contentPadding = PaddingValues(bottom = 12.dp),
-            ) {
-                item {
-                    TrendingGames(
-                        uiState = trendingState,
-                        onNavigateToDetail = onNavigateToDetail,
-                        onNavigateToSectionDetail = onNavigateToSectionDetail,
-                        onRetry = onRetryTrendSection,
-                        onReload = onReloadTrendSection,
-                        modifier = Modifier,
-                    )
-                }
-
-                item {
-                    HighRatedGames(
-                        uiState = highlyRatedState,
-                        onNavigateToDetail = onNavigateToDetail,
-                        onNavigateToSectionDetail = onNavigateToSectionDetail,
-                        onRetry = onRetryHighRatedSection,
-                        onReload = onReloadHighRatedSection,
-                        modifier = Modifier,
-                    )
-                }
-
-                item {
-                    NewReleaseGames(
-                        uiState = newReleasesState,
-                        onNavigateToDetail = onNavigateToDetail,
-                        onNavigateToSectionDetail = onNavigateToSectionDetail,
-                        onRetry = onRetryNewReleaseSection,
-                        onReload = onReloadNewReleaseSection,
-                        modifier = Modifier,
-                    )
-                }
-            }
+            // Todo: WindowWidthSizeによって、CompactContentを表示するかLeastMediumContentを表示する
+            CompactContent(
+                trendingState = trendingState,
+                highlyRatedState = highlyRatedState,
+                newReleasesState = newReleasesState,
+                scrollBehavior = scrollBehavior,
+                onNavigateToDetail = onNavigateToDetail,
+                onNavigateToSectionDetail = onNavigateToSectionDetail,
+                onReloadTrendSection = onReloadTrendSection,
+                onReloadHighRatedSection = onReloadHighRatedSection,
+                onReloadNewReleaseSection = onReloadNewReleaseSection,
+                onRetryTrendSection = onRetryTrendSection,
+                onRetryHighRatedSection = onRetryHighRatedSection,
+                onRetryNewReleaseSection = onRetryNewReleaseSection,
+                modifier = modifier,
+            )
         }
     }
+}
+
+@Composable
+private fun CompactContent(
+    trendingState: DiscoveryUiState,
+    highlyRatedState: DiscoveryUiState,
+    newReleasesState: DiscoveryUiState,
+    scrollBehavior: TopAppBarScrollBehavior,
+    onNavigateToDetail: (Int) -> Unit,
+    onNavigateToSectionDetail: (SectionType) -> Unit,
+    onReloadTrendSection: () -> Unit,
+    onReloadHighRatedSection: () -> Unit,
+    onReloadNewReleaseSection: () -> Unit,
+    onRetryTrendSection: () -> Unit,
+    onRetryHighRatedSection: () -> Unit,
+    onRetryNewReleaseSection: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier = modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        contentPadding = PaddingValues(bottom = 12.dp),
+    ) {
+        item {
+            TrendingGames(
+                uiState = trendingState,
+                onNavigateToDetail = onNavigateToDetail,
+                onNavigateToSectionDetail = onNavigateToSectionDetail,
+                onRetry = onRetryTrendSection,
+                onReload = onReloadTrendSection,
+                modifier = Modifier,
+            )
+        }
+
+        item {
+            HighRatedGames(
+                uiState = highlyRatedState,
+                onNavigateToDetail = onNavigateToDetail,
+                onNavigateToSectionDetail = onNavigateToSectionDetail,
+                onRetry = onRetryHighRatedSection,
+                onReload = onReloadHighRatedSection,
+                modifier = Modifier,
+            )
+        }
+
+        item {
+            NewReleaseGames(
+                uiState = newReleasesState,
+                onNavigateToDetail = onNavigateToDetail,
+                onNavigateToSectionDetail = onNavigateToSectionDetail,
+                onRetry = onRetryNewReleaseSection,
+                onReload = onReloadNewReleaseSection,
+                modifier = Modifier,
+            )
+        }
+    }
+}
+
+@Composable
+private fun LeastMediumContent() {
+    // Medium以上の場合のleyout定義
 }
 
 @Composable
@@ -470,7 +522,6 @@ private fun NewReleaseGames(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @VisibleForTesting
 @Composable
 internal fun DiscoveryScreenSample(
@@ -498,8 +549,9 @@ internal fun DiscoveryScreenSample(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showSystemUi = true)
+@Preview(name = "Compact", widthDp = 400)
+@Preview(name = "Medium", widthDp = 700)
+@Preview(name = "Expanded", widthDp = 900)
 @Composable
 private fun DiscoveryScreenPreview() {
     val games = listOf(
