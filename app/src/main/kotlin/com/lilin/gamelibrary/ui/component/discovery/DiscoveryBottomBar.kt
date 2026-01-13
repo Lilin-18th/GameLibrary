@@ -36,8 +36,10 @@ import androidx.compose.ui.unit.dp
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.ui.theme.HighRatedGradientStart
 import com.lilin.gamelibrary.ui.theme.HighRatedRippleConfiguration
+import com.lilin.gamelibrary.ui.theme.NewReleaseGradientEnd
 import com.lilin.gamelibrary.ui.theme.NewReleaseGradientStart
 import com.lilin.gamelibrary.ui.theme.NewReleaseRippleConfiguration
+import com.lilin.gamelibrary.ui.theme.TrendingGradientEnd
 import com.lilin.gamelibrary.ui.theme.TrendingGradientStart
 import com.lilin.gamelibrary.ui.theme.TrendingRippleConfiguration
 
@@ -46,6 +48,7 @@ fun DiscoveryBottomBar(
     onClickTrending: () -> Unit,
     onClickHighRated: () -> Unit,
     onClickNewRelease: () -> Unit,
+    selectedTab: SectionType,
     modifier: Modifier = Modifier,
 ) {
     val interactionSourceTrending = remember { MutableInteractionSource() }
@@ -103,7 +106,11 @@ fun DiscoveryBottomBar(
                         modifier = Modifier
                             .size(80.dp, 44.dp)
                             .background(
-                                color = MaterialTheme.colorScheme.surface,
+                                color = if (selectedTab == SectionType.TRENDING) {
+                                    TrendingGradientEnd.copy(alpha = 0.3f)
+                                } else {
+                                    MaterialTheme.colorScheme.surface
+                                },
                                 shape = RoundedCornerShape(32.dp),
                             ),
                     ) {
@@ -121,7 +128,11 @@ fun DiscoveryBottomBar(
                         modifier = Modifier
                             .size(80.dp, 44.dp)
                             .background(
-                                color = MaterialTheme.colorScheme.surface,
+                                color = if (selectedTab == SectionType.HIGH_RATED) {
+                                    HighRatedGradientStart.copy(alpha = 0.2f)
+                                } else {
+                                    MaterialTheme.colorScheme.surface
+                                },
                                 shape = RoundedCornerShape(32.dp),
                             ),
                     ) {
@@ -139,7 +150,11 @@ fun DiscoveryBottomBar(
                         modifier = Modifier
                             .size(80.dp, 44.dp)
                             .background(
-                                color = MaterialTheme.colorScheme.surface,
+                                color = if (selectedTab == SectionType.NEW_RELEASE) {
+                                    NewReleaseGradientEnd.copy(alpha = 0.3f)
+                                } else {
+                                    MaterialTheme.colorScheme.surface
+                                },
                                 shape = RoundedCornerShape(32.dp),
                             ),
                     ) {
@@ -209,10 +224,33 @@ private fun CustomRippleIconButtonPreview() {
 
 @Preview
 @Composable
-private fun DiscoveryBottomBarPreview() {
+private fun DiscoveryBottomBarTrendPreview() {
     DiscoveryBottomBar(
         onClickTrending = {},
         onClickHighRated = {},
         onClickNewRelease = {},
+        selectedTab = SectionType.TRENDING,
+    )
+}
+
+@Preview
+@Composable
+private fun DiscoveryBottomBarSelectedHighRatedPreview() {
+    DiscoveryBottomBar(
+        onClickTrending = {},
+        onClickHighRated = {},
+        onClickNewRelease = {},
+        selectedTab = SectionType.HIGH_RATED,
+    )
+}
+
+@Preview
+@Composable
+private fun DiscoveryBottomBarSelectedNewReleasePreview() {
+    DiscoveryBottomBar(
+        onClickTrending = {},
+        onClickHighRated = {},
+        onClickNewRelease = {},
+        selectedTab = SectionType.NEW_RELEASE,
     )
 }
