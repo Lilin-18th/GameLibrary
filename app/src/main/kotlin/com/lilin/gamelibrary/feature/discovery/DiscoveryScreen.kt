@@ -44,9 +44,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -114,14 +111,17 @@ fun DiscoveryScreen(
     val newReleasesState by viewModel.newReleasesState.collectAsState()
     val expandedUiState by viewModel.expandedUiState.collectAsStateWithLifecycle()
 
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     DiscoveryScreen(
         isAtLeastMedium = isAtLeastMedium,
+        selectedTab = selectedTab,
         expandedUiState = expandedUiState,
         trendingState = trendingState,
         highlyRatedState = highlyRatedState,
         newReleasesState = newReleasesState,
         scrollBehavior = scrollBehavior,
+        changeSectionTab = viewModel::changeSelectedTab,
         loadingAllSection = viewModel::loadAllSections,
         onReloadTrendSection = viewModel::reloadTrendingGames,
         onReloadHighRatedSection = viewModel::reloadHighlyRatedGames,
@@ -139,11 +139,13 @@ fun DiscoveryScreen(
 @Composable
 private fun DiscoveryScreen(
     isAtLeastMedium: Boolean,
+    selectedTab: SectionType,
     expandedUiState: DiscoveryExpandedUiState,
     trendingState: DiscoveryUiState,
     highlyRatedState: DiscoveryUiState,
     newReleasesState: DiscoveryUiState,
     scrollBehavior: TopAppBarScrollBehavior,
+    changeSectionTab: (SectionType) -> Unit,
     loadingAllSection: () -> Unit,
     onReloadTrendSection: () -> Unit,
     onReloadHighRatedSection: () -> Unit,
@@ -156,13 +158,11 @@ private fun DiscoveryScreen(
     loadSectionExpanded: (SectionType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var selectedTab by rememberSaveable { mutableStateOf(SectionType.TRENDING) }
-
     Scaffold(
         topBar = {
             if (isAtLeastMedium) {
                 SectionDetailTopAppBar(
-                    sectionType = SectionType.TRENDING,
+                    sectionType = selectedTab,
                     gameCount = if (expandedUiState is DiscoveryExpandedUiState.Success) {
                         expandedUiState.totalCount
                     } else {
@@ -177,15 +177,9 @@ private fun DiscoveryScreen(
         bottomBar = {
             if (isAtLeastMedium) {
                 DiscoveryBottomBar(
-                    onClickTrending = {
-                        selectedTab = SectionType.TRENDING
-                    },
-                    onClickHighRated = {
-                        selectedTab = SectionType.HIGH_RATED
-                    },
-                    onClickNewRelease = {
-                        selectedTab = SectionType.NEW_RELEASE
-                    },
+                    onClickTrending = { changeSectionTab(SectionType.TRENDING) },
+                    onClickHighRated = { changeSectionTab(SectionType.HIGH_RATED) },
+                    onClickNewRelease = { changeSectionTab(SectionType.NEW_RELEASE) },
                     selectedTab = selectedTab,
                 )
             }
@@ -744,11 +738,13 @@ internal fun DiscoveryScreenSample(
     ) { paddingValues ->
         DiscoveryScreen(
             isAtLeastMedium = isAtLeastMedium,
+            selectedTab = SectionType.TRENDING,
             expandedUiState = expandedUiState,
             trendingState = trendingState,
             highlyRatedState = highlyRatedState,
             newReleasesState = newReleasesState,
             scrollBehavior = scrollBehavior,
+            changeSectionTab = {},
             loadingAllSection = {},
             onReloadTrendSection = {},
             onReloadHighRatedSection = {},
@@ -759,7 +755,7 @@ internal fun DiscoveryScreenSample(
             onNavigateToDetail = {},
             onNavigateToSectionDetail = {},
             loadSectionExpanded = {},
-            modifier = modifier,
+            modifier = modifier.padding(paddingValues),
         )
     }
 }

@@ -5,9 +5,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,9 +34,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lilin.gamelibrary.R
+import com.lilin.gamelibrary.ui.theme.DetailDescriptionGradientEnd
 import com.lilin.gamelibrary.ui.theme.HighRatedGradientStart
 import com.lilin.gamelibrary.ui.theme.HighRatedRippleConfiguration
-import com.lilin.gamelibrary.ui.theme.NewReleaseGradientEnd
 import com.lilin.gamelibrary.ui.theme.NewReleaseGradientStart
 import com.lilin.gamelibrary.ui.theme.NewReleaseRippleConfiguration
 import com.lilin.gamelibrary.ui.theme.TrendingGradientEnd
@@ -59,7 +59,7 @@ fun DiscoveryBottomBar(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(80.dp)
+                .defaultMinSize(minHeight = 80.dp)
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
@@ -72,7 +72,7 @@ fun DiscoveryBottomBar(
         )
 
         BottomAppBar(
-            modifier = Modifier.height(80.dp),
+            modifier = Modifier.defaultMinSize(minHeight = 80.dp),
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface,
             tonalElevation = 0.dp,
@@ -107,7 +107,7 @@ fun DiscoveryBottomBar(
                             .size(80.dp, 44.dp)
                             .background(
                                 color = if (selectedTab == SectionType.TRENDING) {
-                                    TrendingGradientEnd.copy(alpha = 0.3f)
+                                    TrendingGradientEnd.copy(alpha = 0.15f)
                                 } else {
                                     MaterialTheme.colorScheme.surface
                                 },
@@ -129,7 +129,7 @@ fun DiscoveryBottomBar(
                             .size(80.dp, 44.dp)
                             .background(
                                 color = if (selectedTab == SectionType.HIGH_RATED) {
-                                    HighRatedGradientStart.copy(alpha = 0.2f)
+                                    DetailDescriptionGradientEnd.copy(alpha = 0.25f)
                                 } else {
                                     MaterialTheme.colorScheme.surface
                                 },
@@ -151,7 +151,7 @@ fun DiscoveryBottomBar(
                             .size(80.dp, 44.dp)
                             .background(
                                 color = if (selectedTab == SectionType.NEW_RELEASE) {
-                                    NewReleaseGradientEnd.copy(alpha = 0.3f)
+                                    NewReleaseGradientStart.copy(alpha = 0.15f)
                                 } else {
                                     MaterialTheme.colorScheme.surface
                                 },

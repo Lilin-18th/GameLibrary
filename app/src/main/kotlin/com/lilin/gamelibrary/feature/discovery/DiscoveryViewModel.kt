@@ -32,6 +32,13 @@ class DiscoveryViewModel @Inject constructor(
         MutableStateFlow<DiscoveryExpandedUiState>(DiscoveryExpandedUiState.Loading)
     val expandedUiState = _expandedUiState.asStateFlow()
 
+    private val _selectedTab = MutableStateFlow(SectionType.TRENDING)
+    val selectedTab = _selectedTab.asStateFlow()
+
+    fun changeSelectedTab(sectionType: SectionType) {
+        _selectedTab.value = sectionType
+    }
+
     fun loadSectionExpanded(sectionType: SectionType) {
         viewModelScope.launch {
             _expandedUiState.value = DiscoveryExpandedUiState.Loading
