@@ -39,7 +39,7 @@ jobs:
       - name: Compare Screenshots
         id: compare
         continue-on-error: true
-        run: ./gradlew compareRoborazziDebug --stacktrace
+        run: ./gradlew compareRoborazziLocalDebug --stacktrace
 
       - name: Upload Comparison Artifacts
         uses: actions/upload-artifact@v4

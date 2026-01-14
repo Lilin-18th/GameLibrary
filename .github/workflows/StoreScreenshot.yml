@@ -27,7 +27,7 @@ jobs:
         run: echo "api_key=dummy_key_for_unit_tests" > local.properties
 
       - name: Record Screenshots
-        run: ./gradlew recordRoborazziDebug --stacktrace
+        run: ./gradlew recordRoborazziLocalDebug --stacktrace
 
       - name: Upload Screenshots Artifact
         uses: actions/upload-artifact@v4
