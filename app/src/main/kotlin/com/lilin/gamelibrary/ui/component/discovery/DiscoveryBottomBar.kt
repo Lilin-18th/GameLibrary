@@ -45,10 +45,10 @@ import com.lilin.gamelibrary.ui.theme.TrendingRippleConfiguration
 
 @Composable
 fun DiscoveryBottomBar(
-    onClickTrending: () -> Unit,
-    onClickHighRated: () -> Unit,
-    onClickNewRelease: () -> Unit,
     selectedTab: SectionType,
+    onClickTrendingTab: () -> Unit,
+    onClickHighRatedTab: () -> Unit,
+    onClickNewReleaseTab: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val interactionSourceTrending = remember { MutableInteractionSource() }
@@ -98,11 +98,10 @@ fun DiscoveryBottomBar(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-
                     CustomRippleIconButton(
                         interactionSource = interactionSourceTrending,
                         rippleConfiguration = TrendingRippleConfiguration,
-                        onClick = onClickTrending,
+                        onClick = onClickTrendingTab,
                         modifier = Modifier
                             .size(80.dp, 44.dp)
                             .background(
@@ -124,7 +123,7 @@ fun DiscoveryBottomBar(
                     CustomRippleIconButton(
                         interactionSource = interactionSourceHighRated,
                         rippleConfiguration = HighRatedRippleConfiguration,
-                        onClick = onClickHighRated,
+                        onClick = onClickHighRatedTab,
                         modifier = Modifier
                             .size(80.dp, 44.dp)
                             .background(
@@ -146,7 +145,7 @@ fun DiscoveryBottomBar(
                     CustomRippleIconButton(
                         interactionSource = interactionSourceNewRelease,
                         rippleConfiguration = NewReleaseRippleConfiguration,
-                        onClick = onClickNewRelease,
+                        onClick = onClickNewReleaseTab,
                         modifier = Modifier
                             .size(80.dp, 44.dp)
                             .background(
@@ -226,9 +225,9 @@ private fun CustomRippleIconButtonPreview() {
 @Composable
 private fun DiscoveryBottomBarTrendPreview() {
     DiscoveryBottomBar(
-        onClickTrending = {},
-        onClickHighRated = {},
-        onClickNewRelease = {},
+        onClickTrendingTab = {},
+        onClickHighRatedTab = {},
+        onClickNewReleaseTab = {},
         selectedTab = SectionType.TRENDING,
     )
 }
@@ -237,9 +236,9 @@ private fun DiscoveryBottomBarTrendPreview() {
 @Composable
 private fun DiscoveryBottomBarSelectedHighRatedPreview() {
     DiscoveryBottomBar(
-        onClickTrending = {},
-        onClickHighRated = {},
-        onClickNewRelease = {},
+        onClickTrendingTab = {},
+        onClickHighRatedTab = {},
+        onClickNewReleaseTab = {},
         selectedTab = SectionType.HIGH_RATED,
     )
 }
@@ -248,9 +247,9 @@ private fun DiscoveryBottomBarSelectedHighRatedPreview() {
 @Composable
 private fun DiscoveryBottomBarSelectedNewReleasePreview() {
     DiscoveryBottomBar(
-        onClickTrending = {},
-        onClickHighRated = {},
-        onClickNewRelease = {},
+        onClickTrendingTab = {},
+        onClickHighRatedTab = {},
+        onClickNewReleaseTab = {},
         selectedTab = SectionType.NEW_RELEASE,
     )
 }

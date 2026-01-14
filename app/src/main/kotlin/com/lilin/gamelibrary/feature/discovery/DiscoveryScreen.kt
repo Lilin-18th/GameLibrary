@@ -131,7 +131,7 @@ fun DiscoveryScreen(
         onRetryNewReleaseSection = viewModel::retryNewReleases,
         onNavigateToDetail = onNavigateToDetail,
         onNavigateToSectionDetail = onNavigateToSectionDetail,
-        loadSectionExpanded = viewModel::loadSectionExpanded,
+        loadSectionExpandedContent = viewModel::loadSectionExpanded,
         modifier = modifier,
     )
 }
@@ -155,7 +155,7 @@ private fun DiscoveryScreen(
     onRetryNewReleaseSection: () -> Unit,
     onNavigateToDetail: (Int) -> Unit,
     onNavigateToSectionDetail: (SectionType) -> Unit,
-    loadSectionExpanded: (SectionType) -> Unit,
+    loadSectionExpandedContent: (SectionType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -177,9 +177,9 @@ private fun DiscoveryScreen(
         bottomBar = {
             if (isAtLeastMedium) {
                 DiscoveryBottomBar(
-                    onClickTrending = { changeSectionTab(SectionType.TRENDING) },
-                    onClickHighRated = { changeSectionTab(SectionType.HIGH_RATED) },
-                    onClickNewRelease = { changeSectionTab(SectionType.NEW_RELEASE) },
+                    onClickTrendingTab = { changeSectionTab(SectionType.TRENDING) },
+                    onClickHighRatedTab = { changeSectionTab(SectionType.HIGH_RATED) },
+                    onClickNewReleaseTab = { changeSectionTab(SectionType.NEW_RELEASE) },
                     selectedTab = selectedTab,
                 )
             }
@@ -189,7 +189,7 @@ private fun DiscoveryScreen(
     ) { paddingValues ->
         if (isAtLeastMedium) {
             LaunchedEffect(selectedTab) {
-                loadSectionExpanded(selectedTab)
+                loadSectionExpandedContent(selectedTab)
             }
 
             ExpandedDiscoveryScreen(
@@ -707,57 +707,27 @@ internal fun DiscoveryScreenSample(
 
         else -> true
     }
-    Scaffold(
-        topBar = {
-            if (isAtLeastMedium) {
-                SectionDetailTopAppBar(
-                    sectionType = SectionType.TRENDING,
-                    gameCount = if (expandedUiState is DiscoveryExpandedUiState.Success) {
-                        expandedUiState.totalCount
-                    } else {
-                        0
-                    },
-                    scrollBehavior = scrollBehavior,
-                )
-            } else {
-                DiscoveryTopBar(scrollBehavior = scrollBehavior)
-            }
-        },
-        bottomBar = {
-            if (isAtLeastMedium) {
-                DiscoveryBottomBar(
-                    onClickTrending = {},
-                    onClickHighRated = {},
-                    onClickNewRelease = {},
-                    selectedTab = SectionType.TRENDING,
-                )
-            }
-        },
-        contentWindowInsets = WindowInsets.navigationBars,
-        modifier = modifier,
-    ) { paddingValues ->
-        DiscoveryScreen(
-            isAtLeastMedium = isAtLeastMedium,
-            selectedTab = SectionType.TRENDING,
-            expandedUiState = expandedUiState,
-            trendingState = trendingState,
-            highlyRatedState = highlyRatedState,
-            newReleasesState = newReleasesState,
-            scrollBehavior = scrollBehavior,
-            changeSectionTab = {},
-            loadingAllSection = {},
-            onReloadTrendSection = {},
-            onReloadHighRatedSection = {},
-            onReloadNewReleaseSection = {},
-            onRetryTrendSection = {},
-            onRetryHighRatedSection = {},
-            onRetryNewReleaseSection = {},
-            onNavigateToDetail = {},
-            onNavigateToSectionDetail = {},
-            loadSectionExpanded = {},
-            modifier = modifier.padding(paddingValues),
-        )
-    }
+
+    DiscoveryScreen(
+        isAtLeastMedium = isAtLeastMedium,
+        selectedTab = SectionType.TRENDING,
+        expandedUiState = expandedUiState,
+        trendingState = trendingState,
+        highlyRatedState = highlyRatedState,
+        newReleasesState = newReleasesState,
+        scrollBehavior = scrollBehavior,
+        changeSectionTab = {},
+        loadingAllSection = {},
+        onReloadTrendSection = {},
+        onReloadHighRatedSection = {},
+        onReloadNewReleaseSection = {},
+        onRetryTrendSection = {},
+        onRetryHighRatedSection = {},
+        onRetryNewReleaseSection = {},
+        onNavigateToDetail = {},
+        onNavigateToSectionDetail = {},
+        loadSectionExpandedContent = {},
+    )
 }
 
 private fun Context.findActivity(): ComponentActivity {
