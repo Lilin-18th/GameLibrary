@@ -52,6 +52,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             viewModel.retryTrendingGames()
 
@@ -94,6 +95,7 @@ class DiscoveryViewModelTest {
         )
 
         testScheduler.advanceUntilIdle()
+        viewModel.loadAllSections()
 
         viewModel.retryTrendingGames()
         testScheduler.advanceUntilIdle()
@@ -120,7 +122,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
-
+            viewModel.loadAllSections()
             viewModel.retryHighlyRatedGames()
             assertEquals(DiscoveryUiState.Loading, viewModel.highlyRatedState.value)
             testScheduler.advanceUntilIdle()
@@ -155,7 +157,7 @@ class DiscoveryViewModelTest {
             getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
             getNewReleasesUseCase = mockGetNewReleasesUseCase,
         )
-
+        viewModel.loadAllSections()
         viewModel.retryHighlyRatedGames()
         assertEquals(DiscoveryUiState.Loading, viewModel.highlyRatedState.value)
         testScheduler.advanceUntilIdle()
@@ -181,7 +183,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
-
+            viewModel.loadAllSections()
             viewModel.retryNewReleases()
             assertEquals(DiscoveryUiState.Loading, viewModel.newReleasesState.value)
             testScheduler.advanceUntilIdle()
@@ -216,7 +218,7 @@ class DiscoveryViewModelTest {
             getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
             getNewReleasesUseCase = mockGetNewReleasesUseCase,
         )
-
+        viewModel.loadAllSections()
         viewModel.retryHighlyRatedGames()
         assertEquals(DiscoveryUiState.Loading, viewModel.highlyRatedState.value)
         testScheduler.advanceUntilIdle()
@@ -242,6 +244,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.trendingState.value)
@@ -285,6 +288,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.trendingState.value)
@@ -328,6 +332,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Error(exception), viewModel.trendingState.value)
@@ -354,6 +359,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.highlyRatedState.value)
@@ -400,6 +406,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.highlyRatedState.value)
@@ -446,6 +453,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Error(exception), viewModel.highlyRatedState.value)
@@ -472,6 +480,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.newReleasesState.value)
@@ -518,6 +527,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Success(mockGamesList), viewModel.newReleasesState.value)
@@ -564,6 +574,7 @@ class DiscoveryViewModelTest {
                 getHighRatedGamesUseCase = mockGetHighRatedGamesUseCase,
                 getNewReleasesUseCase = mockGetNewReleasesUseCase,
             )
+            viewModel.loadAllSections()
 
             testScheduler.advanceUntilIdle()
             assertEquals(DiscoveryUiState.Error(exception), viewModel.newReleasesState.value)

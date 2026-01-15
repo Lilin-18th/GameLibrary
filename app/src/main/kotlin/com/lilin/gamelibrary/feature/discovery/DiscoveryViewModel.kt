@@ -6,6 +6,7 @@ import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.domain.usecase.GetHighMetacriticScoreGamesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetNewReleasesUseCase
 import com.lilin.gamelibrary.domain.usecase.GetTrendingGamesUseCase
+import com.lilin.gamelibrary.ui.component.discovery.SectionType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,8 +28,39 @@ class DiscoveryViewModel @Inject constructor(
     private val _newReleasesState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.InitialLoading)
     val newReleasesState = _newReleasesState.asStateFlow()
 
-    init {
-        loadAllSections()
+    private val _expandedUiState =
+        MutableStateFlow<DiscoveryExpandedUiState>(DiscoveryExpandedUiState.Loading)
+    val expandedUiState = _expandedUiState.asStateFlow()
+
+    private val _selectedTab = MutableStateFlow(SectionType.TRENDING)
+    val selectedTab = _selectedTab.asStateFlow()
+
+    fun changeSelectedTab(sectionType: SectionType) {
+        _selectedTab.value = sectionType
+    }
+
+    fun loadSectionExpanded(sectionType: SectionType) {
+        viewModelScope.launch {
+            _expandedUiState.value = DiscoveryExpandedUiState.Loading
+            val result = when (sectionType) {
+                SectionType.TRENDING -> getTrendingGamesUseCase(page = 1, pageSize = 30)
+                SectionType.HIGH_RATED -> getHighRatedGamesUseCase(page = 1, pageSize = 30)
+                SectionType.NEW_RELEASE -> getNewReleasesUseCase(page = 1, pageSize = 30)
+            }
+
+            result.fold(
+                onSuccess = { games ->
+                    _expandedUiState.value = DiscoveryExpandedUiState.Success(
+                        games = games,
+                        totalCount = games.size,
+                        selectedSection = sectionType,
+                    )
+                },
+                onFailure = { throwable ->
+                    _expandedUiState.value = DiscoveryExpandedUiState.Error(throwable)
+                },
+            )
+        }
     }
 
     fun retryTrendingGames() {

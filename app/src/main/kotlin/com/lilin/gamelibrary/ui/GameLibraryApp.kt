@@ -187,6 +187,7 @@ private fun MediumApp(
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
         ) { paddingValues ->
             AppNavHost(
+                isAtLeastMedium = true,
                 navController = navController,
                 modifier = Modifier
                     .padding(paddingValues)
@@ -217,6 +218,7 @@ private fun ExpandedApp(
         modifier = modifier,
     ) {
         AppNavHost(
+            isAtLeastMedium = true,
             navController = navController,
             modifier = Modifier.fillMaxSize(),
         )
@@ -227,6 +229,7 @@ private fun ExpandedApp(
 private fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    isAtLeastMedium: Boolean = false,
 ) {
     NavHost(
         navController = navController,
@@ -237,7 +240,10 @@ private fun AppNavHost(
         popEnterTransition = { fadeIn(tween(DURATION_MILLIS)) },
         popExitTransition = { fadeOut(tween(DURATION_MILLIS)) },
     ) {
-        bottomNavGraph(navController)
+        bottomNavGraph(
+            isAtLeastMedium = isAtLeastMedium,
+            navController = navController,
+        )
 
         navigateDetailScreen(onBackClick = navController::popBackStack)
 
@@ -250,7 +256,10 @@ private fun AppNavHost(
     }
 }
 
-private fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
+private fun NavGraphBuilder.bottomNavGraph(
+    isAtLeastMedium: Boolean,
+    navController: NavHostController,
+) {
     navigation<BottomNavGraph>(
         startDestination = DiscoveryScreen,
         enterTransition = {
@@ -258,7 +267,7 @@ private fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
                 fadeIn(tween(DURATION_MILLIS))
             } else {
                 slideIntoContainer(
-                    towards = getSlideDirection(initialState, targetState),
+                    towards = getSlideDirection(isAtLeastMedium, initialState, targetState),
                     animationSpec = tween(DURATION_MILLIS),
                 )
             }
@@ -268,7 +277,7 @@ private fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
                 fadeOut(tween(DURATION_MILLIS))
             } else {
                 slideOutOfContainer(
-                    towards = getSlideDirection(initialState, targetState),
+                    towards = getSlideDirection(isAtLeastMedium, initialState, targetState),
                     animationSpec = tween(DURATION_MILLIS),
                 ) + ExitTransition.KeepUntilTransitionsFinished
             }
@@ -278,7 +287,7 @@ private fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
                 fadeIn(tween(DURATION_MILLIS))
             } else {
                 slideIntoContainer(
-                    towards = getSlideDirection(initialState, targetState),
+                    towards = getSlideDirection(isAtLeastMedium, initialState, targetState),
                     animationSpec = tween(DURATION_MILLIS),
                 )
             }
@@ -288,13 +297,14 @@ private fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
                 fadeOut(tween(DURATION_MILLIS))
             } else {
                 slideOutOfContainer(
-                    towards = getSlideDirection(initialState, targetState),
+                    towards = getSlideDirection(isAtLeastMedium, initialState, targetState),
                     animationSpec = tween(DURATION_MILLIS),
                 ) + ExitTransition.KeepUntilTransitionsFinished
             }
         },
     ) {
         navigateDiscoveryScreen(
+            isAtLeastMedium = isAtLeastMedium,
             onNavigateToDetail = { gameId ->
                 navController.navigate(GameDetailScreen(gameId))
             },
@@ -337,6 +347,7 @@ private fun involvesDetailScreen(
  * @return スライド方向
  */
 private fun getSlideDirection(
+    isAtLeastMedium: Boolean,
     from: NavBackStackEntry,
     to: NavBackStackEntry,
 ): AnimatedContentTransitionScope.SlideDirection {
@@ -344,9 +355,17 @@ private fun getSlideDirection(
     val toIndex = getScreenIndex(to)
 
     return if (toIndex > fromIndex) {
-        AnimatedContentTransitionScope.SlideDirection.Start
+        if (isAtLeastMedium) {
+            AnimatedContentTransitionScope.SlideDirection.Up
+        } else {
+            AnimatedContentTransitionScope.SlideDirection.Start
+        }
     } else {
-        AnimatedContentTransitionScope.SlideDirection.End
+        if (isAtLeastMedium) {
+            AnimatedContentTransitionScope.SlideDirection.Down
+        } else {
+            AnimatedContentTransitionScope.SlideDirection.End
+        }
     }
 }
 
