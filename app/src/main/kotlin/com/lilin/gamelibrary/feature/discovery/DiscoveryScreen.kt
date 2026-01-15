@@ -188,7 +188,7 @@ private fun DiscoveryScreen(
         modifier = modifier,
     ) { paddingValues ->
         if (isAtLeastMedium) {
-            LaunchedEffect(selectedTab) {
+            LaunchedEffect(selectedTab, loadSectionExpandedContent) {
                 loadSectionExpandedContent(selectedTab)
             }
 
@@ -206,7 +206,7 @@ private fun DiscoveryScreen(
                     highlyRatedState is DiscoveryUiState.InitialLoading ||
                     newReleasesState is DiscoveryUiState.InitialLoading
 
-            LaunchedEffect(Unit) {
+            LaunchedEffect(Unit, loadingAllSection) {
                 loadingAllSection()
             }
 
@@ -693,7 +693,6 @@ internal fun DiscoveryScreenSample(
     highlyRatedState: DiscoveryUiState,
     newReleasesState: DiscoveryUiState,
     expandedUiState: DiscoveryExpandedUiState,
-    modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val context = LocalContext.current
@@ -736,7 +735,7 @@ private fun Context.findActivity(): ComponentActivity {
         if (context is ComponentActivity) return context
         context = context.baseContext
     }
-    throw IllegalStateException("No ComponentActivity found")
+    error("No ComponentActivity found")
 }
 
 @Preview(name = "Compact", widthDp = 400)
