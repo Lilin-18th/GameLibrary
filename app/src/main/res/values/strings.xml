@@ -26,8 +26,12 @@
     <string name="discover_trend_card_badge">TREND</string>
     <string name="discover_high_rated_card_badge">HIGH RATED</string>
     <string name="discover_new_release_card_badge">NEW</string>
+    <string name="detail_basic_info">基本情報</string>
     <string name="detail_label_genre">ジャンル</string>
+    <string name="detail_label_developer">開発者</string>
+    <string name="detail_label_rating">評価</string>
     <string name="detail_label_release_date">発売日</string>
+    <string name="game_rating_format">%.2f (%s ratings)</string>
     <string name="detail_label_esrb_rating">ESRB</string>
     <string name="detail_label_description">説明</string>
     <string name="detail_description_button_collapse">折りたたむ ▲</string>
@@ -62,4 +66,8 @@
 
     <string name="navigation_rail_hide">Hide rail</string>
     <string name="navigation_rail_show">Show rail</string>
+
+    <string name="game_image_description">%1$sのゲーム画像</string>
+    <string name="game_image_placeholder">ゲーム画像が見つかりません</string>
+    <string name="detail_section_platforms_title">プラットフォーム情報</string>
 </resources>

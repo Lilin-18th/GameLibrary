@@ -28,6 +28,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,6 +49,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.GameDetail
+import com.lilin.gamelibrary.feature.discovery.findActivity
 import com.lilin.gamelibrary.ui.component.ErrorMessage
 import com.lilin.gamelibrary.ui.component.GameDetailTopAppBar
 import com.lilin.gamelibrary.ui.component.detail.GameBackgroundImageSection
@@ -67,11 +71,13 @@ import kotlinx.serialization.Serializable
 data class GameDetailScreen(val gameId: Int)
 
 fun NavGraphBuilder.navigateDetailScreen(
+    isAtLeastMedium: Boolean,
     onBackClick: () -> Unit,
 ) {
     composable<GameDetailScreen> { backStackEntry ->
         backStackEntry.toRoute<GameDetailScreen>()
         GameDetailScreen(
+            isAtLeastMedium = isAtLeastMedium,
             onBackClick = onBackClick,
         )
     }
@@ -80,6 +86,7 @@ fun NavGraphBuilder.navigateDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameDetailScreen(
+    isAtLeastMedium: Boolean,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GameDetailViewModel = hiltViewModel(),
@@ -119,6 +126,7 @@ fun GameDetailScreen(
         GameDetailScreen(
             uiState = uiState,
             scrollBehavior = scrollBehavior,
+            isAtLeastMedium = isAtLeastMedium,
             onRetry = viewModel::retryLoadGameDetail,
             bottomBarPadding = paddingValues.calculateBottomPadding(),
             modifier = Modifier.padding(
@@ -133,6 +141,7 @@ fun GameDetailScreen(
 private fun GameDetailScreen(
     uiState: GameDetailUiState,
     scrollBehavior: TopAppBarScrollBehavior,
+    isAtLeastMedium: Boolean,
     onRetry: () -> Unit,
     bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
@@ -147,12 +156,20 @@ private fun GameDetailScreen(
         }
 
         is GameDetailUiState.Success -> {
-            GameDetailSuccessContent(
-                gameDetail = uiState.gameDetail,
-                scrollBehavior = scrollBehavior,
-                bottomBarPadding = bottomBarPadding,
-                modifier = modifier,
-            )
+            if (isAtLeastMedium) {
+                GameDetailMediumExpandedLayout(
+                    gameDetail = uiState.gameDetail,
+                    bottomBarPadding = bottomBarPadding,
+                    modifier = modifier,
+                )
+            } else {
+                GameDetailSuccessContent(
+                    gameDetail = uiState.gameDetail,
+                    scrollBehavior = scrollBehavior,
+                    bottomBarPadding = bottomBarPadding,
+                    modifier = modifier,
+                )
+            }
         }
 
         is GameDetailUiState.Error -> {
@@ -299,16 +316,32 @@ private fun shareGameWebSite(context: Context, url: String) {
     context.startActivity(shareIntent)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3WindowSizeClassApi::class,
+)
 @VisibleForTesting
 @Composable
 internal fun GameDetailScreenSample(
     uiState: GameDetailUiState,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val activity = context.findActivity()
+    val windowWidthSize = calculateWindowSizeClass(activity).widthSizeClass
+
+    val isAtLeastMedium = when (windowWidthSize) {
+        WindowWidthSizeClass.Compact -> {
+            false
+        }
+
+        else -> true
+    }
+
     GameDetailScreen(
         uiState = uiState,
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+        isAtLeastMedium = isAtLeastMedium,
         onRetry = {},
         bottomBarPadding = 90.dp,
         modifier = modifier,
