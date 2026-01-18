@@ -67,11 +67,13 @@ import kotlinx.serialization.Serializable
 data class GameDetailScreen(val gameId: Int)
 
 fun NavGraphBuilder.navigateDetailScreen(
+    isAtLeastMedium: Boolean,
     onBackClick: () -> Unit,
 ) {
     composable<GameDetailScreen> { backStackEntry ->
         backStackEntry.toRoute<GameDetailScreen>()
         GameDetailScreen(
+            isAtLeastMedium = isAtLeastMedium,
             onBackClick = onBackClick,
         )
     }
@@ -80,6 +82,7 @@ fun NavGraphBuilder.navigateDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameDetailScreen(
+    isAtLeastMedium: Boolean,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GameDetailViewModel = hiltViewModel(),
@@ -119,6 +122,7 @@ fun GameDetailScreen(
         GameDetailScreen(
             uiState = uiState,
             scrollBehavior = scrollBehavior,
+            isAtLeastMedium = isAtLeastMedium,
             onRetry = viewModel::retryLoadGameDetail,
             bottomBarPadding = paddingValues.calculateBottomPadding(),
             modifier = Modifier.padding(
@@ -133,6 +137,7 @@ fun GameDetailScreen(
 private fun GameDetailScreen(
     uiState: GameDetailUiState,
     scrollBehavior: TopAppBarScrollBehavior,
+    isAtLeastMedium: Boolean,
     onRetry: () -> Unit,
     bottomBarPadding: Dp,
     modifier: Modifier = Modifier,
@@ -147,12 +152,20 @@ private fun GameDetailScreen(
         }
 
         is GameDetailUiState.Success -> {
-            GameDetailSuccessContent(
-                gameDetail = uiState.gameDetail,
-                scrollBehavior = scrollBehavior,
-                bottomBarPadding = bottomBarPadding,
-                modifier = modifier,
-            )
+            if (isAtLeastMedium) {
+                GameDetailMediumExpandedLayout(
+                    gameDetail = uiState.gameDetail,
+                    bottomBarPadding = bottomBarPadding,
+                    modifier = modifier,
+                )
+            } else {
+                GameDetailSuccessContent(
+                    gameDetail = uiState.gameDetail,
+                    scrollBehavior = scrollBehavior,
+                    bottomBarPadding = bottomBarPadding,
+                    modifier = modifier,
+                )
+            }
         }
 
         is GameDetailUiState.Error -> {
@@ -309,6 +322,7 @@ internal fun GameDetailScreenSample(
     GameDetailScreen(
         uiState = uiState,
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+        isAtLeastMedium = false,
         onRetry = {},
         bottomBarPadding = 90.dp,
         modifier = modifier,

@@ -245,7 +245,10 @@ private fun AppNavHost(
             navController = navController,
         )
 
-        navigateDetailScreen(onBackClick = navController::popBackStack)
+        navigateDetailScreen(
+            isAtLeastMedium = isAtLeastMedium,
+            onBackClick = navController::popBackStack,
+        )
 
         navigateSectionDetailScreen(
             onBackClick = navController::popBackStack,
