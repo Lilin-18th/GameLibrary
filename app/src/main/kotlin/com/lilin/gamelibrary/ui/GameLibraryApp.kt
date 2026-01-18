@@ -208,8 +208,8 @@ private fun ExpandedApp(
         currentDestination = currentDestination,
         onNavigateToRoute = { route ->
             navController.navigate(route) {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
+                popUpTo(BottomNavGraph) {
+                    inclusive = false
                 }
                 launchSingleTop = true
                 restoreState = true
