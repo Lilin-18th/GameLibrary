@@ -70,4 +70,6 @@
     <string name="game_image_description">%1$sのゲーム画像</string>
     <string name="game_image_placeholder">ゲーム画像が見つかりません</string>
     <string name="detail_section_platforms_title">プラットフォーム情報</string>
+    <string name="search_result_header">検索結果: %s - %d 件</string>
+    <string name="search_result_reload">更新</string>
 </resources>

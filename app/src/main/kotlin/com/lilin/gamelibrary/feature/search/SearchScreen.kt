@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,11 +22,13 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -54,6 +57,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lilin.gamelibrary.R
+import com.lilin.gamelibrary.domain.model.Game
 import com.lilin.gamelibrary.ui.component.ErrorMessage
 import com.lilin.gamelibrary.ui.component.LoadingScreen
 import com.lilin.gamelibrary.ui.component.SearchTopBar
@@ -156,6 +160,7 @@ fun SearchScreen(
             bottomBarPadding = paddingValues.calculateBottomPadding(),
             listState = listState,
             onLoadNextPage = viewModel::loadNextPage,
+            search = viewModel::search,
             modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
         )
     }
@@ -168,6 +173,7 @@ private fun SearchScreen(
     query: String,
     navigateToDetail: (Int) -> Unit,
     onLoadNextPage: () -> Unit,
+    search: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     bottomBarPadding: Dp,
     listState: LazyListState,
@@ -211,6 +217,12 @@ private fun SearchScreen(
                             onLoadNextPage()
                         }
                     }
+
+                    SearchResultsHeader(
+                        query = query,
+                        count = searchUiState.data.size,
+                        onRefresh = search,
+                    )
 
                     LazyColumn(
                         modifier = Modifier
@@ -268,6 +280,32 @@ private fun SearchScreen(
                     modifier = Modifier.fillMaxSize(),
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun SearchResultsHeader(
+    query: String,
+    count: Int,
+    onRefresh: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.search_result_header, query, count),
+        )
+        IconButton(onClick = { onRefresh() }) {
+            Icon(
+                imageVector = Icons.Default.Refresh,
+                contentDescription = stringResource(R.string.search_result_reload),
+            )
         }
     }
 }
@@ -366,14 +404,86 @@ internal fun SearchScreenSample(
         bottomBarPadding = 0.dp,
         listState = listState,
         onLoadNextPage = {},
+        search = {},
         modifier = modifier,
     )
 }
 
-@Preview
+@Preview(
+    showBackground = true,
+    name = "Search UiState None",
+)
 @Composable
-private fun SearchScreenPreview() {
-    SearchScreen(
-        navigateToDetail = {},
+private fun SearchScreenNoneStatePreview() {
+    SearchScreenSample(
+        query = "",
+        searchUiState = SearchUiState.None,
+    )
+}
+
+@Preview(
+    showBackground = true,
+    name = "Search UiState Loading",
+)
+@Composable
+private fun SearchScreenLoadingStatePreview() {
+    SearchScreenSample(
+        query = "",
+        searchUiState = SearchUiState.Loading,
+    )
+}
+
+@Preview(
+    showBackground = true,
+    name = "Search UiState Success",
+)
+@Composable
+private fun SearchScreenSuccessStatePreview() {
+    val sampleGames = listOf(
+        Game(
+            id = 1,
+            name = "The Witcher 3: Wild Hunt",
+            imageUrl = null,
+            releaseDate = "2015-05-19",
+            rating = 4.5,
+            ratingsCount = 15234,
+            metacritic = 92,
+            isTba = false,
+            addedCount = 50000,
+            platforms = listOf("PC", "PS4", "Xbox One"),
+        ),
+        Game(
+            id = 2,
+            name = "Cyberpunk 2077",
+            imageUrl = null,
+            releaseDate = "2020-12-10",
+            rating = 4.2,
+            ratingsCount = 8765,
+            metacritic = 86,
+            isTba = false,
+            addedCount = 30000,
+            platforms = listOf("PC", "PS5", "Xbox Series X"),
+        ),
+    )
+
+    SearchScreenSample(
+        query = "Sample",
+        searchUiState = SearchUiState.Success(
+            data = sampleGames,
+        ),
+    )
+}
+
+@Preview(
+    showBackground = true,
+    name = "Search UiState Error",
+)
+@Composable
+private fun SearchScreenErrorStatePreview() {
+    SearchScreenSample(
+        query = "",
+        searchUiState = SearchUiState.Error(
+            throwable = Throwable("Sample error"),
+        ),
     )
 }
