@@ -19,6 +19,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -34,6 +39,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -47,6 +55,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -58,12 +67,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.Game
+import com.lilin.gamelibrary.feature.discovery.findActivity
 import com.lilin.gamelibrary.ui.component.ErrorMessage
 import com.lilin.gamelibrary.ui.component.LoadingScreen
 import com.lilin.gamelibrary.ui.component.SearchTopBar
 import com.lilin.gamelibrary.ui.component.search.SearchBottomBar
 import com.lilin.gamelibrary.ui.component.search.SearchNoResultState
 import com.lilin.gamelibrary.ui.component.search.SearchResultCard
+import com.lilin.gamelibrary.ui.component.search.SearchResultGridCard
 import com.lilin.gamelibrary.ui.component.toErrorMessage
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
@@ -72,10 +83,12 @@ import kotlinx.serialization.Serializable
 object SearchScreen
 
 fun NavGraphBuilder.navigateSearchScreen(
+    isAtLeastMedium: Boolean,
     navigateToDetail: (Int) -> Unit,
 ) {
     composable<SearchScreen> {
         SearchScreen(
+            isAtLeastMedium = isAtLeastMedium,
             navigateToDetail = { gameId ->
                 navigateToDetail(gameId)
             },
@@ -86,6 +99,7 @@ fun NavGraphBuilder.navigateSearchScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
+    isAtLeastMedium: Boolean,
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
@@ -151,6 +165,7 @@ fun SearchScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         SearchScreen(
+            isAtLeastMedium = isAtLeastMedium,
             query = query,
             searchUiState = searchUiState,
             scrollBehavior = scrollBehavior,
@@ -169,6 +184,7 @@ fun SearchScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchScreen(
+    isAtLeastMedium: Boolean,
     searchUiState: SearchUiState,
     query: String,
     navigateToDetail: (Int) -> Unit,
@@ -200,76 +216,33 @@ private fun SearchScreen(
                         modifier = Modifier.fillMaxSize(),
                     )
                 } else {
-                    val shouldLoadMore by remember(searchUiState) {
-                        derivedStateOf {
-                            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-                            val totalItems = listState.layoutInfo.totalItemsCount
-
-                            lastVisibleItem != null &&
-                                lastVisibleItem.index >= totalItems - 3 &&
-                                searchUiState.hasNextPage &&
-                                !searchUiState.isLoadingMore
-                        }
-                    }
-
-                    LaunchedEffect(shouldLoadMore, onLoadNextPage) {
-                        if (shouldLoadMore) {
-                            onLoadNextPage()
-                        }
-                    }
-
                     SearchResultsHeader(
                         query = query,
                         count = searchUiState.data.size,
                         onRefresh = search,
                     )
 
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .nestedScroll(scrollBehavior.nestedScrollConnection),
-                        state = listState,
-                        contentPadding = PaddingValues(
-                            top = 16.dp,
-                            start = 20.dp,
-                            bottom = bottomBarPadding,
-                            end = 20.dp,
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        items(
-                            items = searchUiState.data,
-                            key = { it.id },
-                        ) { game ->
-                            SearchResultCard(
-                                game = game,
-                                onClickItem = {
-                                    navigateToDetail(game.id)
-                                },
-                            )
-                        }
-
-                        if (searchUiState.isLoadingMore) {
-                            item {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 16.dp),
-                                    contentAlignment = Alignment.Center,
-                                ) {
-                                    CircularProgressIndicator(
-                                        modifier = Modifier.size(32.dp),
-                                        color = MaterialTheme.colorScheme.primary,
-                                    )
-                                }
-                            }
-                        }
-
-                        if (!searchUiState.isLoadingMore && !searchUiState.hasNextPage) {
-                            item {
-                                Spacer(modifier = Modifier.height(90.dp))
-                            }
-                        }
+                    if (isAtLeastMedium) {
+                        SearchResultsExpandedGrid(
+                            games = searchUiState.data,
+                            isLoadingMore = searchUiState.isLoadingMore,
+                            hasNextPage = searchUiState.hasNextPage,
+                            scrollBehavior = scrollBehavior,
+                            bottomBarPadding = bottomBarPadding,
+                            onLoadNextPage = onLoadNextPage,
+                            navigateToDetail = navigateToDetail,
+                        )
+                    } else {
+                        SearchResultsCompactList(
+                            games = searchUiState.data,
+                            isLoadingMore = searchUiState.isLoadingMore,
+                            hasNextPage = searchUiState.hasNextPage,
+                            listState = listState,
+                            scrollBehavior = scrollBehavior,
+                            bottomBarPadding = bottomBarPadding,
+                            onLoadNextPage = onLoadNextPage,
+                            navigateToDetail = navigateToDetail,
+                        )
                     }
                 }
             }
@@ -279,6 +252,169 @@ private fun SearchScreen(
                     error = searchUiState.throwable.toErrorMessage(),
                     modifier = Modifier.fillMaxSize(),
                 )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SearchResultsCompactList(
+    games: List<Game>,
+    isLoadingMore: Boolean,
+    hasNextPage: Boolean,
+    listState: LazyListState,
+    scrollBehavior: TopAppBarScrollBehavior,
+    bottomBarPadding: Dp,
+    onLoadNextPage: () -> Unit,
+    navigateToDetail: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val shouldLoadMore by remember(games, isLoadingMore, hasNextPage) {
+        derivedStateOf {
+            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+            val totalItems = listState.layoutInfo.totalItemsCount
+
+            lastVisibleItem != null &&
+                lastVisibleItem.index >= totalItems - 3 &&
+                hasNextPage &&
+                !isLoadingMore
+        }
+    }
+
+    LaunchedEffect(shouldLoadMore) {
+        if (shouldLoadMore) {
+            onLoadNextPage()
+        }
+    }
+
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        state = listState,
+        contentPadding = PaddingValues(
+            top = 16.dp,
+            start = 20.dp,
+            bottom = bottomBarPadding,
+            end = 20.dp,
+        ),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        items(
+            items = games,
+            key = { it.id },
+        ) { game ->
+            SearchResultCard(
+                game = game,
+                onClickItem = {
+                    navigateToDetail(game.id)
+                },
+            )
+        }
+
+        if (isLoadingMore) {
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(32.dp),
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+        }
+
+        if (!isLoadingMore && !hasNextPage) {
+            item {
+                Spacer(modifier = Modifier.height(90.dp))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SearchResultsExpandedGrid(
+    games: List<Game>,
+    isLoadingMore: Boolean,
+    hasNextPage: Boolean,
+    scrollBehavior: TopAppBarScrollBehavior,
+    bottomBarPadding: Dp,
+    onLoadNextPage: () -> Unit,
+    navigateToDetail: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val gridState = rememberLazyGridState()
+
+    val shouldLoadMore by remember(games, isLoadingMore, hasNextPage) {
+        derivedStateOf {
+            val lastVisibleItem = gridState.layoutInfo.visibleItemsInfo.lastOrNull()
+            val totalItems = gridState.layoutInfo.totalItemsCount
+
+            lastVisibleItem != null &&
+                lastVisibleItem.index >= totalItems - 3 &&
+                hasNextPage &&
+                !isLoadingMore
+        }
+    }
+
+    LaunchedEffect(shouldLoadMore) {
+        if (shouldLoadMore) {
+            onLoadNextPage()
+        }
+    }
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = modifier
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        state = gridState,
+        contentPadding = PaddingValues(
+            top = 16.dp,
+            start = 16.dp,
+            bottom = bottomBarPadding,
+            end = 16.dp,
+        ),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        items(
+            items = games,
+            key = { it.id },
+        ) { game ->
+            SearchResultGridCard(
+                game = game,
+                onClickItem = {
+                    navigateToDetail(game.id)
+                },
+            )
+        }
+
+        if (isLoadingMore) {
+            item(span = { GridItemSpan(3) }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(32.dp),
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+        }
+
+        if (!isLoadingMore && !hasNextPage) {
+            item(span = { GridItemSpan(3) }) {
+                Spacer(modifier = Modifier.height(90.dp))
             }
         }
     }
@@ -385,7 +521,8 @@ fun SearchEmptyState(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
 @VisibleForTesting
 @Composable
 internal fun SearchScreenSample(
@@ -396,7 +533,20 @@ internal fun SearchScreenSample(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val listState = rememberLazyListState()
 
+    val context = LocalContext.current
+    val activity = context.findActivity()
+    val windowWidthSize = calculateWindowSizeClass(activity).widthSizeClass
+
+    val isAtLeastMedium = when (windowWidthSize) {
+        WindowWidthSizeClass.Compact -> {
+            false
+        }
+
+        else -> true
+    }
+
     SearchScreen(
+        isAtLeastMedium = isAtLeastMedium,
         query = query,
         searchUiState = searchUiState,
         scrollBehavior = scrollBehavior,

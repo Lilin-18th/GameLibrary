@@ -317,6 +317,7 @@ private fun NavGraphBuilder.bottomNavGraph(
         )
 
         navigateSearchScreen(
+            isAtLeastMedium = isAtLeastMedium,
             navigateToDetail = { gameId ->
                 navController.navigate(GameDetailScreen(gameId))
             },
