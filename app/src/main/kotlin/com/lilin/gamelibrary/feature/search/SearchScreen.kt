@@ -282,7 +282,7 @@ private fun SearchResultsCompactList(
         }
     }
 
-    LaunchedEffect(shouldLoadMore) {
+    LaunchedEffect(shouldLoadMore, onLoadNextPage) {
         if (shouldLoadMore) {
             onLoadNextPage()
         }
@@ -363,7 +363,7 @@ private fun SearchResultsExpandedGrid(
         }
     }
 
-    LaunchedEffect(shouldLoadMore) {
+    LaunchedEffect(shouldLoadMore, onLoadNextPage) {
         if (shouldLoadMore) {
             onLoadNextPage()
         }
@@ -520,7 +520,6 @@ fun SearchEmptyState(
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
 @VisibleForTesting

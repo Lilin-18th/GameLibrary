@@ -172,4 +172,3 @@ private fun SearchResultGridCardPreview() {
         onClickItem = {},
     )
 }
-
