@@ -2,13 +2,7 @@ package com.lilin.gamelibrary.feature.search
 
 import android.content.Context
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -22,9 +16,6 @@ import coil3.asImage
 import coil3.test.FakeImageLoaderEngine
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.Game
-import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
-import com.lilin.gamelibrary.ui.component.GameLibraryNavigationBar
-import com.lilin.gamelibrary.ui.component.SearchTopBar
 import com.lilin.gamelibrary.util.captureMultiDevice
 import org.junit.Before
 import org.junit.Rule
@@ -64,26 +55,10 @@ class SearchScreenShotTest {
     @Test
     fun searchScreen_None_ScreenShot() {
         composeTestRule.captureMultiDevice("SearchScreen_None") {
-            Scaffold(
-                topBar = {
-                    SearchTopBar(scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior())
-                },
-                bottomBar = {
-                    GameLibraryNavigationBar(
-                        topLevelRoute = TOP_LEVEL_ROUTES,
-                        currentDestination = null,
-                        onNavigateToRoute = {},
-                    )
-                },
-                contentWindowInsets = WindowInsets.navigationBars,
-                modifier = Modifier,
-            ) { paddingValues ->
-                SearchScreenSample(
-                    query = "",
-                    searchUiState = SearchUiState.None,
-                    modifier = Modifier.padding(paddingValues),
-                )
-            }
+            SearchScreenSample(
+                query = "",
+                searchUiState = SearchUiState.None,
+            )
         }
     }
 
@@ -91,26 +66,10 @@ class SearchScreenShotTest {
     @Test
     fun searchScreen_Loading_ScreenShot() {
         composeTestRule.captureMultiDevice("SearchScreen_Loading") {
-            Scaffold(
-                topBar = {
-                    SearchTopBar(scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior())
-                },
-                bottomBar = {
-                    GameLibraryNavigationBar(
-                        topLevelRoute = TOP_LEVEL_ROUTES,
-                        currentDestination = null,
-                        onNavigateToRoute = {},
-                    )
-                },
-                contentWindowInsets = WindowInsets.navigationBars,
-                modifier = Modifier,
-            ) { paddingValues ->
-                SearchScreenSample(
-                    query = "cyberpunk",
-                    searchUiState = SearchUiState.Loading,
-                    modifier = Modifier.padding(paddingValues),
-                )
-            }
+            SearchScreenSample(
+                query = "cyberpunk",
+                searchUiState = SearchUiState.Loading,
+            )
         }
     }
 
@@ -118,26 +77,10 @@ class SearchScreenShotTest {
     @Test
     fun searchScreen_Success_ScreenShot() {
         composeTestRule.captureMultiDevice("SearchScreen_Success") {
-            Scaffold(
-                topBar = {
-                    SearchTopBar(scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior())
-                },
-                bottomBar = {
-                    GameLibraryNavigationBar(
-                        topLevelRoute = TOP_LEVEL_ROUTES,
-                        currentDestination = null,
-                        onNavigateToRoute = {},
-                    )
-                },
-                contentWindowInsets = WindowInsets.navigationBars,
-                modifier = Modifier,
-            ) { paddingValues ->
-                SearchScreenSample(
-                    query = "cyberpunk",
-                    searchUiState = SearchUiState.Success(data = SEARCH_RESULTS),
-                    modifier = Modifier.padding(paddingValues),
-                )
-            }
+            SearchScreenSample(
+                query = "cyberpunk",
+                searchUiState = SearchUiState.Success(data = SEARCH_RESULTS),
+            )
         }
     }
 
@@ -145,26 +88,10 @@ class SearchScreenShotTest {
     @Test
     fun searchScreen_SuccessWithQuery_ScreenShot() {
         composeTestRule.captureMultiDevice("SearchScreen_SuccessWithQuery") {
-            Scaffold(
-                topBar = {
-                    SearchTopBar(scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior())
-                },
-                bottomBar = {
-                    GameLibraryNavigationBar(
-                        topLevelRoute = TOP_LEVEL_ROUTES,
-                        currentDestination = null,
-                        onNavigateToRoute = {},
-                    )
-                },
-                contentWindowInsets = WindowInsets.navigationBars,
-                modifier = Modifier,
-            ) { paddingValues ->
-                SearchScreenSample(
-                    query = "The Witcher",
-                    searchUiState = SearchUiState.Success(data = WITCHER_RESULTS),
-                    modifier = Modifier.padding(paddingValues),
-                )
-            }
+            SearchScreenSample(
+                query = "The Witcher",
+                searchUiState = SearchUiState.Success(data = WITCHER_RESULTS),
+            )
         }
     }
 

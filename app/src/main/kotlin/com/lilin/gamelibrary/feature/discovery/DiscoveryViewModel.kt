@@ -22,10 +22,12 @@ class DiscoveryViewModel @Inject constructor(
     private val _trendingState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.InitialLoading)
     val trendingState = _trendingState.asStateFlow()
 
-    private val _highlyRatedState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.InitialLoading)
+    private val _highlyRatedState =
+        MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.InitialLoading)
     val highlyRatedState = _highlyRatedState.asStateFlow()
 
-    private val _newReleasesState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.InitialLoading)
+    private val _newReleasesState =
+        MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.InitialLoading)
     val newReleasesState = _newReleasesState.asStateFlow()
 
     private val _expandedUiState =
