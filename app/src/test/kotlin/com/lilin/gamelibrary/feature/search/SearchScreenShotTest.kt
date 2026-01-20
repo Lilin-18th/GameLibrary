@@ -64,26 +64,10 @@ class SearchScreenShotTest {
     @Test
     fun searchScreen_None_ScreenShot() {
         composeTestRule.captureMultiDevice("SearchScreen_None") {
-            Scaffold(
-                topBar = {
-                    SearchTopBar(scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior())
-                },
-                bottomBar = {
-                    GameLibraryNavigationBar(
-                        topLevelRoute = TOP_LEVEL_ROUTES,
-                        currentDestination = null,
-                        onNavigateToRoute = {},
-                    )
-                },
-                contentWindowInsets = WindowInsets.navigationBars,
-                modifier = Modifier,
-            ) { paddingValues ->
-                SearchScreenSample(
-                    query = "",
-                    searchUiState = SearchUiState.None,
-                    modifier = Modifier.padding(paddingValues),
-                )
-            }
+            SearchScreenSample(
+                query = "",
+                searchUiState = SearchUiState.None,
+            )
         }
     }
 
@@ -91,26 +75,10 @@ class SearchScreenShotTest {
     @Test
     fun searchScreen_Loading_ScreenShot() {
         composeTestRule.captureMultiDevice("SearchScreen_Loading") {
-            Scaffold(
-                topBar = {
-                    SearchTopBar(scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior())
-                },
-                bottomBar = {
-                    GameLibraryNavigationBar(
-                        topLevelRoute = TOP_LEVEL_ROUTES,
-                        currentDestination = null,
-                        onNavigateToRoute = {},
-                    )
-                },
-                contentWindowInsets = WindowInsets.navigationBars,
-                modifier = Modifier,
-            ) { paddingValues ->
-                SearchScreenSample(
-                    query = "cyberpunk",
-                    searchUiState = SearchUiState.Loading,
-                    modifier = Modifier.padding(paddingValues),
-                )
-            }
+            SearchScreenSample(
+                query = "cyberpunk",
+                searchUiState = SearchUiState.Loading,
+            )
         }
     }
 
@@ -118,26 +86,10 @@ class SearchScreenShotTest {
     @Test
     fun searchScreen_Success_ScreenShot() {
         composeTestRule.captureMultiDevice("SearchScreen_Success") {
-            Scaffold(
-                topBar = {
-                    SearchTopBar(scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior())
-                },
-                bottomBar = {
-                    GameLibraryNavigationBar(
-                        topLevelRoute = TOP_LEVEL_ROUTES,
-                        currentDestination = null,
-                        onNavigateToRoute = {},
-                    )
-                },
-                contentWindowInsets = WindowInsets.navigationBars,
-                modifier = Modifier,
-            ) { paddingValues ->
-                SearchScreenSample(
-                    query = "cyberpunk",
-                    searchUiState = SearchUiState.Success(data = SEARCH_RESULTS),
-                    modifier = Modifier.padding(paddingValues),
-                )
-            }
+            SearchScreenSample(
+                query = "cyberpunk",
+                searchUiState = SearchUiState.Success(data = SEARCH_RESULTS),
+            )
         }
     }
 
@@ -145,26 +97,10 @@ class SearchScreenShotTest {
     @Test
     fun searchScreen_SuccessWithQuery_ScreenShot() {
         composeTestRule.captureMultiDevice("SearchScreen_SuccessWithQuery") {
-            Scaffold(
-                topBar = {
-                    SearchTopBar(scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior())
-                },
-                bottomBar = {
-                    GameLibraryNavigationBar(
-                        topLevelRoute = TOP_LEVEL_ROUTES,
-                        currentDestination = null,
-                        onNavigateToRoute = {},
-                    )
-                },
-                contentWindowInsets = WindowInsets.navigationBars,
-                modifier = Modifier,
-            ) { paddingValues ->
-                SearchScreenSample(
-                    query = "The Witcher",
-                    searchUiState = SearchUiState.Success(data = WITCHER_RESULTS),
-                    modifier = Modifier.padding(paddingValues),
-                )
-            }
+            SearchScreenSample(
+                query = "The Witcher",
+                searchUiState = SearchUiState.Success(data = WITCHER_RESULTS),
+            )
         }
     }
 
