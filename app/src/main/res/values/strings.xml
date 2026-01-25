@@ -84,4 +84,8 @@
     <string name="favorite_alert_dialog_message">「%s」をお気に入りから削除しますか？</string>
     <string name="favorite_alert_dialog_cancel">キャンセル</string>
     <string name="favorite_alert_dialog_delete">削除</string>
+    <string name="favorite_statistics">統計</string>
+    <string name="favorite_statistics_total">合計</string>
+    <string name="favorite_statistics_average">平均評価</string>
+    <string name="favorite_statistics_latest">最新追加</string>
 </resources>

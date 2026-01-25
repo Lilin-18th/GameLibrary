@@ -11,11 +11,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.FavoriteStatistics
-import com.lilin.gamelibrary.ui.theme.FavoriteGradientEnd
 import com.lilin.gamelibrary.ui.theme.GameLibraryTheme
 import com.lilin.gamelibrary.ui.util.formatAvgRatingWithStar
 
@@ -28,7 +29,7 @@ fun StatisticsSection(
         modifier = modifier,
     ) {
         Text(
-            text = "統計",
+            text = stringResource(R.string.favorite_statistics),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -36,19 +37,19 @@ fun StatisticsSection(
 
         Spacer(modifier = Modifier.height(12.dp))
         StatisticItem(
-            label = "合計",
+            label = stringResource(R.string.favorite_statistics_total),
             value = statistics.totalCount.toString(),
         )
 
         Spacer(modifier = Modifier.height(8.dp))
         StatisticItem(
-            label = "平均評価",
+            label = stringResource(R.string.favorite_statistics_average),
             value = statistics.avgRating.formatAvgRatingWithStar(),
         )
 
         Spacer(modifier = Modifier.height(8.dp))
         StatisticItem(
-            label = "最新追加",
+            label = stringResource(R.string.favorite_statistics_latest),
             value = statistics.latestAdded,
         )
     }
@@ -73,7 +74,7 @@ private fun StatisticItem(
             text = value,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            color = FavoriteGradientEnd,
+            color = MaterialTheme.colorScheme.primary,
         )
     }
 }

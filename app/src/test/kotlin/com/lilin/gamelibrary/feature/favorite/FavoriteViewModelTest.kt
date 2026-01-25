@@ -65,8 +65,8 @@ class FavoriteViewModelTest {
                 ),
             )
 
-            every { getFavoriteGamesUseCase(SortOrder.NEWEST_FIRST) } returns flowOf(testGames)
-            every { getFavoriteGamesUseCase(SortOrder.OLDEST_FIRST) } returns flowOf(testGames.reversed())
+            every { getFavoriteGamesUseCase.invoke(SortOrder.NEWEST_FIRST) } returns flowOf(testGames)
+            every { getFavoriteGamesUseCase.invoke(SortOrder.OLDEST_FIRST) } returns flowOf(testGames.reversed())
 
             viewModel = FavoriteViewModel(getFavoriteGamesUseCase, removeFavoriteGameUseCase)
 
@@ -113,8 +113,8 @@ class FavoriteViewModelTest {
                 ),
             )
 
-            every { getFavoriteGamesUseCase(SortOrder.NEWEST_FIRST) } returns flowOf(testGames)
-            every { getFavoriteGamesUseCase(SortOrder.OLDEST_FIRST) } returns flowOf(testGames)
+            every { getFavoriteGamesUseCase.invoke(SortOrder.NEWEST_FIRST) } returns flowOf(testGames)
+            every { getFavoriteGamesUseCase.invoke(SortOrder.OLDEST_FIRST) } returns flowOf(testGames)
 
             viewModel = FavoriteViewModel(getFavoriteGamesUseCase, removeFavoriteGameUseCase)
             advanceUntilIdle()
@@ -148,7 +148,7 @@ class FavoriteViewModelTest {
     @Test
     fun toggleSortOrder_withNonSuccessState_stateRemainsUnchanged() =
         runTest {
-            every { getFavoriteGamesUseCase(SortOrder.NEWEST_FIRST) } returns flowOf(emptyList())
+            every { getFavoriteGamesUseCase.invoke(SortOrder.NEWEST_FIRST) } returns flowOf(emptyList())
 
             viewModel = FavoriteViewModel(getFavoriteGamesUseCase, removeFavoriteGameUseCase)
 

@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.SortOption
-import com.lilin.gamelibrary.ui.theme.FavoriteGradientEnd
 import com.lilin.gamelibrary.ui.theme.GameLibraryTheme
 
 @Composable
@@ -66,7 +65,7 @@ private fun SortOptionItem(
             selected = isSelected,
             onClick = null,
             colors = RadioButtonDefaults.colors(
-                selectedColor = FavoriteGradientEnd,
+                selectedColor = MaterialTheme.colorScheme.primary,
             ),
         )
 
