@@ -61,7 +61,7 @@ private const val METACRITIC_SILVER_THRESHOLD = 70
 private const val METACRITIC_BRONZE_THRESHOLD = 50
 
 @Composable
-fun FavoriteGameCard(
+fun FavoriteGameCompactCard(
     game: FavoriteGame,
     onClick: (Int) -> Unit,
     onClickDelete: (Int) -> Unit,
@@ -199,7 +199,11 @@ fun FavoriteGameCard(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         LabeledIcon(
-                            content = String.format(Locale.current.platformLocale, "%.1f", game.rating),
+                            content = String.format(
+                                Locale.current.platformLocale,
+                                "%.1f",
+                                game.rating,
+                            ),
                             imageVector = Icons.Rounded.Star,
                             contentDescription = "Rating",
                         )
@@ -209,6 +213,7 @@ fun FavoriteGameCard(
 
             Box(
                 modifier = Modifier
+                    .align(Alignment.CenterVertically)
                     .size(48.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .background(
@@ -239,7 +244,7 @@ fun FavoriteGameCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun FavoriteGameCardPreview() {
+private fun FavoriteGameCompactCardPreview() {
     val game = FavoriteGame(
         id = 1,
         name = "The Legend of Zelda: Breath of the Wild",
@@ -249,7 +254,7 @@ private fun FavoriteGameCardPreview() {
         released = "2017-03-03",
         addedAt = System.currentTimeMillis(),
     )
-    FavoriteGameCard(
+    FavoriteGameCompactCard(
         game = game,
         onClick = {},
         onClickDelete = {},
@@ -258,7 +263,7 @@ private fun FavoriteGameCardPreview() {
 
 @Preview(showBackground = true, name = "Low Score")
 @Composable
-private fun FavoriteGameCardLowScorePreview() {
+private fun FavoriteGameCompactCardLowScorePreview() {
     val game = FavoriteGame(
         id = 2,
         name = "Low Score Game with Very Long Title That Should Be Truncated",
@@ -268,7 +273,7 @@ private fun FavoriteGameCardLowScorePreview() {
         released = "2023-12-01",
         addedAt = System.currentTimeMillis(),
     )
-    FavoriteGameCard(
+    FavoriteGameCompactCard(
         game = game,
         onClick = {},
         onClickDelete = {},
