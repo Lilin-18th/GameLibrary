@@ -15,5 +15,3 @@ fun Double.formatAvgRatingWithStar(): String {
         "-"
     }
 }
-
-

@@ -8,7 +8,7 @@ enum class SortOption {
     TITLE_ASC,
     TITLE_DESC,
     RATING_DESC,
-    RATING_ASC
+    RATING_ASC,
     ;
 
     val label: Int

@@ -28,7 +28,6 @@ class FavoriteViewModel @Inject constructor(
         MutableStateFlow<FavoriteExpandedUiState>(FavoriteExpandedUiState.Empty)
     val expandedUiState: StateFlow<FavoriteExpandedUiState> = _expandedUiState.asStateFlow()
 
-
     private val _sortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
     val sortOrder: StateFlow<SortOrder> = _sortOrder.asStateFlow()
 
@@ -181,6 +180,7 @@ class FavoriteViewModel @Inject constructor(
      * @param timestamp Unix timestamp (milliseconds)
      * @return 相対時間文字列（例: "2日前", "1週間前"）
      */
+    @Suppress("MagicNumber")
     private fun formatRelativeTime(timestamp: Long): String {
         val now = System.currentTimeMillis()
         val diff = now - timestamp

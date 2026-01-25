@@ -76,7 +76,6 @@ private fun StatisticItem(
             color = FavoriteGradientEnd,
         )
     }
-
 }
 
 @Preview(showBackground = true)

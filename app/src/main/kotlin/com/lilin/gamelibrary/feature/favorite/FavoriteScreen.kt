@@ -46,10 +46,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.feature.favorite.expanded.FavoriteExpandedLayout
+import com.lilin.gamelibrary.ui.component.favorite.DeleteConfirmDialog
 import com.lilin.gamelibrary.ui.component.favorite.FavoriteGameCompactCard
 import com.lilin.gamelibrary.ui.component.favorite.FavoriteScreenHeader
 import com.lilin.gamelibrary.ui.component.favorite.FavoriteSortFabMenu
-import com.lilin.gamelibrary.ui.component.favorite.DeleteConfirmDialog
 import com.lilin.gamelibrary.ui.theme.FavoriteGradientEnd
 import com.lilin.gamelibrary.ui.theme.FavoriteGradientStart
 import kotlinx.serialization.Serializable

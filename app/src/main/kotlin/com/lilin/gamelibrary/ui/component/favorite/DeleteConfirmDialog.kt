@@ -47,7 +47,7 @@ fun DeleteConfirmDialog(
                 },
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colorScheme.error,
-                )
+                ),
             ) {
                 Text(text = stringResource(R.string.favorite_alert_dialog_delete))
             }
