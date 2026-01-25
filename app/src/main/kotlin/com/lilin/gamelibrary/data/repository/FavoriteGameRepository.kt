@@ -3,6 +3,7 @@ package com.lilin.gamelibrary.data.repository
 import com.lilin.gamelibrary.data.local.dao.FavoriteGameDao
 import com.lilin.gamelibrary.data.local.entity.FavoriteGameEntity
 import com.lilin.gamelibrary.domain.model.FavoriteGame
+import com.lilin.gamelibrary.domain.model.SortOption
 import com.lilin.gamelibrary.domain.model.SortOrder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,6 +16,19 @@ class FavoriteGameRepository @Inject constructor(
         return when (order) {
             SortOrder.NEWEST_FIRST -> favoriteGameDao.getFavoriteGamesNewestFirst()
             SortOrder.OLDEST_FIRST -> favoriteGameDao.getFavoriteGamesOldestFirst()
+        }.map { entities ->
+            entities.map { it.toDomainModel() }
+        }
+    }
+
+    fun getFavoriteGames2(order: SortOption): Flow<List<FavoriteGame>> {
+        return when (order) {
+            SortOption.ADDED_DATE_DESC -> favoriteGameDao.getFavoriteGamesNewestFirst()
+            SortOption.ADDED_DATE_ASC -> favoriteGameDao.getFavoriteGamesOldestFirst()
+            SortOption.TITLE_DESC -> favoriteGameDao.getFavoriteGamesByTitleDesc()
+            SortOption.TITLE_ASC -> favoriteGameDao.getFavoriteGamesByTitleAsc()
+            SortOption.RATING_DESC -> favoriteGameDao.getFavoriteGamesByRatingDesc()
+            SortOption.RATING_ASC -> favoriteGameDao.getFavoriteGamesByRatingAsc()
         }.map { entities ->
             entities.map { it.toDomainModel() }
         }
