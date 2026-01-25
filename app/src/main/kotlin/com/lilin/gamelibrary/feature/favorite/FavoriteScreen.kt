@@ -45,9 +45,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.lilin.gamelibrary.R
-import com.lilin.gamelibrary.ui.component.favorite.FavoriteGameCard
+import com.lilin.gamelibrary.feature.favorite.expanded.FavoriteExpandedLayout
+import com.lilin.gamelibrary.ui.component.favorite.FavoriteGameCompactCard
 import com.lilin.gamelibrary.ui.component.favorite.FavoriteScreenHeader
 import com.lilin.gamelibrary.ui.component.favorite.FavoriteSortFabMenu
+import com.lilin.gamelibrary.ui.component.favorite.DeleteConfirmDialog
 import com.lilin.gamelibrary.ui.theme.FavoriteGradientEnd
 import com.lilin.gamelibrary.ui.theme.FavoriteGradientStart
 import kotlinx.serialization.Serializable
@@ -56,10 +58,12 @@ import kotlinx.serialization.Serializable
 object FavoriteScreen
 
 fun NavGraphBuilder.navigateFavoriteScreen(
+    isAtLeastMedium: Boolean,
     navigateToDetail: (Int) -> Unit,
 ) {
     composable<FavoriteScreen> {
         FavoriteScreen(
+            isAtLeastMedium = isAtLeastMedium,
             navigateToDetail = { gameId ->
                 navigateToDetail(gameId)
             },
@@ -70,6 +74,7 @@ fun NavGraphBuilder.navigateFavoriteScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoriteScreen(
+    isAtLeastMedium: Boolean,
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FavoriteViewModel = hiltViewModel(),
@@ -77,35 +82,63 @@ fun FavoriteScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sortOrder by viewModel.sortOrder.collectAsStateWithLifecycle()
 
+    val expandedUiState by viewModel.expandedUiState.collectAsStateWithLifecycle()
+    val showDeleteDialog by viewModel.showDeleteDialog.collectAsStateWithLifecycle()
+    val selectedGameName by viewModel.selectedGameName.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.favorite_screen_title),
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                    )
-                },
-            )
+            if (!isAtLeastMedium) {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            text = stringResource(R.string.favorite_screen_title),
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    },
+                )
+            }
         },
         floatingActionButton = {
-            FavoriteSortFabMenu(
-                sortOrder = sortOrder,
-                onSortClick = viewModel::toggleSortOrder,
-            )
+            if (!isAtLeastMedium) {
+                FavoriteSortFabMenu(
+                    sortOrder = sortOrder,
+                    onSortClick = viewModel::toggleSortOrder,
+                )
+            }
         },
         contentWindowInsets = WindowInsets.navigationBars,
         modifier = modifier,
     ) { paddingValues ->
-        FavoriteScreen(
-            uiState = uiState,
-            navigateToDetail = { gameId ->
-                navigateToDetail(gameId)
-            },
-            onClickDelete = viewModel::removeFavoriteGame,
-            modifier = Modifier.padding(paddingValues),
-        )
+        if (isAtLeastMedium) {
+            FavoriteExpandedLayout(
+                uiState = expandedUiState,
+                bottomBarPadding = paddingValues.calculateBottomPadding(),
+                onSortChange = viewModel::onSortChange,
+                onGameClick = { gameId ->
+                    navigateToDetail(gameId)
+                },
+                onDeleteClick = viewModel::showDeleteConfirmDialog,
+            )
+        } else {
+            FavoriteScreen(
+                uiState = uiState,
+                navigateToDetail = { gameId ->
+                    navigateToDetail(gameId)
+                },
+                onClickDelete = viewModel::showDeleteConfirmDialog,
+                modifier = Modifier.padding(paddingValues),
+            )
+        }
+
+        if (showDeleteDialog) {
+            DeleteConfirmDialog(
+                gameName = selectedGameName,
+                onDismiss = viewModel::dismissDeleteDialog,
+                onConfirm = viewModel::confirmDelete,
+            )
+        }
     }
 }
 
@@ -124,16 +157,7 @@ private fun FavoriteScreen(
         }
 
         is FavoriteUiState.Loading -> {
-            Box(
-                modifier = modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(64.dp),
-                    color = FavoriteGradientEnd,
-                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
-                )
-            }
+            FavoriteGridLoading()
         }
 
         is FavoriteUiState.Success -> {
@@ -163,7 +187,7 @@ private fun FavoriteScreen(
                         items = uiState.games,
                         key = { it.id },
                     ) {
-                        FavoriteGameCard(
+                        FavoriteGameCompactCard(
                             game = it,
                             onClick = { gameId ->
                                 navigateToDetail(gameId)
@@ -178,31 +202,31 @@ private fun FavoriteScreen(
         }
 
         is FavoriteUiState.Error -> {
-            Column(
-                modifier = modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.ErrorOutline,
-                    contentDescription = null,
-                    modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.error,
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = uiState.message,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
+            FavoriteGridError(
+                message = uiState.message,
+            )
         }
     }
 }
 
 @Composable
-private fun FavoriteEmptyContent(
+fun FavoriteGridLoading(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(64.dp),
+            color = FavoriteGradientEnd,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+        )
+    }
+}
+
+@Composable
+fun FavoriteEmptyContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -248,6 +272,32 @@ private fun FavoriteEmptyContent(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+fun FavoriteGridError(
+    message: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.ErrorOutline,
+            contentDescription = null,
+            modifier = Modifier.size(64.dp),
+            tint = MaterialTheme.colorScheme.error,
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.error,
         )
     }
 }
