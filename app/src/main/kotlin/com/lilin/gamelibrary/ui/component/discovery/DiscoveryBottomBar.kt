@@ -5,9 +5,11 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,24 +57,23 @@ fun DiscoveryBottomBar(
     val interactionSourceHighRated = remember { MutableInteractionSource() }
     val interactionSourceNewRelease = remember { MutableInteractionSource() }
 
-    Box(modifier = modifier) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 80.dp)
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
-                            MaterialTheme.colorScheme.surface,
-                        ),
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color.Transparent,
+                        MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
+                        MaterialTheme.colorScheme.surface,
                     ),
                 ),
-        )
-
+            ),
+    ) {
         BottomAppBar(
-            modifier = Modifier.defaultMinSize(minHeight = 80.dp),
+            modifier = Modifier
+                .defaultMinSize(minHeight = 80.dp)
+                .padding(bottom = 10.dp),
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface,
             tonalElevation = 0.dp,
