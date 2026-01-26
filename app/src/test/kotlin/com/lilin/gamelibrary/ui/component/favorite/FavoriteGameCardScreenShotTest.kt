@@ -53,7 +53,7 @@ class FavoriteGameCardScreenShotTest {
     @Test
     fun favoriteGameCard_withImage_screenShot() {
         composeTestRule.captureMultiDevice("FavoriteGameCard_WithImage") {
-            FavoriteGameCard(
+            FavoriteGameCompactCard(
                 game = createMockFavoriteGame(
                     name = "The Legend of Zelda: Breath of the Wild",
                     backgroundImage = "https://example.com/image.jpg",
@@ -70,7 +70,7 @@ class FavoriteGameCardScreenShotTest {
     @Test
     fun favoriteGameCard_withoutImage_screenShot() {
         composeTestRule.captureMultiDevice("FavoriteGameCard_WithoutImage") {
-            FavoriteGameCard(
+            FavoriteGameCompactCard(
                 game = createMockFavoriteGame(
                     name = "Stardew Valley",
                     backgroundImage = null,
@@ -87,7 +87,7 @@ class FavoriteGameCardScreenShotTest {
     @Test
     fun favoriteGameCard_longGameName_screenShot() {
         composeTestRule.captureMultiDevice("FavoriteGameCard_LongGameName") {
-            FavoriteGameCard(
+            FavoriteGameCompactCard(
                 game = createMockFavoriteGame(
                     name = "The Elder Scrolls V: Skyrim Special Edition Anniversary Edition",
                     backgroundImage = "https://example.com/image.jpg",

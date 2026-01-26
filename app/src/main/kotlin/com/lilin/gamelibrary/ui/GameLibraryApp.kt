@@ -324,6 +324,7 @@ private fun NavGraphBuilder.bottomNavGraph(
         )
 
         navigateFavoriteScreen(
+            isAtLeastMedium = isAtLeastMedium,
             navigateToDetail = { gameId ->
                 navController.navigate(GameDetailScreen(gameId))
             },

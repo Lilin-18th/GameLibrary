@@ -1,6 +1,8 @@
 package com.lilin.gamelibrary.feature.favorite
 
 import com.lilin.gamelibrary.domain.model.FavoriteGame
+import com.lilin.gamelibrary.domain.model.FavoriteStatistics
+import com.lilin.gamelibrary.domain.model.SortOption
 import com.lilin.gamelibrary.domain.model.SortOrder
 
 sealed interface FavoriteUiState {
@@ -14,4 +16,18 @@ sealed interface FavoriteUiState {
     ) : FavoriteUiState
 
     data class Error(val message: String) : FavoriteUiState
+}
+
+sealed interface FavoriteExpandedUiState {
+    data object Empty : FavoriteExpandedUiState
+
+    data object Loading : FavoriteExpandedUiState
+
+    data class Success(
+        val games: List<FavoriteGame>,
+        val statistics: FavoriteStatistics,
+        val sortOption: SortOption,
+    ) : FavoriteExpandedUiState
+
+    data class Error(val message: String) : FavoriteExpandedUiState
 }

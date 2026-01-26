@@ -2,6 +2,7 @@ package com.lilin.gamelibrary.domain.usecase.favorite
 
 import com.lilin.gamelibrary.data.repository.FavoriteGameRepository
 import com.lilin.gamelibrary.domain.model.FavoriteGame
+import com.lilin.gamelibrary.domain.model.SortOption
 import com.lilin.gamelibrary.domain.model.SortOrder
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -18,7 +19,12 @@ import javax.inject.Inject
 class GetFavoriteGamesUseCase @Inject constructor(
     private val repository: FavoriteGameRepository,
 ) {
-    operator fun invoke(sortOrder: SortOrder): Flow<List<FavoriteGame>> {
+    @Deprecated("use invoke2")
+    fun invoke(sortOrder: SortOrder): Flow<List<FavoriteGame>> {
         return repository.getFavoriteGames(sortOrder)
+    }
+
+    fun invoke2(sortOption: SortOption): Flow<List<FavoriteGame>> {
+        return repository.getFavoriteGames2(sortOption)
     }
 }

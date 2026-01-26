@@ -72,4 +72,20 @@
     <string name="detail_section_platforms_title">プラットフォーム情報</string>
     <string name="search_result_header">検索結果: %s - %d 件</string>
     <string name="search_result_reload">更新</string>
+    
+    <string name="favorite_added_date_desc">追加日（新しい順）</string>
+    <string name="favorite_added_date_asc">追加日（古い順）</string>
+    <string name="favorite_title_desc">タイトル（A-Z）</string>
+    <string name="favorite_title_asc">タイトル（Z-A）</string>
+    <string name="favorite_rating_desc">評価（高い順）</string>
+    <string name="favorite_rating_asc">評価（低い順）</string>
+    <string name="favorite_sort">並び替え</string>
+    <string name="favorite_alert_dialog_title">削除の確認</string>
+    <string name="favorite_alert_dialog_message">「%s」をお気に入りから削除しますか？</string>
+    <string name="favorite_alert_dialog_cancel">キャンセル</string>
+    <string name="favorite_alert_dialog_delete">削除</string>
+    <string name="favorite_statistics">統計</string>
+    <string name="favorite_statistics_total">合計</string>
+    <string name="favorite_statistics_average">平均評価</string>
+    <string name="favorite_statistics_latest">最新追加</string>
 </resources>

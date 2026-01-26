@@ -17,6 +17,22 @@ interface FavoriteGameDao {
     @Query("SELECT * FROM favorite_games ORDER BY addedAt ASC")
     fun getFavoriteGamesOldestFirst(): Flow<List<FavoriteGameEntity>>
 
+    // タイトル（A-Z）
+    @Query("SELECT * FROM favorite_games ORDER BY name ASC")
+    fun getFavoriteGamesByTitleDesc(): Flow<List<FavoriteGameEntity>>
+
+    // タイトル（Z-A）
+    @Query("SELECT * FROM favorite_games ORDER BY name DESC")
+    fun getFavoriteGamesByTitleAsc(): Flow<List<FavoriteGameEntity>>
+
+    // 評価（高い順）
+    @Query("SELECT * FROM favorite_games ORDER BY rating DESC")
+    fun getFavoriteGamesByRatingDesc(): Flow<List<FavoriteGameEntity>>
+
+    // 評価（低い順）
+    @Query("SELECT * FROM favorite_games ORDER BY rating ASC")
+    fun getFavoriteGamesByRatingAsc(): Flow<List<FavoriteGameEntity>>
+
     // お気に入り判定用
     @Query("SELECT EXISTS(SELECT 1 FROM favorite_games WHERE id = :gameId)")
     fun isFavorite(gameId: Int): Flow<Boolean>
