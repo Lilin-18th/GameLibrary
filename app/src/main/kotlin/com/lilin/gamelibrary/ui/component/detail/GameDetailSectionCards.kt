@@ -57,7 +57,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.ui.component.discovery.getMetacriticColor
-import java.util.Locale
+import com.lilin.gamelibrary.ui.util.formatCount
 
 @Composable
 fun GameBackgroundImage(
@@ -426,19 +426,6 @@ fun GameTags(
                 )
             }
         }
-    }
-}
-
-/**
- * 数値をフォーマット（例：1234 → 1.2k）
- */
-private fun formatCount(count: Int): String {
-    return when {
-        count >= 1000 -> {
-            String.format(Locale.ROOT, "%.1fk", count / 1000.0)
-        }
-
-        else -> count.toString()
     }
 }
 

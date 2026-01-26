@@ -50,7 +50,7 @@ import com.lilin.gamelibrary.ui.theme.DetailDescriptionGradientEnd
 import com.lilin.gamelibrary.ui.theme.DetailDescriptionGradientStart
 import com.lilin.gamelibrary.ui.theme.DetailRatingGradientStart
 import com.lilin.gamelibrary.ui.theme.DetailTagGradientStart
-import java.util.Locale
+import com.lilin.gamelibrary.ui.util.formatCount
 
 @Composable
 fun GameDetailMediumExpandedLayout(
@@ -192,7 +192,11 @@ private fun BasicInfoSection(
             InfoRow(
                 icon = Icons.Outlined.Star,
                 label = stringResource(R.string.detail_label_rating),
-                value = stringResource(R.string.game_rating_format, rating, formatCount(ratingsCount)),
+                value = stringResource(
+                    R.string.game_rating_format,
+                    rating,
+                    formatCount(ratingsCount),
+                ),
             )
         }
     }
@@ -350,19 +354,6 @@ private fun PlatformChipsRow(
                 ),
             )
         }
-    }
-}
-
-/**
- * 数値をフォーマット（例：1234 → 1.2k）
- */
-private fun formatCount(count: Int): String {
-    return when {
-        count >= 1000 -> {
-            String.format(Locale.ROOT, "%.1f k", count / 1000.0)
-        }
-
-        else -> count.toString()
     }
 }
 
