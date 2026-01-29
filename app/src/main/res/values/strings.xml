@@ -88,4 +88,8 @@
     <string name="favorite_statistics_total">合計</string>
     <string name="favorite_statistics_average">平均評価</string>
     <string name="favorite_statistics_latest">最新追加</string>
+
+    <string name="favorite_sort_added_date">追加日</string>
+    <string name="favorite_sort_title">タイトル</string>
+    <string name="favorite_sort_rating">評価</string>
 </resources>

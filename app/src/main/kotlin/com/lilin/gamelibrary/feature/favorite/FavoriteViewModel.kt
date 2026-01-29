@@ -28,34 +28,36 @@ class FavoriteViewModel @Inject constructor(
         MutableStateFlow<FavoriteExpandedUiState>(FavoriteExpandedUiState.Empty)
     val expandedUiState: StateFlow<FavoriteExpandedUiState> = _expandedUiState.asStateFlow()
 
-    private val _sortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
-    val sortOrder: StateFlow<SortOrder> = _sortOrder.asStateFlow()
-
     private val _showDeleteDialog = MutableStateFlow(false)
     val showDeleteDialog: StateFlow<Boolean> = _showDeleteDialog.asStateFlow()
 
     private val _selectedGameId = MutableStateFlow(0)
-    val selectedGameId: StateFlow<Int> = _selectedGameId.asStateFlow()
 
     private val _selectedGameName = MutableStateFlow("")
     val selectedGameName: StateFlow<String> = _selectedGameName.asStateFlow()
 
+    private val _sortOption = MutableStateFlow(SortOption.ADDED_DATE_DESC)
+    val sortOption: StateFlow<SortOption> = _sortOption.asStateFlow()
+
+    private val _isExpanded = MutableStateFlow(false)
+    val isExpanded: StateFlow<Boolean> = _isExpanded.asStateFlow()
+
     init {
-        getFavoriteGames(SortOrder.NEWEST_FIRST)
+        getFavoriteGames(SortOption.ADDED_DATE_DESC)
         loadFavoriteGamesExpanded(SortOption.ADDED_DATE_DESC)
     }
 
-    private fun getFavoriteGames(sortOrder: SortOrder) {
+    private fun getFavoriteGames(sortOption: SortOption) {
         _uiState.value = FavoriteUiState.Loading
 
         viewModelScope.launch {
             runCatching {
-                getFavoriteGamesUseCase.invoke(sortOrder).collect { games ->
+                getFavoriteGamesUseCase.invoke2(sortOption).collect { games ->
                     _uiState.value = if (games.isEmpty()) {
                         FavoriteUiState.Empty
                     } else {
-                        _sortOrder.value = sortOrder
-                        FavoriteUiState.Success(games, sortOrder)
+                        _sortOption.value = sortOption
+                        FavoriteUiState.Success(games, sortOption)
                     }
                 }
             }.onFailure {
@@ -64,25 +66,12 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun toggleSortOrder() {
-        val currentState = _uiState.value
-        if (currentState is FavoriteUiState.Success) {
-            val newOrder = when (currentState.sortOrder) {
-                SortOrder.NEWEST_FIRST -> SortOrder.OLDEST_FIRST
-                SortOrder.OLDEST_FIRST -> SortOrder.NEWEST_FIRST
-            }
-            getFavoriteGames(newOrder)
-        }
+    fun toggleFabMenu() {
+        _isExpanded.value = !_isExpanded.value
     }
 
-    fun removeFavoriteGame(gameId: Int) {
-        viewModelScope.launch {
-            runCatching {
-                removeFavoriteGameUseCase(gameId)
-            }.onFailure {
-                _uiState.value = FavoriteUiState.Error(it.message ?: "Unknown error")
-            }
-        }
+    fun toggleSortOrder(sortOption: SortOption) {
+        getFavoriteGames(sortOption)
     }
 
     // Expanded
@@ -95,7 +84,6 @@ class FavoriteViewModel @Inject constructor(
                     if (games.isEmpty()) {
                         _expandedUiState.value = FavoriteExpandedUiState.Empty
                     } else {
-                        // 統計計算
                         val statistics = calculateStatistics(games)
 
                         _expandedUiState.value = FavoriteExpandedUiState.Success(

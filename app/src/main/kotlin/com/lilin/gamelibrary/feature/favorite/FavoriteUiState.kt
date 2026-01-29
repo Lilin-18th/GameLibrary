@@ -12,7 +12,7 @@ sealed interface FavoriteUiState {
 
     data class Success(
         val games: List<FavoriteGame>,
-        val sortOrder: SortOrder,
+        val sortOption: SortOption,
     ) : FavoriteUiState
 
     data class Error(val message: String) : FavoriteUiState
