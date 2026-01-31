@@ -10,17 +10,19 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
@@ -46,6 +48,7 @@ import com.lilin.gamelibrary.domain.model.SortType
 import com.lilin.gamelibrary.domain.model.combineSortOption
 import com.lilin.gamelibrary.domain.model.toTypeAndDirection
 import com.lilin.gamelibrary.ui.theme.FavoriteGradientStart
+import com.lilin.gamelibrary.ui.theme.InfoColor
 
 @Composable
 fun FavoriteSortFabMenu(
@@ -109,7 +112,9 @@ fun FavoriteSortFabMenu(
                         }
                     }
                 }
+            }
 
+            Box {
                 FloatingActionButton(
                     onClick = onClickFab,
                     containerColor = FavoriteGradientStart,
@@ -120,6 +125,29 @@ fun FavoriteSortFabMenu(
                         imageVector = Icons.AutoMirrored.Filled.Sort,
                         contentDescription = "Sort Menu",
                     )
+                }
+
+                if (!isExpanded) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .offset(x = 10.dp)
+                            .background(
+                                color = InfoColor,
+                                shape = CircleShape,
+                            ),
+                    ) {
+                        Icon(
+                            imageVector = when (currentDirection) {
+                                SortDirection.ASC -> Icons.Default.ArrowUpward
+                                SortDirection.DESC -> Icons.Default.ArrowDownward
+                            },
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp),
+                            tint = Color.White,
+                        )
+                    }
                 }
             }
         }
@@ -145,28 +173,9 @@ private fun FavoriteSortMenuItem(
         Row(
             modifier = Modifier
                 .padding(horizontal = 20.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            AnimatedContent(
-                targetState = currentDirection,
-                transitionSpec = {
-                    fadeIn(tween(150)) + scaleIn(tween(150)) togetherWith
-                        fadeOut(tween(150)) + scaleOut(tween(150))
-                },
-                label = "sort_icon_animation",
-            ) { direction ->
-                Icon(
-                    imageVector = when (direction) {
-                        SortDirection.ASC -> Icons.Default.ArrowUpward
-                        SortDirection.DESC -> Icons.Default.ArrowDownward
-                    },
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    tint = Color.White,
-                )
-            }
-
             AnimatedContent(
                 targetState = sortType,
                 transitionSpec = {
@@ -183,6 +192,27 @@ private fun FavoriteSortMenuItem(
                     color = Color.White,
                     style = MaterialTheme.typography.titleMedium,
                 )
+            }
+
+            AnimatedContent(
+                targetState = currentDirection,
+                transitionSpec = {
+                    fadeIn(tween(150)) + scaleIn(tween(150)) togetherWith
+                        fadeOut(tween(150)) + scaleOut(tween(150))
+                },
+                label = "sort_icon_animation",
+            ) { direction ->
+                if (isSelected) {
+                    Icon(
+                        imageVector = when (direction) {
+                            SortDirection.ASC -> Icons.Default.ArrowUpward
+                            SortDirection.DESC -> Icons.Default.ArrowDownward
+                        },
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = Color.White,
+                    )
+                }
             }
         }
     }
@@ -225,4 +255,15 @@ private fun FavoriteSortFabMenuExpandedPreview() {
             )
         }
     }
+}
+
+@Preview(showBackground = true, name = "Not Expanded")
+@Composable
+private fun FavoriteSortFabMenuExpanded1Preview() {
+    FavoriteSortFabMenu(
+        currentSortOption = SortOption.ADDED_DATE_DESC,
+        isExpanded = false,
+        onClickFab = {},
+        onSortChange = {},
+    )
 }
