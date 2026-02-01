@@ -69,47 +69,53 @@ val OnSurfaceVariantDark = Color(0xFFC4C6CF)
 val OutlineDark = Color(0xFF938F99)
 val OutlineVariantDark = Color(0xFF49454F)
 
-// 評価用カラー
-val RatingGold = Color(0xFFFFB300)
-val RatingSilver = Color(0xFFC0C0C0)
-val RatingBronze = Color(0xFFCD7F32)
-val RatingEmpty = Color(0xFFE0E0E0)
+/* Color Palette */
+// Purple
+val Purple500 = Color(0xFF7C4DFF)
+val Purple300 = Color(0xFFB47CFF)
 
-// Trending Section Colors
-val TrendingGradientStart = Color(0xFFFF6B6B)
-val TrendingGradientEnd = Color(0xFFFF8E53)
+// Coral & Orange
+val Coral500 = Color(0xFFFF6B6B)
+val Orange500 = Color(0xFFFFB74D)
+val Orange600 = Color(0xFFFF8E53)
+val Orange700 = Color(0xFFFFA500)
 
-// High Rated Section Colors
-val HighRatedGradientStart = Color(0xFFFFD700)
-val HighRatedGradientEnd = Color(0xFFFFA500)
+// Teal
+val Teal500 = Color(0xFF26C6DA)
+val Teal700 = Color(0xFF00BFA5)
 
-// New Release Section Colors
-val NewReleaseGradientStart = Color(0xFF26C6DA)
-val NewReleaseGradientEnd = Color(0xFF00BFA5)
+// Gold
+val Gold500 = Color(0xFFFFD700)
+val Gold600 = Color(0xFFFFB300)
 
-// その他の機能的なカラー
-val SuccessColor = Color(0xFF00C853)
-val WarningColor = Color(0xFFFF9800)
-val InfoColor = Color(0xFF0066CC)
-val LoadingColor = Color(0xFFCCCCCC)
+// Gray
+val Gray300 = Color(0xFFE0E0E0)
+val Silver = Color(0xFFC0C0C0)
+val Bronze = Color(0xFFCD7F32)
 
-// 評価セクション
-val DetailRatingGradientStart = Color(0xFF7C4DFF)
-val DetailRatingGradientEnd = Color(0xFFB47CFF)
+/* Semantic Colors - Discovery Section */
+val TrendingGradientStart = Coral500
+val TrendingGradientEnd = Orange600
+val HighRatedGradientStart = Gold500
+val HighRatedGradientEnd = Orange700
+val NewReleaseGradientStart = Teal500
+val NewReleaseGradientEnd = Teal700
 
-// 説明セクション
-val DetailDescriptionGradientStart = Color(0xFFFF6B6B)
-val DetailDescriptionGradientEnd = Color(0xFFFFB74D)
+/* Semantic Colors - Detail Section */
+val DetailRatingGradientStart = Purple500
+val DetailRatingGradientEnd = Purple300
+val DetailDescriptionGradientStart = Coral500
+val DetailDescriptionGradientEnd = Orange500
+val DetailTagGradientStart = Teal500
+val DetailTagGradientEnd = Purple500
 
-// タグセクション
-val DetailTagGradientStart = Color(0xFF26C6DA)
-val DetailTagGradientEnd = Color(0xFF7C4DFF)
+/* Semantic Colors - Favorite Section */
+val FavoriteGradientStart = Purple500
+val FavoriteGradientEnd = Gold500
+val BadgeColor = Orange500
 
-// フォーカス時
-val OutlineColor = Color(0xFF7C4DFF)
-val IconTint = Color(0xFF7C4DFF)
-
-// FavoriteSection
-val FavoriteGradientStart = Color(0xFF7C4DFF)
-val FavoriteGradientEnd = Color(0xFFFFD700)
-val BadgeColor = Color(0xFFFFB74D)
+/* Semantic Colors - Rating */
+val RatingGold = Gold600
+val RatingSilver = Silver
+val RatingBronze = Bronze
+val RatingEmpty = Gray300
