@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -28,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,8 +47,8 @@ import com.lilin.gamelibrary.domain.model.SortOption
 import com.lilin.gamelibrary.domain.model.SortType
 import com.lilin.gamelibrary.domain.model.combineSortOption
 import com.lilin.gamelibrary.domain.model.toTypeAndDirection
+import com.lilin.gamelibrary.ui.theme.BadgeColor
 import com.lilin.gamelibrary.ui.theme.FavoriteGradientStart
-import com.lilin.gamelibrary.ui.theme.InfoColor
 
 @Composable
 fun FavoriteSortFabMenu(
@@ -114,7 +114,28 @@ fun FavoriteSortFabMenu(
                 }
             }
 
-            Box {
+            BadgedBox(
+                badge = {
+                    if (!isExpanded) {
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = BadgeColor,
+                                    shape = CircleShape,
+                                )
+                                .padding(2.dp),
+                        ) {
+                            Icon(
+                                imageVector = if (currentDirection == SortDirection.ASC)
+                                    Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = Color.White,
+                            )
+                        }
+                    }
+                },
+            ) {
                 FloatingActionButton(
                     onClick = onClickFab,
                     containerColor = FavoriteGradientStart,
@@ -125,29 +146,6 @@ fun FavoriteSortFabMenu(
                         imageVector = Icons.AutoMirrored.Filled.Sort,
                         contentDescription = "Sort Menu",
                     )
-                }
-
-                if (!isExpanded) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.CenterEnd)
-                            .offset(x = 10.dp)
-                            .background(
-                                color = InfoColor,
-                                shape = CircleShape,
-                            ),
-                    ) {
-                        Icon(
-                            imageVector = when (currentDirection) {
-                                SortDirection.ASC -> Icons.Default.ArrowUpward
-                                SortDirection.DESC -> Icons.Default.ArrowDownward
-                            },
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(24.dp),
-                            tint = Color.White,
-                        )
-                    }
                 }
             }
         }

@@ -112,3 +112,4 @@ val IconTint = Color(0xFF7C4DFF)
 // FavoriteSection
 val FavoriteGradientStart = Color(0xFF7C4DFF)
 val FavoriteGradientEnd = Color(0xFFFFD700)
+val BadgeColor = Color(0xFFFFB74D)
