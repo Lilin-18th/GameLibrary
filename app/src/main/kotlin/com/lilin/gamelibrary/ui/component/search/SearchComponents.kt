@@ -55,7 +55,7 @@ import com.lilin.gamelibrary.ui.theme.RatingBronze
 import com.lilin.gamelibrary.ui.theme.RatingEmpty
 import com.lilin.gamelibrary.ui.theme.RatingGold
 import com.lilin.gamelibrary.ui.theme.RatingSilver
-import java.util.Locale
+import com.lilin.gamelibrary.ui.util.formatCount
 
 private const val METACRITIC_GOLD_THRESHOLD = 90
 private const val METACRITIC_SILVER_THRESHOLD = 70
@@ -309,18 +309,6 @@ private fun getMetacriticColor(score: Int): Color {
         score >= METACRITIC_SILVER_THRESHOLD -> RatingSilver
         score >= METACRITIC_BRONZE_THRESHOLD -> RatingBronze
         else -> RatingEmpty
-    }
-}
-
-/**
- * 数値をフォーマット（例：1234 → 1.2k）
- */
-private fun formatCount(count: Int): String {
-    return when {
-        count >= 1000 -> {
-            String.format(Locale.ROOT, "%.1fk", count / 1000.0)
-        }
-        else -> count.toString()
     }
 }
 

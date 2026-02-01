@@ -80,7 +80,8 @@ fun FavoriteScreen(
     viewModel: FavoriteViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val sortOrder by viewModel.sortOrder.collectAsStateWithLifecycle()
+    val sortOption by viewModel.sortOption.collectAsStateWithLifecycle()
+    val isExpanded by viewModel.isExpanded.collectAsStateWithLifecycle()
 
     val expandedUiState by viewModel.expandedUiState.collectAsStateWithLifecycle()
     val showDeleteDialog by viewModel.showDeleteDialog.collectAsStateWithLifecycle()
@@ -103,8 +104,10 @@ fun FavoriteScreen(
         floatingActionButton = {
             if (!isAtLeastMedium) {
                 FavoriteSortFabMenu(
-                    sortOrder = sortOrder,
-                    onSortClick = viewModel::toggleSortOrder,
+                    currentSortOption = sortOption,
+                    isExpanded = isExpanded,
+                    onClickFab = viewModel::toggleFabMenu,
+                    onSortChange = viewModel::toggleSortOrder,
                 )
             }
         },
@@ -163,7 +166,7 @@ private fun FavoriteScreen(
         is FavoriteUiState.Success -> {
             val listState = rememberLazyListState()
 
-            LaunchedEffect(uiState.sortOrder) {
+            LaunchedEffect(uiState.sortOption) {
                 listState.scrollToItem(0)
             }
 

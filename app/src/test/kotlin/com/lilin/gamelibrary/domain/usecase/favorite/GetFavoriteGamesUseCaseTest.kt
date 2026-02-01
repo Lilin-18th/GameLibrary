@@ -2,7 +2,7 @@ package com.lilin.gamelibrary.domain.usecase.favorite
 
 import com.lilin.gamelibrary.data.repository.FavoriteGameRepository
 import com.lilin.gamelibrary.domain.model.FavoriteGame
-import com.lilin.gamelibrary.domain.model.SortOrder
+import com.lilin.gamelibrary.domain.model.SortOption
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
@@ -23,12 +23,12 @@ class GetFavoriteGamesUseCaseTest {
     }
 
     @Test
-    fun invoke_withNewestFirstOrder_returnsCorrectFlow() = runTest {
-        val order = SortOrder.NEWEST_FIRST
+    fun invoke_withAddedDateDescOrder_returnsCorrectFlow() = runTest {
+        val order = SortOption.ADDED_DATE_DESC
         val games = newestGames()
 
         coEvery {
-            repository.getFavoriteGames(order)
+            repository.getFavoriteGames2(order)
         } returns flowOf(games)
 
         val result = useCase.invoke(order)
@@ -38,12 +38,12 @@ class GetFavoriteGamesUseCaseTest {
     }
 
     @Test
-    fun invoke_withOldestFirstOrder_returnsCorrectFlow() = runTest {
-        val order = SortOrder.OLDEST_FIRST
+    fun invoke_withAddedDateAscOrder_returnsCorrectFlow() = runTest {
+        val order = SortOption.ADDED_DATE_ASC
         val games = oldestGames()
 
         coEvery {
-            repository.getFavoriteGames(order)
+            repository.getFavoriteGames2(order)
         } returns flowOf(games)
 
         val result = useCase.invoke(order)
@@ -54,11 +54,11 @@ class GetFavoriteGamesUseCaseTest {
 
     @Test
     fun invoke_withEmptyList_returnsEmptyFlow() = runTest {
-        val order = SortOrder.NEWEST_FIRST
+        val order = SortOption.ADDED_DATE_DESC
         val emptyGames = emptyList<FavoriteGame>()
 
         coEvery {
-            repository.getFavoriteGames(order)
+            repository.getFavoriteGames2(order)
         } returns flowOf(emptyGames)
 
         val result = useCase.invoke(order)
