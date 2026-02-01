@@ -3,7 +3,6 @@ package com.lilin.gamelibrary.feature.favorite
 import com.lilin.gamelibrary.domain.model.FavoriteGame
 import com.lilin.gamelibrary.domain.model.FavoriteStatistics
 import com.lilin.gamelibrary.domain.model.SortOption
-import com.lilin.gamelibrary.domain.model.SortOrder
 
 sealed interface FavoriteUiState {
     data object Empty : FavoriteUiState

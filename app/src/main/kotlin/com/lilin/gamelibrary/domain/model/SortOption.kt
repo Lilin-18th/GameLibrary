@@ -6,13 +6,11 @@ enum class SortType {
     ADDED_DATE,
     TITLE,
     RATING,
-    ;
 }
 
 enum class SortDirection {
     DESC,
     ASC,
-    ;
 }
 
 enum class SortOption {

@@ -126,8 +126,11 @@ fun FavoriteSortFabMenu(
                                 .padding(2.dp),
                         ) {
                             Icon(
-                                imageVector = if (currentDirection == SortDirection.ASC)
-                                    Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
+                                imageVector = if (currentDirection == SortDirection.ASC) {
+                                    Icons.Default.ArrowUpward
+                                } else {
+                                    Icons.Default.ArrowDownward
+                                },
                                 contentDescription = null,
                                 modifier = Modifier.size(16.dp),
                                 tint = Color.White,
