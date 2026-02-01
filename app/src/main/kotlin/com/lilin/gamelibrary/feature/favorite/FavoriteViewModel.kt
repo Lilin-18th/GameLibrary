@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.lilin.gamelibrary.domain.model.FavoriteGame
 import com.lilin.gamelibrary.domain.model.FavoriteStatistics
 import com.lilin.gamelibrary.domain.model.SortOption
-import com.lilin.gamelibrary.domain.model.SortOrder
 import com.lilin.gamelibrary.domain.usecase.favorite.GetFavoriteGamesUseCase
 import com.lilin.gamelibrary.domain.usecase.favorite.RemoveFavoriteGameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,7 +51,7 @@ class FavoriteViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-                getFavoriteGamesUseCase.invoke2(sortOption).collect { games ->
+                getFavoriteGamesUseCase(sortOption).collect { games ->
                     _uiState.value = if (games.isEmpty()) {
                         FavoriteUiState.Empty
                     } else {
@@ -80,7 +79,7 @@ class FavoriteViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-                getFavoriteGamesUseCase.invoke2(sortOption).collect { games ->
+                getFavoriteGamesUseCase(sortOption).collect { games ->
                     if (games.isEmpty()) {
                         _expandedUiState.value = FavoriteExpandedUiState.Empty
                     } else {
@@ -105,11 +104,13 @@ class FavoriteViewModel @Inject constructor(
             is FavoriteExpandedUiState.Success -> {
                 state.games.find { it.id == gameId }?.name ?: ""
             }
+
             else -> {
                 when (val compactState = _uiState.value) {
                     is FavoriteUiState.Success -> {
                         compactState.games.find { it.id == gameId }?.name ?: ""
                     }
+
                     else -> ""
                 }
             }
