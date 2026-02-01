@@ -2,7 +2,7 @@ package com.lilin.gamelibrary.feature.favorite
 
 import app.cash.turbine.test
 import com.lilin.gamelibrary.domain.model.FavoriteGame
-import com.lilin.gamelibrary.domain.model.SortOrder
+import com.lilin.gamelibrary.domain.model.SortOption
 import com.lilin.gamelibrary.domain.usecase.favorite.GetFavoriteGamesUseCase
 import com.lilin.gamelibrary.domain.usecase.favorite.RemoveFavoriteGameUseCase
 import io.mockk.every
@@ -19,7 +19,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import kotlin.collections.reversed
 
 @ExperimentalCoroutinesApi
 class FavoriteViewModelTest {
@@ -42,7 +41,7 @@ class FavoriteViewModelTest {
     }
 
     @Test
-    fun toggleSortOrder_withNewestFirstOrder_updatesToOldestFirst() =
+    fun toggleSortOrder_withAddedDateDescOrder_updatesToAddedDateAsc() =
         runTest {
             val testGames = listOf(
                 FavoriteGame(
@@ -65,8 +64,8 @@ class FavoriteViewModelTest {
                 ),
             )
 
-            every { getFavoriteGamesUseCase.invoke(SortOrder.NEWEST_FIRST) } returns flowOf(testGames)
-            every { getFavoriteGamesUseCase.invoke(SortOrder.OLDEST_FIRST) } returns flowOf(testGames.reversed())
+            every { getFavoriteGamesUseCase.invoke(SortOption.ADDED_DATE_DESC) } returns flowOf(testGames)
+            every { getFavoriteGamesUseCase.invoke(SortOption.ADDED_DATE_ASC) } returns flowOf(testGames.reversed())
 
             viewModel = FavoriteViewModel(getFavoriteGamesUseCase, removeFavoriteGameUseCase)
 
@@ -77,12 +76,12 @@ class FavoriteViewModelTest {
                 val initialSuccessState = awaitItem()
                 assertEquals(true, initialSuccessState is FavoriteUiState.Success)
                 assertEquals(
-                    SortOrder.NEWEST_FIRST,
-                    (initialSuccessState as FavoriteUiState.Success).sortOrder,
+                    SortOption.ADDED_DATE_DESC,
+                    (initialSuccessState as FavoriteUiState.Success).sortOption,
                 )
                 assertEquals(testGames, initialSuccessState.games)
 
-                viewModel.toggleSortOrder()
+                viewModel.toggleSortOrder(SortOption.ADDED_DATE_ASC)
 
                 assertEquals(FavoriteUiState.Loading, awaitItem())
 
@@ -91,15 +90,15 @@ class FavoriteViewModelTest {
                 val toggledSuccessState = awaitItem()
                 assertEquals(true, toggledSuccessState is FavoriteUiState.Success)
                 assertEquals(
-                    SortOrder.OLDEST_FIRST,
-                    (toggledSuccessState as FavoriteUiState.Success).sortOrder,
+                    SortOption.ADDED_DATE_ASC,
+                    (toggledSuccessState as FavoriteUiState.Success).sortOption,
                 )
                 assertEquals(testGames.reversed(), toggledSuccessState.games)
             }
         }
 
     @Test
-    fun toggleSortOrder_withOldestFirstOrder_updatesToNewestFirst() =
+    fun toggleSortOrder_withAddedDateAscOrder_updatesToAddedDateDesc() =
         runTest {
             val testGames = listOf(
                 FavoriteGame(
@@ -113,24 +112,24 @@ class FavoriteViewModelTest {
                 ),
             )
 
-            every { getFavoriteGamesUseCase.invoke(SortOrder.NEWEST_FIRST) } returns flowOf(testGames)
-            every { getFavoriteGamesUseCase.invoke(SortOrder.OLDEST_FIRST) } returns flowOf(testGames)
+            every { getFavoriteGamesUseCase.invoke(SortOption.ADDED_DATE_DESC) } returns flowOf(testGames)
+            every { getFavoriteGamesUseCase.invoke(SortOption.ADDED_DATE_ASC) } returns flowOf(testGames)
 
             viewModel = FavoriteViewModel(getFavoriteGamesUseCase, removeFavoriteGameUseCase)
             advanceUntilIdle()
 
-            viewModel.toggleSortOrder()
+            viewModel.toggleSortOrder(SortOption.ADDED_DATE_ASC)
             advanceUntilIdle()
 
             viewModel.uiState.test {
                 val currentState = awaitItem()
                 assertEquals(true, currentState is FavoriteUiState.Success)
                 assertEquals(
-                    SortOrder.OLDEST_FIRST,
-                    (currentState as FavoriteUiState.Success).sortOrder,
+                    SortOption.ADDED_DATE_ASC,
+                    (currentState as FavoriteUiState.Success).sortOption,
                 )
 
-                viewModel.toggleSortOrder()
+                viewModel.toggleSortOrder(SortOption.ADDED_DATE_DESC)
 
                 assertEquals(FavoriteUiState.Loading, awaitItem())
 
@@ -139,16 +138,17 @@ class FavoriteViewModelTest {
                 val toggledSuccessState = awaitItem()
                 assertEquals(true, toggledSuccessState is FavoriteUiState.Success)
                 assertEquals(
-                    SortOrder.NEWEST_FIRST,
-                    (toggledSuccessState as FavoriteUiState.Success).sortOrder,
+                    SortOption.ADDED_DATE_DESC,
+                    (toggledSuccessState as FavoriteUiState.Success).sortOption,
                 )
             }
         }
 
     @Test
-    fun toggleSortOrder_withNonSuccessState_stateRemainsUnchanged() =
+    fun toggleSortOrder_withEmptyState_transitionsToLoadingThenEmpty() =
         runTest {
-            every { getFavoriteGamesUseCase.invoke(SortOrder.NEWEST_FIRST) } returns flowOf(emptyList())
+            every { getFavoriteGamesUseCase.invoke(SortOption.ADDED_DATE_DESC) } returns flowOf(emptyList())
+            every { getFavoriteGamesUseCase.invoke(SortOption.ADDED_DATE_ASC) } returns flowOf(emptyList())
 
             viewModel = FavoriteViewModel(getFavoriteGamesUseCase, removeFavoriteGameUseCase)
 
@@ -159,9 +159,13 @@ class FavoriteViewModelTest {
 
                 assertEquals(FavoriteUiState.Empty, awaitItem())
 
-                viewModel.toggleSortOrder()
+                viewModel.toggleSortOrder(SortOption.ADDED_DATE_ASC)
 
-                expectNoEvents()
+                assertEquals(FavoriteUiState.Loading, awaitItem())
+
+                advanceUntilIdle()
+
+                assertEquals(FavoriteUiState.Empty, awaitItem())
             }
         }
 }

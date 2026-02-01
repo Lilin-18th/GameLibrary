@@ -27,6 +27,7 @@ import coil3.asImage
 import coil3.test.FakeImageLoaderEngine
 import com.lilin.gamelibrary.R
 import com.lilin.gamelibrary.domain.model.FavoriteGame
+import com.lilin.gamelibrary.domain.model.SortOption
 import com.lilin.gamelibrary.domain.model.SortOrder
 import com.lilin.gamelibrary.navigation.TOP_LEVEL_ROUTES
 import com.lilin.gamelibrary.ui.component.GameLibraryNavigationBar
@@ -95,7 +96,7 @@ class FavoriteScreenShotTest {
                 FavoriteScreenSample(
                     uiState = FavoriteUiState.Success(
                         games = FAVORITE_GAMES,
-                        sortOrder = SortOrder.NEWEST_FIRST,
+                        sortOption = SortOption.ADDED_DATE_DESC,
                     ),
                     modifier = Modifier.padding(paddingValues),
                 )
@@ -168,7 +169,7 @@ class FavoriteScreenShotTest {
                 FavoriteScreenSample(
                     uiState = FavoriteUiState.Success(
                         games = FAVORITE_GAMES,
-                        sortOrder = SortOrder.OLDEST_FIRST,
+                        sortOption = SortOption.TITLE_DESC,
                     ),
                     modifier = Modifier.padding(paddingValues),
                 )
