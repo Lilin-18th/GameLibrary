@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -72,7 +73,8 @@ fun TrendingGameCard(
                 shape = RoundedCornerShape(16.dp),
                 ambientColor = TrendingGradientStart.copy(alpha = 0.3f),
                 spotColor = TrendingGradientStart.copy(alpha = 0.3f),
-            ),
+            )
+            .testTag("TrendingGameCard"),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(0.dp),
     ) {

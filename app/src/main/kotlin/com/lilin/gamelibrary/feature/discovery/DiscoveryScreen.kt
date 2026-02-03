@@ -48,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -169,9 +170,13 @@ private fun DiscoveryScreen(
                         0
                     },
                     scrollBehavior = scrollBehavior,
+                    modifier = Modifier.testTag("SectionDetailTopAppBar"),
                 )
             } else {
-                DiscoveryTopBar(scrollBehavior = scrollBehavior)
+                DiscoveryTopBar(
+                    scrollBehavior = scrollBehavior,
+                    modifier = Modifier.testTag("DiscoveryTopBar"),
+                )
             }
         },
         bottomBar = {
@@ -181,6 +186,7 @@ private fun DiscoveryScreen(
                     onClickHighRatedTab = { changeSectionTab(SectionType.HIGH_RATED) },
                     onClickNewReleaseTab = { changeSectionTab(SectionType.NEW_RELEASE) },
                     selectedTab = selectedTab,
+                    modifier = Modifier.testTag("DiscoveryBottomBar"),
                 )
             }
         },
@@ -340,7 +346,8 @@ private fun CompactContent(
 ) {
     LazyColumn(
         modifier = modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .testTag("DiscoveryLazyColumn"),
         contentPadding = PaddingValues(bottom = 12.dp),
     ) {
         item {
@@ -350,7 +357,8 @@ private fun CompactContent(
                 onNavigateToSectionDetail = onNavigateToSectionDetail,
                 onRetry = onRetryTrendSection,
                 onReload = onReloadTrendSection,
-                modifier = Modifier,
+                modifier = Modifier
+                    .testTag("TrendingGames"),
             )
         }
 
@@ -361,7 +369,8 @@ private fun CompactContent(
                 onNavigateToSectionDetail = onNavigateToSectionDetail,
                 onRetry = onRetryHighRatedSection,
                 onReload = onReloadHighRatedSection,
-                modifier = Modifier,
+                modifier = Modifier
+                    .testTag("HighRatedGames"),
             )
         }
 
@@ -372,7 +381,8 @@ private fun CompactContent(
                 onNavigateToSectionDetail = onNavigateToSectionDetail,
                 onRetry = onRetryNewReleaseSection,
                 onReload = onReloadNewReleaseSection,
-                modifier = Modifier,
+                modifier = Modifier
+                    .testTag("NewReleaseGames"),
             )
         }
     }
@@ -407,6 +417,8 @@ private fun LeastMediumContent(
                     TrendingGameCard(
                         game = game,
                         onClick = { onGameClick(game.id) },
+                        modifier = Modifier
+                            .testTag("TrendingGameCard"),
                     )
                 }
 
@@ -414,6 +426,8 @@ private fun LeastMediumContent(
                     HighRatedGameCard(
                         game = game,
                         onClick = { onGameClick(game.id) },
+                        modifier = Modifier
+                            .testTag("HighRatedGameCard"),
                     )
                 }
 
@@ -421,6 +435,8 @@ private fun LeastMediumContent(
                     NewReleaseGameCard(
                         game = game,
                         onClick = { onGameClick(game.id) },
+                        modifier = Modifier
+                            .testTag("NewReleaseGameCard"),
                     )
                 }
             }

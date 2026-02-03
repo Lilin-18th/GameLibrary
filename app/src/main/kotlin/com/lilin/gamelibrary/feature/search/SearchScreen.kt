@@ -56,6 +56,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -157,7 +158,9 @@ fun SearchScreen(
                     query = query,
                     onQueryChange = viewModel::onQueryChange,
                     onSearch = viewModel::search,
-                    modifier = Modifier.padding(bottom = 10.dp),
+                    modifier = Modifier
+                        .padding(bottom = 10.dp)
+                        .testTag("SearchBottomBar"),
                 )
             }
         },
@@ -201,7 +204,9 @@ private fun SearchScreen(
         when (searchUiState) {
             is SearchUiState.None -> {
                 SearchEmptyState(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag("EmptyView"),
                 )
             }
 
@@ -242,6 +247,7 @@ private fun SearchScreen(
                             bottomBarPadding = bottomBarPadding,
                             onLoadNextPage = onLoadNextPage,
                             navigateToDetail = navigateToDetail,
+                            modifier = Modifier.testTag("SearchResultsCompactList")
                         )
                     }
                 }

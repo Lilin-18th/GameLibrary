@@ -46,6 +46,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -129,7 +130,8 @@ fun SectionDetailScreen(
                 currentDisplayMode = displayMode,
                 onBackClick = onBackClick,
                 onDisplayModeChange = viewModel::changeDisplayMode,
-                modifier = Modifier,
+                modifier = Modifier
+                    .testTag("SectionDetailBottomBar"),
             )
         },
         contentWindowInsets = WindowInsets.navigationBars,
@@ -262,7 +264,9 @@ private fun GameGridContent(
         LazyVerticalGrid(
             state = gridScrollState,
             columns = GridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("SectionDetailLazyVerticalGrid"),
             contentPadding = PaddingValues(
                 start = 20.dp,
                 end = 20.dp,
@@ -325,7 +329,9 @@ private fun GameListContent(
             bottom = bottomBarPadding,
         ),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .testTag("SectionDetailLazyColumn"),
     ) {
         items(items = games, key = { it.id }) { game ->
             GameListCard(

@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -126,7 +127,8 @@ fun SearchBottomBar(
                     .padding(horizontal = 12.dp)
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
-                    },
+                    }
+                    .testTag("SearchTextField"),
             )
         }
     }

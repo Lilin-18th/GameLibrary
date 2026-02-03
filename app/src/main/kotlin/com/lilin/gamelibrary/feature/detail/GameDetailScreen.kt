@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -104,6 +105,7 @@ fun GameDetailScreen(
             GameDetailTopAppBar(
                 title = gameTitle,
                 scrollBehavior = scrollBehavior,
+                modifier = Modifier.testTag("GameDetailTopBar"),
             )
         },
         bottomBar = {
@@ -118,6 +120,7 @@ fun GameDetailScreen(
                 },
                 isSuccessState = isSuccessState,
                 isFavorite = if (isSuccessState) (uiState as GameDetailUiState.Success).isFavorite else false,
+                modifier = Modifier.testTag("GameDetailBottomBar"),
             )
         },
         contentWindowInsets = WindowInsets.navigationBars,
@@ -167,7 +170,7 @@ private fun GameDetailScreen(
                     gameDetail = uiState.gameDetail,
                     scrollBehavior = scrollBehavior,
                     bottomBarPadding = bottomBarPadding,
-                    modifier = modifier,
+                    modifier = modifier.testTag("GameDetailSuccessContent"),
                 )
             }
         }
@@ -232,23 +235,38 @@ private fun GameDetailSuccessContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
-            GameBackgroundImageSection(gameDetail = gameDetail)
+            GameBackgroundImageSection(
+                gameDetail = gameDetail,
+                modifier = Modifier.testTag("GameBackgroundImageSection"),
+            )
         }
 
         item {
-            GameBasicInfoSection(gameDetail = gameDetail)
+            GameBasicInfoSection(
+                gameDetail = gameDetail,
+                modifier = Modifier.testTag("GameBasicInfoSection"),
+            )
         }
 
         item {
-            GameRatingSummarySection(gameDetail = gameDetail)
+            GameRatingSummarySection(
+                gameDetail = gameDetail,
+                modifier = Modifier.testTag("GameRatingSummarySection"),
+            )
         }
 
         item {
-            GameDescriptionSection(gameDetail = gameDetail)
+            GameDescriptionSection(
+                gameDetail = gameDetail,
+                modifier = Modifier.testTag("GameDescriptionSection"),
+            )
         }
 
         item {
-            GameTagsSection(gameDetail = gameDetail)
+            GameTagsSection(
+                gameDetail = gameDetail,
+                modifier = Modifier.testTag("GameTagsSection"),
+            )
         }
     }
 }

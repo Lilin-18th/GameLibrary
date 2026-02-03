@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lilin.gamelibrary.domain.model.Game
@@ -38,6 +39,7 @@ fun TrendingGamesSection(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
+            modifier = Modifier.testTag("TrendingGamesSectionLazyRow")
         ) {
             items(items = games, key = { it.id }) { game ->
                 TrendingGameCard(
@@ -50,6 +52,7 @@ fun TrendingGamesSection(
                 SeeMoreCard(
                     sectionType = SectionType.TRENDING,
                     onClick = onSeeMoreClick,
+                    modifier = Modifier.testTag("TrendingSeeMoreCard")
                 )
             }
         }
@@ -78,6 +81,7 @@ fun HighRatedGamesSection(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
+            modifier = Modifier.testTag("HighRatedGamesSectionLazyRow")
         ) {
             items(items = games, key = { it.id }) { game ->
                 HighRatedGameCard(
@@ -90,6 +94,7 @@ fun HighRatedGamesSection(
                 SeeMoreCard(
                     sectionType = SectionType.HIGH_RATED,
                     onClick = onSeeMoreClick,
+                    modifier = Modifier.testTag("HighRatedSeeMoreCard")
                 )
             }
         }
@@ -118,6 +123,7 @@ fun NewReleaseGamesSection(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
+            modifier = Modifier.testTag("NewReleaseGamesSectionLazyRow")
         ) {
             items(items = games, key = { it.id }) { game ->
                 NewReleaseGameCard(
@@ -130,6 +136,7 @@ fun NewReleaseGamesSection(
                 SeeMoreCard(
                     sectionType = SectionType.NEW_RELEASE,
                     onClick = onSeeMoreClick,
+                    modifier = Modifier.testTag("NewReleaseSeeMoreCard")
                 )
             }
         }
