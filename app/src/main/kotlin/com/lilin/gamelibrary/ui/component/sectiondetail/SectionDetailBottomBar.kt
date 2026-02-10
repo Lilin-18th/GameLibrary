@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +37,10 @@ fun SectionDetailBottomBar(
                 .padding(vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(onClick = onBackClick) {
+            IconButton(
+                onClick = onBackClick,
+                modifier = Modifier.testTag("BackKey")
+            ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = stringResource(R.string.detail_bottom_bar_back),
@@ -51,6 +55,7 @@ fun SectionDetailBottomBar(
             ) {
                 IconButton(
                     onClick = { onDisplayModeChange(DisplayMode.GRID_COLUMN) },
+                    modifier = Modifier.testTag("GridMode"),
                 ) {
                     Icon(
                         imageVector = Icons.Filled.GridView,
@@ -65,6 +70,7 @@ fun SectionDetailBottomBar(
 
                 IconButton(
                     onClick = { onDisplayModeChange(DisplayMode.LIST) },
+                    modifier = Modifier.testTag("ListMode"),
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ViewList,

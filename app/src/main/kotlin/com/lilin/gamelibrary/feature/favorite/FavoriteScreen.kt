@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -155,7 +156,9 @@ private fun FavoriteScreen(
     when (uiState) {
         is FavoriteUiState.Empty -> {
             FavoriteEmptyContent(
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier
+                    .fillMaxSize()
+                    .testTag("FavoriteEmptyView"),
             )
         }
 
@@ -198,6 +201,7 @@ private fun FavoriteScreen(
                             onClickDelete = { gameId ->
                                 onClickDelete(gameId)
                             },
+                            modifier = Modifier.testTag("FavoriteGameCompactCard"),
                         )
                     }
                 }
