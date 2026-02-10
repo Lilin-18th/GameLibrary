@@ -40,6 +40,20 @@ class DiscoveryScreenNavigationTest {
 
     @Test
     fun navigateToNewReleaseGamesFromDiscoveryScreen() {
+        fromDiscoveryScreenToSeeMore()
+
+        fromSeeMoreToSearchScreen()
+
+        fromSearchToFavoriteScreen()
+
+        fromFavoriteToDetail()
+
+        fromDetailToFavorite()
+
+        checkFavoriteGameAndDelete()
+    }
+
+    private fun fromDiscoveryScreenToSeeMore() {
         composeTestRule
             .waitUntilNodeExists("DiscoveryTopBar")
             .assertIsDisplayed()
@@ -66,14 +80,15 @@ class DiscoveryScreenNavigationTest {
             .waitUntilNodeExists("NewReleaseGamesSectionLazyRow")
             .performScrollTo()
 
-        // LazyRowを右方向にスクロールしてNewReleaseSeeMoreCardを探してクリック（詳細画面へ遷移）
         composeTestRule
             .scrollRightUntilNodeExists(
                 scrollableTag = "NewReleaseGamesSectionLazyRow",
                 targetTag = "NewReleaseSeeMoreCard",
             )
             .performClick()
+    }
 
+    private fun fromSeeMoreToSearchScreen() {
         composeTestRule
             .waitUntilNodeExists("SectionDetailBottomBar")
             .assertIsDisplayed()
@@ -101,7 +116,9 @@ class DiscoveryScreenNavigationTest {
         composeTestRule
             .waitUntilNodeExists("BackKey")
             .performClick()
+    }
 
+    private fun fromSearchToFavoriteScreen() {
         composeTestRule
             .waitUntilNodeExists("Search")
             .performClick()
@@ -130,7 +147,9 @@ class DiscoveryScreenNavigationTest {
         composeTestRule
             .waitUntilNodeExists("Favorite")
             .performClick()
+    }
 
+    private fun fromFavoriteToDetail() {
         composeTestRule
             .waitUntilNodeExists("FavoriteEmptyView")
             .performClick()
@@ -160,7 +179,9 @@ class DiscoveryScreenNavigationTest {
         composeTestRule
             .onAllNodesWithTag("TrendingGameCard")[0]
             .performClick()
+    }
 
+    private fun fromDetailToFavorite() {
         composeTestRule
             .waitUntilNodeExists("GameDetailTopBar")
             .assertIsDisplayed()
@@ -216,7 +237,9 @@ class DiscoveryScreenNavigationTest {
         composeTestRule
             .waitUntilNodeExists("Favorite")
             .performClick()
+    }
 
+    private fun checkFavoriteGameAndDelete() {
         composeTestRule
             .waitUntilNodeExists("FavoriteGameCompactCard")
             .assertIsDisplayed()
